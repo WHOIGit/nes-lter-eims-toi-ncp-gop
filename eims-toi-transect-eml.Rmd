@@ -1,0 +1,403 @@
+---
+title: "NES-LTER EIMS TOI Transect"
+author: "Jaxine Wolfe"
+date: "Dec 2, 2019"
+output: html_document
+---
+
+## R Markdown Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+
+# clear workspace for local development
+rm(list = ls())
+
+# set environment timezone to UTC
+Sys.setenv(TZ = "UTC")
+
+# assign relative path to directory
+dir <- "/Users/jaxinewolfe/Documents/WHOI/NESLTER/nes-lter-eims-toi-ncp-gop/"
+# set as working directory
+setwd(dir)
+
+# define source for functions developed for the EDI packaging workflow
+source("edi-utilities.R")
+
+# install necessary libraries
+# install.packages("devtools")
+# install_github("EDIorg/EMLassemblyline")
+# install.packages("R.matlab")
+
+# define R packages to require
+libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2", "R.matlab")
+# load libraries
+lapply(libs, require, character.only = TRUE)
+```
+
+## Load in Provided Matlab files
+
+```{r}
+
+# store all the names of matlab files
+files <- Sys.glob("*.mat")
+# apply the readMat function to read in the files
+d <- lapply(files, readMat)
+
+# loop through matlab data files
+for (i in 1:length(files)) {
+  # isolate data in mat file and convert to data frame
+  df <- as.data.frame(d[[i]][1])
+  # add a utc datetime column 
+  df$utc_datetime <- as.POSIXct((df[,1] - 719529)*86400, origin = "1970-01-01", tz = "UTC")
+  # assign data to assicated file names
+  assign(str_remove(files[i], ".mat"), df)
+}
+
+# Rename the dataframes according to Rachel's provided description
+colnames(bottleEn617withoutincubation) <- c("matlab_datetime", "O2_Ar_delta", "O2_Ar_ratio",
+                                       "depth", "D17", "d17", "d18", "niskin","utc_datetime")
+colnames(discreteratesEn617) <- c("matlab_date", "lat", "lon", "gop", "ncp",
+                                  "ncp_per_gop","utc_datetime")
+colnames(RaEn617withbiosat) <- c("matlab_date", "O2_Ar_corrected", "temp", "sal", "lat", "lon", "cum_dist", "biosat", "utc_datetime")
+colnames(ncplterEn617) <- c("matlab_date", "O2_Ar_corrected", "temp", "sal", "lat", "lon",
+                "cum_dist", "biosat", "ncp", "k","utc_datetime")
+
+# Trim fields and rename vars
+# eims-toi
+bottle <- bottleEn617withoutincubation
+ra <- RaEn617withbiosat %>% select(-cum_dist)
+# ncp-gop
+ncplter <- ncplterEn617 %>% select(-cum_dist)
+rates <- discreteratesEn617
+```
+
+## PER CRUISE: Merge k from High to Low throughput data
+```{r}
+
+# high <- ncplterEn617
+# low <- discreteratesEn617
+# 
+# # create column to populate with k from high thoughput
+# low$k <- NA_character_
+# 
+# for (i in 1:nrow(low)) {
+#   datetime <- low$utc_datetime[i]
+# 
+#   # find the index of the nearest depth
+#   ind <- which.min(abs(datetime - high$utc_datetime))
+#   
+#   # check that the minimum difference is less than 2m
+#   # if (min(abs(datetime - high$utc_datetime_high)) > 20) {
+#   #   print("exceeds")
+#   # }
+#   
+#   low$k[i] <- high$k[ind]
+# }
+
+```
+
+#### EIMS-TOI-TRANSECT DATA ####
+
+## Clarifying Bottle vs. Underway: bottleEn617withoutincubation
+```{r}
+# define bottle vs underway based on niskin
+toi_source <- ifelse(bottle$niskin == 0, 
+                     yes = "toi_underway", no = "toi_bottle")
+# add categorical column to data
+bottle$toi_source <- toi_source
+
+# assign NA to niskin bottle 0
+bottle$niskin[bottle$niskin == 0] <- NA_integer_
+
+# assign depths of 0 as 5m if it was an underway sample
+for (j in 1:nrow(bottle)) {
+  if (bottle$depth[j] == 0 &
+      bottle$toi_source[j] == "toi_underway") {
+    bottle$depth[j] <- 5
+  } else {
+    j <- j + 1
+    next
+  }
+}
+
+# are there any bucket samples?
+# which(bottle$depth == 0)
+
+```
+
+## Utility Function: Correct UTC timezone
+
+The utc_datetime for bottleEn617withoutincubation represents the cast start time, NOT the time at which the bottle was fired
+
+Steps: 
+  • load in the bottle summary for en617
+  • find the associated cast based on nearest time
+  • find the bottle time based on cast and niskin
+  
+```{r}
+
+# read in bottle summary for en617
+summary <- read_from_api(type = "summary", cruises = "EN617")
+
+# create column to populate with k from high thoughput
+bottle$cast <- NA_integer_
+
+for (i in 1:nrow(bottle)) {
+  # store values
+  nisk <- bottle$niskin[i]
+  nisktime <- bottle$utc_datetime[i]
+  
+  # skip row if underway
+  if (is.na(nisk)) {
+    i <- i + 1
+    next
+  }
+  
+  # find the index of the nearest datetime
+  ind <- which.min(abs(nisktime - summary$date))
+  smry_cast <- summary$cast[ind]
+
+  # populate cast column from summary
+  bottle$cast[i] <- smry_cast
+  
+  # store cast to find bottle time
+  smry <- summary %>% filter(cast == smry_cast &
+                               niskin == nisk)
+  
+  # case: smry subset is empty
+  if (nrow(smry) == 0) {
+    print("Niskin not found in bottle summary for the given cast")
+    i <- i + 1
+    next
+  }
+  
+  # store bottle time 
+  bottle$utc_datetime[i] <- smry$date
+}
+
+```
+
+# Final Edits
+```{r}
+# define headers for columns in desired order
+bottle_headers <- c("utc_datetime", "matlab_datetime", "toi_source", "cast", "niskin", "depth", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
+ra_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_corrected")
+
+# reorder columns as necessary
+bottle_edi <- bottle[, bottle_headers]
+ra_edi <- ra[, ra_headers]
+
+```
+
+
+
+## EML Assembly: EIMS-TOI-transect
+
+This chunk outputs the final xml file for EDI through the following steps:
+
+Step 1: Populating EML Assembly Line templates with metadata
+Step 2: Calculating the geospatial and temporal coverage 
+Step 3: Making the XML file 
+Step 4: Inserting a custom NES-LTER parent project node 
+
+```{r}
+
+# write files for upload to EDI
+write.csv(bottle_edi, paste0(dir, "/eims-toi-transect/bottleEn617withoutincubation.csv"), 
+          row.names = FALSE)
+write.csv(ra_edi, file.path(dir, "/eims-toi-transect/RaEn617withbiosat.csv"), 
+          row.names = FALSE)
+
+# define input for EML assembly
+metadata <- "/eims-toi-transect/eims-toi-transect-info"
+bottles_file <- "bottleEn617withoutincubation"
+ra_file <- "RaEn617withbiosat"
+edi_filename <- c(bottles_file, ra_file)
+file_descriptions <- c("Low frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes", "High frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes")
+pkg_id <- "knb-lter-nes.6.1"
+
+# Make EML Templates 
+xlsx_to_template(metadata.path = paste0(dir, "eims-toi-transect/eims-toi-transect-info"),
+                 output.path = paste0(dir, "eims-toi-transect/"),
+                 edi.filename = NULL, 
+                 rights = "CCBY")
+# Bottle
+xlsx_to_template(metadata.path = paste0(dir, "eims-toi-transect/", bottles_file), 
+                 output.path = paste0(dir, "eims-toi-transect/"),
+                 edi.filename = bottles_file, 
+                 rights = "CCBY")
+# Ra
+xlsx_to_template(metadata.path = paste0(dir, "eims-toi-transect/", ra_file), 
+                 output.path = paste0(dir, "eims-toi-transect/"),
+                 edi.filename = ra_file, 
+                 rights = "CCBY")
+
+# Data Coverage
+# combine the dates for both datasets
+# isolate date and geospatial columns for input
+date_col <- as.Date(c(ra_edi$utc_datetime,
+                      bottle_edi$utc_datetime))
+lat_col <- ra_edi$lat
+lon_col <- ra_edi$lon
+# run function to determine geospatial and temporal coverage
+coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
+
+# Make EML
+make_eml(path = paste0(dir, "eims-toi-transect/"),
+         dataset.title = "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018",
+         data.table = paste0(edi_filename, ".csv"),
+         data.table.description = file_descriptions,
+         temporal.coverage = c(coverage$startdate, coverage$enddate),
+         geographic.description = "NES-LTER Transect",
+         geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
+         maintenance.description = "ongoing",
+         user.id = "NES",
+         user.domain = "LTER",
+         package.id = pkg_id)
+
+# Insert Custom Project Node
+project_insert(edi_pkg = pkg_id, 
+               xml.path = paste0(dir, "eims-toi-transect/"))
+```
+
+
+#### NCP-GOP-TRANSECT ####
+
+## Adding a unique identifier
+
+There are several instances of two low frequency samples with the exact same time. Hopefully these will be bottle and underway samples respectively...unless they're replicate bottle samples. 
+```{r}
+
+# add field with unique identifier for each observation
+discreteratesEn617$uniqueIdentifier <- paste0("en617lowhighfreq", rownames(discreteratesEn617))
+
+# create column to populate with k from high thoughput
+ncplterEn617$uniqueIdentifier <- NA_character_
+
+for (i in 1:nrow(ncplterEn617)) {
+  datetime <- ncplterEn617$utc_datetime[i]
+
+  # find the nearest datetime
+  timediff <- min(abs(as.numeric(difftime(datetime, discreteratesEn617$utc_datetime, units = "mins"))))
+
+  # check that the minimum difference 
+  if (timediff > (25/60)) {
+    i <- i + 1
+    next
+  } else {
+    # find the index of the nearest datetime
+    ind <- which.min(abs(as.numeric(difftime(datetime, discreteratesEn617$utc_datetime, units = "mins"))))
+  
+  }
+  
+  ncplterEn617$uniqueIdentifier[i] <- discreteratesEn617$uniqueIdentifier[ind]
+}
+
+```
+
+
+## QA: Per Cruise
+```{r}
+
+# create column to populate with k from high thoughput
+low$ncp_high <- NA_integer_
+low$ncp_test <- FALSE
+
+for (i in 1:nrow(low)) {
+  value <- low$ncp[i]
+
+  # find the index of the nearest depth
+  ind <- which.min(abs(value - high$ncp))
+
+  # populate new value of ncp from high throughput
+  low$ncp_high[i] <- high$ncp[ind]
+  
+  if (round(low$ncp[i], 2) == round(low$ncp_high[i], 2)) {
+    low$ncp_test[i] <- TRUE
+    }
+}
+
+# return if false
+```
+
+# Final Edits
+```{r}
+# define headers for columns in desired order
+rates_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "gop", "ncp", "ncp_per_gop")
+ncp_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_corrected", "ncp", "k")
+
+# reorder columns as necessary
+rates_edi <- rates[, rates_headers]
+ncplter_edi <- ncplter[, ncp_headers]
+```
+
+
+## EML Assembly: NCP-GOP-transect
+
+This chunk outputs the final xml file for EDI through the following steps:
+
+Step 1: Populating EML Assembly Line templates with metadata
+Step 2: Calculating the geospatial and temporal coverage 
+Step 3: Making the XML file 
+Step 4: Inserting a custom NES-LTER parent project node 
+
+```{r}
+# write files for upload to EDI
+write.csv(rates_edi, 
+          paste0(dir, "ncp-gop-transect-summer-2018/discreteratesEn617.csv"), 
+          row.names = FALSE)
+write.csv(ncplter_edi, paste0(dir, "ncp-gop-transect-summer-2018/ncplterEn617.csv"), 
+          row.names = FALSE)
+
+# define input for EML assembly
+metadata <- "ncp-gop-transect-summer-2018/ncp-gop-transect-info"
+rates_file <- "discreteratesEn617"
+ncp_file <- "ncplterEn617"
+edi_filename <- c(rates_file, ncp_file)
+file_descriptions <- c("Low frequency net community production and gross oxygen production", "High frequency net community production and gross oxygen production")
+pkg_id <- "knb-lter-nes.7.1"
+
+# Make EML Templates 
+xlsx_to_template(metadata.path = paste0(dir, metadata),
+                 output.path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+                 edi.filename = NULL, 
+                 rights = "CCBY")
+# Discrete Rates
+xlsx_to_template(metadata.path = paste0(dir, "ncp-gop-transect-summer-2018/", rates_file), 
+                 output.path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+                 edi.filename = rates_file, 
+                 rights = "CCBY")
+# Ncplter 
+xlsx_to_template(metadata.path = paste0(dir, "ncp-gop-transect-summer-2018/", ncp_file), 
+                 output.path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+                 edi.filename = ncp_file, 
+                 rights = "CCBY")
+
+# Data Coverage
+# combine the dates and lat/lon for both datasets
+# isolate date and geospatial columns for input
+date_col <- as.Date(c(ncplter_edi$utc_datetime, rates_edi$utc_datetime))
+lat_col <- c(ncplter_edi$lat, rates_edi$lat)
+lon_col <- c(ncplter_edi$lon, rates_edi$lon)
+# run function to determine geospatial and temporal coverage
+coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
+
+# Make EML
+make_eml(path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+         dataset.title = "Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018",
+         data.table = paste0(edi_filename, ".csv"),
+         data.table.description = file_descriptions,
+         temporal.coverage = c(coverage$startdate, coverage$enddate),
+         geographic.description = "NES-LTER Transect",
+         geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
+         maintenance.description = "ongoing",
+         user.id = "NES",
+         user.domain = "LTER",
+         package.id = pkg_id)
+
+# Insert Custom Project Node
+project_insert(edi_pkg = pkg_id, 
+               xml.path = paste0(dir, "ncp-gop-transect-summer-2018/"))
+```
+

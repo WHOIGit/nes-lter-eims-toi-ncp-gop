@@ -1,0 +1,2 @@
+id	unitType	parentSI	multiplierToSI	description
+micromolePerMeterSquaredPerDay	amount	molePerMeterSquaredPerDay	1e-06	micromoles per meter squared per day
