@@ -3,8 +3,11 @@
 This repository displays the workflow used to process NES-LTER Transect cruise data in preparation for publication of two packages to the Environmental Data Initiative repository. The eims-toi transect package contains oxygen-argon dissolved gas ratios and triple oxygen isotopes, ongoing since 2018. The ncp-gop transect package contains net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes for cruise EN617 (summer 2018). 
 
 *EIMS:* electron ioniation mass spectrometer
+
 *TOI:* triple oxygen isotope
+
 *NCP:* net community production
+
 *GOP:* gross oxygen production
 
 This workflow includes the following:

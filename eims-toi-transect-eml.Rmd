@@ -53,53 +53,30 @@ for (i in 1:length(files)) {
   # assign data to assicated file names
   assign(str_remove(files[i], ".mat"), df)
 }
-
-# Rename the dataframes according to Rachel's provided description
-colnames(bottleEn617withoutincubation) <- c("matlab_datetime", "O2_Ar_delta", "O2_Ar_ratio",
-                                       "depth", "D17", "d17", "d18", "niskin","utc_datetime")
-colnames(discreteratesEn617) <- c("matlab_date", "lat", "lon", "gop", "ncp",
-                                  "ncp_per_gop","utc_datetime")
-colnames(RaEn617withbiosat) <- c("matlab_date", "O2_Ar_corrected", "temp", "sal", "lat", "lon", "cum_dist", "biosat", "utc_datetime")
-colnames(ncplterEn617) <- c("matlab_date", "O2_Ar_corrected", "temp", "sal", "lat", "lon",
-                "cum_dist", "biosat", "ncp", "k","utc_datetime")
-
-# Trim fields and rename vars
-# eims-toi
-bottle <- bottleEn617withoutincubation
-ra <- RaEn617withbiosat %>% select(-cum_dist)
-# ncp-gop
-ncplter <- ncplterEn617 %>% select(-cum_dist)
-rates <- discreteratesEn617
 ```
 
-## PER CRUISE: Merge k from High to Low throughput data
+## EIMS-TOI-TRANSECT DATA ------------
+
+# Define column headers
+
+Columns are named according to the description of the provided .mat files.
+
 ```{r}
 
-# high <- ncplterEn617
-# low <- discreteratesEn617
-# 
-# # create column to populate with k from high thoughput
-# low$k <- NA_character_
-# 
-# for (i in 1:nrow(low)) {
-#   datetime <- low$utc_datetime[i]
-# 
-#   # find the index of the nearest depth
-#   ind <- which.min(abs(datetime - high$utc_datetime))
-#   
-#   # check that the minimum difference is less than 2m
-#   # if (min(abs(datetime - high$utc_datetime_high)) > 20) {
-#   #   print("exceeds")
-#   # }
-#   
-#   low$k[i] <- high$k[ind]
-# }
+# assign column headers
+colnames(bottleEn617withoutincubation) <- c("matlab_datetime", "O2_Ar_delta", "O2_Ar_ratio",
+                                       "depth", "D17", "d17", "d18", "niskin","utc_datetime")
+colnames(RaEn617withbiosat) <- c("matlab_date", "O2_Ar_ratio", "temp", "sal", "lat", "lon", "cum_dist", "biosat", "utc_datetime")
 
+# trim unnecessary fields and rename vars
+bottle <- bottleEn617withoutincubation
+ra <- RaEn617withbiosat %>% select(-cum_dist)
 ```
 
-#### EIMS-TOI-TRANSECT DATA ####
+# TOI Underway vs. Bottle
 
-## Clarifying Bottle vs. Underway: bottleEn617withoutincubation
+Add a toi_source field to the bottle dataset to clarify whether a bottle was sampled from niskin vs. underway water. Assign underway sampling to a depth of 5m.
+
 ```{r}
 # define bottle vs underway based on niskin
 toi_source <- ifelse(bottle$niskin == 0, 
@@ -121,19 +98,16 @@ for (j in 1:nrow(bottle)) {
   }
 }
 
-# are there any bucket samples?
-# which(bottle$depth == 0)
-
 ```
 
-## Utility Function: Correct UTC timezone
+## Correct UTC datetime for bottle samples
 
-The utc_datetime for bottleEn617withoutincubation represents the cast start time, NOT the time at which the bottle was fired
+Issue: The utc_datetime for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired. 
 
-Steps: 
-  • load in the bottle summary for en617
+Solution: 
+  • load in the bottle summary for the appropriate cruise
   • find the associated cast based on nearest time
-  • find the bottle time based on cast and niskin
+  • find the time at which the bottle was fired based on cast and niskin
   
 ```{r}
 
@@ -167,7 +141,7 @@ for (i in 1:nrow(bottle)) {
   
   # case: smry subset is empty
   if (nrow(smry) == 0) {
-    print("Niskin not found in bottle summary for the given cast")
+    print(paste0("Niskin ", nisk, " not found in bottle summary for cast ", smry_cast))
     i <- i + 1
     next
   }
@@ -178,19 +152,57 @@ for (i in 1:nrow(bottle)) {
 
 ```
 
-# Final Edits
+## QA: Checking Data Integrity
+```{r}
+
+# are there any bucket samples?
+if (any(bottle$depth == 0)) {
+  conflicts <- bottle[which(bottle$depth == 0),]
+  print(conflicts)
+}
+
+# write.csv(conflicts, "bottlesamples_conflict.csv")
+# write.csv(summary, "bottlesummary_EN617.csv")
+
+summary %>% filter(cast == 14 | cast == 29)
+
+```
+
+## QA: Map Sampling Locations
+
+Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
+
+```{r}
+
+# Map Check
+
+# ncplter
+map_locs(df = bottle, xvar = "longitude", yvar = "latitude",
+         region = "transect", colorvar = NULL)
+
+# underway 02/Ar
+map_locs(df = ra, xvar = "lon", yvar = "lat",
+         region = "transect", colorvar = NULL)
+
+```
+
+## Column Header Organization
 ```{r}
 # define headers for columns in desired order
 bottle_headers <- c("utc_datetime", "matlab_datetime", "toi_source", "cast", "niskin", "depth", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
-ra_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_corrected")
+ra_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_ratio")
 
 # reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
 ra_edi <- ra[, ra_headers]
 
+# write files for upload to EDI
+write.csv(bottle_edi, paste0(dir, "/eims-toi-transect/bottleEn617withoutincubation.csv"), 
+          row.names = FALSE)
+write.csv(ra_edi, file.path(dir, "/eims-toi-transect/RaEn617withbiosat.csv"), 
+          row.names = FALSE)
+
 ```
-
-
 
 ## EML Assembly: EIMS-TOI-transect
 
@@ -203,33 +215,28 @@ Step 4: Inserting a custom NES-LTER parent project node
 
 ```{r}
 
-# write files for upload to EDI
-write.csv(bottle_edi, paste0(dir, "/eims-toi-transect/bottleEn617withoutincubation.csv"), 
-          row.names = FALSE)
-write.csv(ra_edi, file.path(dir, "/eims-toi-transect/RaEn617withbiosat.csv"), 
-          row.names = FALSE)
-
 # define input for EML assembly
-metadata <- "/eims-toi-transect/eims-toi-transect-info"
+metadata <- "eims-toi-transect/eims-toi-transect-info"
+project_folder <- "eims-toi-transect/"
 bottles_file <- "bottleEn617withoutincubation"
 ra_file <- "RaEn617withbiosat"
-edi_filename <- c(bottles_file, ra_file)
+edi_data <- c(bottles_file, ra_file)
 file_descriptions <- c("Low frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes", "High frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes")
 pkg_id <- "knb-lter-nes.6.1"
 
 # Make EML Templates 
-xlsx_to_template(metadata.path = paste0(dir, "eims-toi-transect/eims-toi-transect-info"),
-                 output.path = paste0(dir, "eims-toi-transect/"),
+xlsx_to_template(metadata.path = paste0(dir, metadata),
+                 output.path = paste0(dir, project_folder),
                  edi.filename = NULL, 
                  rights = "CCBY")
-# Bottle
-xlsx_to_template(metadata.path = paste0(dir, "eims-toi-transect/", bottles_file), 
-                 output.path = paste0(dir, "eims-toi-transect/"),
+# toi bottle samples
+xlsx_to_template(metadata.path = paste0(dir, project_folder, bottles_file), 
+                 output.path = paste0(dir, project_folder),
                  edi.filename = bottles_file, 
                  rights = "CCBY")
-# Ra
-xlsx_to_template(metadata.path = paste0(dir, "eims-toi-transect/", ra_file), 
-                 output.path = paste0(dir, "eims-toi-transect/"),
+# underway samples
+xlsx_to_template(metadata.path = paste0(dir, project_folder, ra_file), 
+                 output.path = paste0(dir, project_folder),
                  edi.filename = ra_file, 
                  rights = "CCBY")
 
@@ -244,9 +251,9 @@ lon_col <- ra_edi$lon
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
-make_eml(path = paste0(dir, "eims-toi-transect/"),
+make_eml(path = paste0(dir, project_folder),
          dataset.title = "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018",
-         data.table = paste0(edi_filename, ".csv"),
+         data.table = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
@@ -258,78 +265,63 @@ make_eml(path = paste0(dir, "eims-toi-transect/"),
 
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, 
-               xml.path = paste0(dir, "eims-toi-transect/"))
+               xml.path = paste0(dir, project_folder))
 ```
 
 
-#### NCP-GOP-TRANSECT ####
+## NCP-GOP-TRANSECT ----------
 
-## Adding a unique identifier
+# Define column headers
 
-There are several instances of two low frequency samples with the exact same time. Hopefully these will be bottle and underway samples respectively...unless they're replicate bottle samples. 
+Columns are named according to the description of the provided .mat files.
+
+```{r}
+# assign column headers
+colnames(ncplterEn617) <- c("matlab_date", "O2_Ar_ratio", "temp", "sal", "lat", "lon",
+                "cum_dist", "biosat", "ncp", "k","utc_datetime")
+colnames(discreteratesEn617) <- c("matlab_date", "lat", "lon", "gop", "ncp",
+                                  "ncp_per_gop","utc_datetime")
+
+# trim unnecessary fields and rename vars
+ncplter <- ncplterEn617 %>% select(-cum_dist)
+rates <- discreteratesEn617
+```
+
+## QA: Map Sampling Locations
+
+Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
+
 ```{r}
 
-# add field with unique identifier for each observation
-discreteratesEn617$uniqueIdentifier <- paste0("en617lowhighfreq", rownames(discreteratesEn617))
+# Map Check
 
-# create column to populate with k from high thoughput
-ncplterEn617$uniqueIdentifier <- NA_character_
+# ncplter
+map_locs(df = ncplter, xvar = "lon", yvar = "lat",
+         region = "transect", colorvar = NULL)
 
-for (i in 1:nrow(ncplterEn617)) {
-  datetime <- ncplterEn617$utc_datetime[i]
-
-  # find the nearest datetime
-  timediff <- min(abs(as.numeric(difftime(datetime, discreteratesEn617$utc_datetime, units = "mins"))))
-
-  # check that the minimum difference 
-  if (timediff > (25/60)) {
-    i <- i + 1
-    next
-  } else {
-    # find the index of the nearest datetime
-    ind <- which.min(abs(as.numeric(difftime(datetime, discreteratesEn617$utc_datetime, units = "mins"))))
-  
-  }
-  
-  ncplterEn617$uniqueIdentifier[i] <- discreteratesEn617$uniqueIdentifier[ind]
-}
+# discrete rates
+map_locs(df = ncplter, xvar = "lon", yvar = "lat",
+         region = "transect", colorvar = NULL)
 
 ```
 
-
-## QA: Per Cruise
+# Column Header Organization
 ```{r}
 
-# create column to populate with k from high thoughput
-low$ncp_high <- NA_integer_
-low$ncp_test <- FALSE
-
-for (i in 1:nrow(low)) {
-  value <- low$ncp[i]
-
-  # find the index of the nearest depth
-  ind <- which.min(abs(value - high$ncp))
-
-  # populate new value of ncp from high throughput
-  low$ncp_high[i] <- high$ncp[ind]
-  
-  if (round(low$ncp[i], 2) == round(low$ncp_high[i], 2)) {
-    low$ncp_test[i] <- TRUE
-    }
-}
-
-# return if false
-```
-
-# Final Edits
-```{r}
-# define headers for columns in desired order
+# define the desired order of columns
 rates_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "gop", "ncp", "ncp_per_gop")
-ncp_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_corrected", "ncp", "k")
+ncp_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_ratio", "ncp", "k")
 
 # reorder columns as necessary
 rates_edi <- rates[, rates_headers]
 ncplter_edi <- ncplter[, ncp_headers]
+
+# write files for upload to EDI
+write.csv(rates_edi, 
+          paste0(dir, "ncp-gop-transect-summer-2018/discreteratesEn617.csv"), 
+          row.names = FALSE)
+write.csv(ncplter_edi, paste0(dir, "ncp-gop-transect-summer-2018/ncplterEn617.csv"), 
+          row.names = FALSE)
 ```
 
 
@@ -343,34 +335,29 @@ Step 3: Making the XML file
 Step 4: Inserting a custom NES-LTER parent project node 
 
 ```{r}
-# write files for upload to EDI
-write.csv(rates_edi, 
-          paste0(dir, "ncp-gop-transect-summer-2018/discreteratesEn617.csv"), 
-          row.names = FALSE)
-write.csv(ncplter_edi, paste0(dir, "ncp-gop-transect-summer-2018/ncplterEn617.csv"), 
-          row.names = FALSE)
 
 # define input for EML assembly
 metadata <- "ncp-gop-transect-summer-2018/ncp-gop-transect-info"
+project_folder <- "ncp-gop-transect-summer-2018/"
 rates_file <- "discreteratesEn617"
 ncp_file <- "ncplterEn617"
-edi_filename <- c(rates_file, ncp_file)
+edi_data <- c(rates_file, ncp_file)
 file_descriptions <- c("Low frequency net community production and gross oxygen production", "High frequency net community production and gross oxygen production")
 pkg_id <- "knb-lter-nes.7.1"
 
 # Make EML Templates 
 xlsx_to_template(metadata.path = paste0(dir, metadata),
-                 output.path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+                 output.path = paste0(dir, project_folder),
                  edi.filename = NULL, 
                  rights = "CCBY")
 # Discrete Rates
-xlsx_to_template(metadata.path = paste0(dir, "ncp-gop-transect-summer-2018/", rates_file), 
-                 output.path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+xlsx_to_template(metadata.path = paste0(dir, project_folder, rates_file), 
+                 output.path = paste0(dir, project_folder),
                  edi.filename = rates_file, 
                  rights = "CCBY")
 # Ncplter 
-xlsx_to_template(metadata.path = paste0(dir, "ncp-gop-transect-summer-2018/", ncp_file), 
-                 output.path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+xlsx_to_template(metadata.path = paste0(dir, project_folder, ncp_file), 
+                 output.path = paste0(dir, project_folder),
                  edi.filename = ncp_file, 
                  rights = "CCBY")
 
@@ -384,9 +371,9 @@ lon_col <- c(ncplter_edi$lon, rates_edi$lon)
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
-make_eml(path = paste0(dir, "ncp-gop-transect-summer-2018/"),
+make_eml(path = paste0(dir, project_folder),
          dataset.title = "Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018",
-         data.table = paste0(edi_filename, ".csv"),
+         data.table = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
@@ -398,6 +385,6 @@ make_eml(path = paste0(dir, "ncp-gop-transect-summer-2018/"),
 
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, 
-               xml.path = paste0(dir, "ncp-gop-transect-summer-2018/"))
+               xml.path = paste0(dir, project_folder))
 ```
 
