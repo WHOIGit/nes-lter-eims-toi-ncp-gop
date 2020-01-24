@@ -49,7 +49,7 @@ for (i in 1:length(files)) {
   # isolate data in mat file and convert to data frame
   df <- as.data.frame(d[[i]][1])
   # add a utc datetime column 
-  df$utc_datetime <- as.POSIXct((df[,1] - 719529)*86400, origin = "1970-01-01", tz = "UTC")
+  df$datetime_utc <- as.POSIXct((df[,1] - 719529)*86400, origin = "1970-01-01", tz = "UTC")
   # assign data to assicated file names
   assign(str_remove(files[i], ".mat"), df)
 }
@@ -64,13 +64,15 @@ Columns are named according to the description of the provided .mat files.
 ```{r}
 
 # assign column headers
-colnames(bottleEn617withoutincubation) <- c("matlab_datetime", "O2_Ar_delta", "O2_Ar_ratio",
-                                       "depth", "D17", "d17", "d18", "niskin","utc_datetime")
-colnames(RaEn617withbiosat) <- c("matlab_date", "O2_Ar_ratio", "temp", "sal", "lat", "lon", "cum_dist", "biosat", "utc_datetime")
+colnames(bottleEn617withoutincubation) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio",
+                                       "depth", "D17", "d17", "d18", "niskin","datetime_utc")
+colnames(RaEn617withbiosat) <- c("matlab_date", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude", "cum_dist", "biosat", "datetime_utc")
 
 # trim unnecessary fields and rename vars
 bottle <- bottleEn617withoutincubation
 ra <- RaEn617withbiosat %>% select(-cum_dist)
+# add depth column to high freq EIMS data
+ra$depth <- 5
 ```
 
 # TOI Underway vs. Bottle
@@ -80,7 +82,7 @@ Add a toi_source field to the bottle dataset to clarify whether a bottle was sam
 ```{r}
 # define bottle vs underway based on niskin
 toi_source <- ifelse(bottle$niskin == 0, 
-                     yes = "toi_underway", no = "toi_bottle")
+                     yes = "toi_underway", no = "toi_niskin")
 # add categorical column to data
 bottle$toi_source <- toi_source
 
@@ -102,13 +104,14 @@ for (j in 1:nrow(bottle)) {
 
 ## Correct UTC datetime for bottle samples
 
-Issue: The utc_datetime for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired. 
+Issue: The datetime_utc for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired. 
 
 Solution: 
   • load in the bottle summary for the appropriate cruise
   • find the associated cast based on nearest time
   • find the time at which the bottle was fired based on cast and niskin
   
+Other Issues: Correct depth field
 ```{r}
 
 # read in bottle summary for en617
@@ -116,11 +119,12 @@ summary <- read_from_api(type = "summary", cruises = "EN617")
 
 # create column to populate with k from high thoughput
 bottle$cast <- NA_integer_
+bottle$depth_api <- NA_integer_
 
 for (i in 1:nrow(bottle)) {
   # store values
   nisk <- bottle$niskin[i]
-  nisktime <- bottle$utc_datetime[i]
+  sampletime <- bottle$datetime_utc[i]
   
   # skip row if underway
   if (is.na(nisk)) {
@@ -129,7 +133,7 @@ for (i in 1:nrow(bottle)) {
   }
   
   # find the index of the nearest datetime
-  ind <- which.min(abs(nisktime - summary$date))
+  ind <- which.min(abs(sampletime - summary$date))
   smry_cast <- summary$cast[ind]
 
   # populate cast column from summary
@@ -147,15 +151,50 @@ for (i in 1:nrow(bottle)) {
   }
   
   # store bottle time 
-  bottle$utc_datetime[i] <- smry$date
+  bottle$datetime_utc[i] <- smry$date
+  bottle$depth_api[i] <- smry$depth
+}
+
+# isolate instances of large depth differences
+depth_diff <- abs(bottle$depth - bottle$depth_api)
+depth_conflicts <- bottle[which(depth_diff > 1),]
+
+```
+
+
+## Supply lat/lon for bottles data from underway api
+
+Using the corrected datetimes, pull geospatial data from the underway log
+
+```{r}
+
+underway <- read_from_api(type = "underway", cruises = "EN617")
+
+# match to datetime
+# figure out which lat/lon to use
+
+bottle$latitude <- NA_integer_
+bottle$longitude <- NA_integer_
+
+for (i in 1:nrow(bottle)) {
+  # store values
+  sampletime <- bottle$datetime_utc[i]
+  
+  # find the index of the nearest datetime
+  ind <- which.min(abs(sampletime - underway$date))
+  
+  # store bottle time 
+  bottle$latitude[i] <- underway$latitude[ind]
+  bottle$longitude[i] <- underway$longitude[ind]
 }
 
 ```
 
+
 ## QA: Checking Data Integrity
 ```{r}
 
-# are there any bucket samples?
+# are there any niskins where the depth is 0?
 if (any(bottle$depth == 0)) {
   conflicts <- bottle[which(bottle$depth == 0),]
   print(conflicts)
@@ -176,12 +215,12 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 
 # Map Check
 
-# ncplter
+# bottle
 map_locs(df = bottle, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = NULL)
 
 # underway 02/Ar
-map_locs(df = ra, xvar = "lon", yvar = "lat",
+map_locs(df = ra, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = NULL)
 
 ```
@@ -189,8 +228,8 @@ map_locs(df = ra, xvar = "lon", yvar = "lat",
 ## Column Header Organization
 ```{r}
 # define headers for columns in desired order
-bottle_headers <- c("utc_datetime", "matlab_datetime", "toi_source", "cast", "niskin", "depth", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
-ra_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_ratio")
+bottle_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "cast", "niskin", "depth", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
+ra_headers <- c("datetime_utc", "matlab_date", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected")
 
 # reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
@@ -243,10 +282,10 @@ xlsx_to_template(metadata.path = paste0(dir, project_folder, ra_file),
 # Data Coverage
 # combine the dates for both datasets
 # isolate date and geospatial columns for input
-date_col <- as.Date(c(ra_edi$utc_datetime,
-                      bottle_edi$utc_datetime))
-lat_col <- ra_edi$lat
-lon_col <- ra_edi$lon
+date_col <- as.Date(c(ra_edi$datetime_utc,
+                      bottle_edi$datetime_utc))
+lat_col <- ra_edi$latitude
+lon_col <- ra_edi$longitude
 # run function to determine geospatial and temporal coverage
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
@@ -277,14 +316,16 @@ Columns are named according to the description of the provided .mat files.
 
 ```{r}
 # assign column headers
-colnames(ncplterEn617) <- c("matlab_date", "O2_Ar_ratio", "temp", "sal", "lat", "lon",
-                "cum_dist", "biosat", "ncp", "k","utc_datetime")
-colnames(discreteratesEn617) <- c("matlab_date", "lat", "lon", "gop", "ncp",
-                                  "ncp_per_gop","utc_datetime")
+colnames(ncplterEn617) <- c("matlab_date", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude",
+                "cum_dist", "biosat", "ncp", "k","datetime_utc")
+colnames(discreteratesEn617) <- c("matlab_date", "latitude", "longitude", "gop", "ncp",
+                                  "ncp_per_gop","datetime_utc")
 
 # trim unnecessary fields and rename vars
 ncplter <- ncplterEn617 %>% select(-cum_dist)
 rates <- discreteratesEn617
+# add depth column to high freq EIMS data
+ncplter$depth <- 5
 ```
 
 ## QA: Map Sampling Locations
@@ -296,11 +337,11 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 # Map Check
 
 # ncplter
-map_locs(df = ncplter, xvar = "lon", yvar = "lat",
+map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = NULL)
 
 # discrete rates
-map_locs(df = ncplter, xvar = "lon", yvar = "lat",
+map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = NULL)
 
 ```
@@ -309,8 +350,8 @@ map_locs(df = ncplter, xvar = "lon", yvar = "lat",
 ```{r}
 
 # define the desired order of columns
-rates_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "gop", "ncp", "ncp_per_gop")
-ncp_headers <- c("utc_datetime", "matlab_date", "lat", "lon", "temp", "sal", "biosat", "O2_Ar_ratio", "ncp", "k")
+rates_headers <- c("datetime_utc", "matlab_date", "latitude", "longitude", "gop", "ncp", "ncp_per_gop")
+ncp_headers <- c("datetime_utc", "matlab_date", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected", "ncp", "k")
 
 # reorder columns as necessary
 rates_edi <- rates[, rates_headers]
@@ -342,7 +383,7 @@ project_folder <- "ncp-gop-transect-summer-2018/"
 rates_file <- "discreteratesEn617"
 ncp_file <- "ncplterEn617"
 edi_data <- c(rates_file, ncp_file)
-file_descriptions <- c("Discrete rates of NCP and GOP", "High frequency net community production and gross oxygen production")
+file_descriptions <- c("Discrete rates of NCP and GOP", "NCP derived from high frequency EIMS  sampling of underway")
 pkg_id <- "knb-lter-nes.7.1"
 
 # Make EML Templates 
@@ -364,9 +405,9 @@ xlsx_to_template(metadata.path = paste0(dir, project_folder, ncp_file),
 # Data Coverage
 # combine the dates and lat/lon for both datasets
 # isolate date and geospatial columns for input
-date_col <- as.Date(c(ncplter_edi$utc_datetime, rates_edi$utc_datetime))
-lat_col <- c(ncplter_edi$lat, rates_edi$lat)
-lon_col <- c(ncplter_edi$lon, rates_edi$lon)
+date_col <- as.Date(c(ncplter_edi$datetime_utc, rates_edi$datetime_utc))
+lat_col <- c(ncplter_edi$latitude, rates_edi$latitude)
+lon_col <- c(ncplter_edi$longitude, rates_edi$longitude)
 # run function to determine geospatial and temporal coverage
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 

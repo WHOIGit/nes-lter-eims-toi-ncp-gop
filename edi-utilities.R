@@ -218,6 +218,10 @@ read_from_api <- function(type, cruises) {
     urls <- paste0("https://nes-lter-data.whoi.edu/api/ctd/", z$Var1, "/bottles.csv")
     urls <- unlist(urls)
   }
+  if (type == "underway") {
+    urls <- paste0("https://nes-lter-data.whoi.edu/api/underway/", z$Var1, ".csv")
+    urls <- unlist(urls)
+  }
   
   ## Cruise Compilation ##
   # case: more than one cruise given
