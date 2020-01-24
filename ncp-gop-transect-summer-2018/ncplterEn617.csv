@@ -1,4 +1,4 @@
-"utc_datetime","matlab_date","lat","lon","temp","sal","biosat","O2_Ar_corrected","ncp","k"
+"utc_datetime","matlab_date","lat","lon","temp","sal","biosat","O2_Ar_ratio","ncp","k"
 2018-07-20 11:39:42,737261.485902778,41.4922,-71.4187,NA,NA,NA,NA,NA,NA
 2018-07-20 11:40:06,737261.48619213,41.4922,-71.4187,NA,NA,NA,NA,NA,NA
 2018-07-20 11:40:31,737261.486481481,41.4922,-71.4187,NA,NA,NA,NA,NA,NA

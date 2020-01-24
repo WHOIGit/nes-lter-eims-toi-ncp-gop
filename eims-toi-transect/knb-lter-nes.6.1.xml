@@ -39,14 +39,6 @@
     </associatedParty>
     <associatedParty>
       <individualName>
-        <givenName>NES-LTER Information Manager</givenName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
-      <role>Metadataprovider</role>
-    </associatedParty>
-    <associatedParty>
-      <individualName>
         <givenName>Jaxine</givenName>
         <givenName>L</givenName>
         <surName>Wolfe</surName>
@@ -56,7 +48,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2020-01-14</pubDate>
+    <pubDate>2020-01-24</pubDate>
     <keywordSet>
       <keyword>inorganic nutrients</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -70,6 +62,11 @@
       <keyword>inorganic nutrients</keyword>
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
     </keywordSet>
+    <additionalInfo>
+      <para>
+  Acknowledgments to the students that participated on each cruise.
+</para>
+    </additionalInfo>
     <intellectualRights>
       <para>
   This information is released under the Creative Commons license -
@@ -119,6 +116,11 @@
       <description>ongoing</description>
     </maintenance>
     <contact>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <positionName>Nes-Lter Information Manager</positionName>
+      <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
+    </contact>
+    <contact>
       <individualName>
         <givenName>Rachel</givenName>
         <surName>Stanley</surName>
@@ -128,7 +130,75 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
     </contact>
     <methods>
-      <methodStep/>
+      <methodStep>
+        <description>
+          <section>
+            <title>Bottle sample seawater supplied to mass spectrometer</title>
+            <para>
+    Samples were collected from the water column at multiple depths
+    using Niskin bottles on a CTD rosette system. Samples are collected
+    in custom-made evacuated glass sample bottles that have been
+    poisoned previously with 100 μL saturated mercuric chloride solution
+    (Emerson et al. 1999). Samples were processed post-cruise.
+  </para>
+          </section>
+          <section>
+            <title>Underway science seawater supplied to the EIMS</title>
+            <para>
+    Continuously during R/V Endeavor cruises, underway science seawater
+    is supplied from 5-m water depth by two separate pumps: a diaphragm
+    pump and an impeller pump. The EIMS samples were from the
+    diaphragm-pump supply unless otherwise noted. A custom-built
+    Equilibration Inlet Mass Spectrometer (EIMS) system was configured
+    for automated measurement of oxygen and argon concentrations in the
+    uncontaminated seawater flow in the ship’s lab. The system consists
+    of a quadrupole mass spectrometer, compact pumping station for the
+    mass spectrometer, equilibrator cartridge and various small pumps
+    for air and water. Measurements were made every 30 seconds
+    approximately.
+  </para>
+          </section>
+          <section>
+            <title>Calibrations and Derivations</title>
+            <para>
+    The data has been calibrated according to the ratio measured in air
+    roughly every 6 hours. This gives the calibrated O2/Ar ratio that
+    was then used to calculate rates of NCP. This data also includes the
+    biological saturation – the O2/Ar divided by the equilibrium value
+    of O2/Ar – which gives the expected super (or under) saturation of
+    O2 based on biological factors. The solubility of T and S were used
+    to derive this value.
+  </para>
+          </section>
+          <section>
+            <title>Data Cleaning</title>
+            <para>
+    For the bottle samples, a field was added to indicate whether the
+    bottle was sampled from underway or niskin. Additionally, cast
+    number was supplied from the REST API bottle summary and the
+    date-time (in UTC) was corrected to reflect the time at which the
+    rosette bottle closed. Data cleaning and metadata template assembly
+    were performed in R Markdown. Further documentation can be found on
+    GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop.
+  </para>
+          </section>
+          <section>
+            <title>Quality Assurance</title>
+            <para>
+    We assured that the geographic and temporal coverage of the clean
+    data table were within expected ranges.
+  </para>
+          </section>
+          <section>
+            <title>References</title>
+            <para>
+    Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate
+    measurement of O-2, N-2, and Ar gases in water and the solubility of
+    N-2. Mar. Chem. 64:337-347
+  </para>
+          </section>
+        </description>
+      </methodStep>
     </methods>
     <project>
       <title>Northeast U.S. Shelf LTER</title>
@@ -230,8 +300,8 @@
       </funding>
     </project>
     <dataTable>
-      <entityName>Low frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes</entityName>
-      <entityDescription>Low frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes</entityDescription>
+      <entityName>Oxygen-argon dissolved gas ratios and TOI from bottle samples</entityName>
+      <entityDescription>Oxygen-argon dissolved gas ratios and TOI from bottle samples</entityDescription>
       <physical>
         <objectName>bottleEn617withoutincubation.csv</objectName>
         <size unit="bytes">13683</size>
@@ -378,7 +448,7 @@
         </attribute>
         <attribute>
           <attributeName>O2_Ar_ratio</attributeName>
-          <attributeDefinition>Oxygen-argon ratio of sample</attributeDefinition>
+          <attributeDefinition>Oxygen-argon ratio of bottle sample</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -456,12 +526,12 @@
       <numberOfRecords>119</numberOfRecords>
     </dataTable>
     <dataTable>
-      <entityName>High frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes</entityName>
-      <entityDescription>High frequency oxygen-argon dissolved gas ratios and triple oxygen isotopes</entityDescription>
+      <entityName>Oxygen-argon dissolved gas ratios and TOI from underway</entityName>
+      <entityDescription>Oxygen-argon dissolved gas ratios and TOI from underway</entityDescription>
       <physical>
         <objectName>RaEn617withbiosat.csv</objectName>
-        <size unit="bytes">2109344</size>
-        <authentication method="MD5">eaef98dcf99471dcb943d4ef8d9416f6</authentication>
+        <size unit="bytes">2109340</size>
+        <authentication method="MD5">f5970bdf4af3d1bc6645e3e74c98e96f</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -590,7 +660,7 @@
         </attribute>
         <attribute>
           <attributeName>biosat</attributeName>
-          <attributeDefinition>Biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio</attributeDefinition>
+          <attributeDefinition>Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -612,8 +682,8 @@
           </missingValueCode>
         </attribute>
         <attribute>
-          <attributeName>O2_Ar_corrected</attributeName>
-          <attributeDefinition>Oxygen-argon ratio corrected for air values</attributeDefinition>
+          <attributeName>O2_Ar_ratio</attributeName>
+          <attributeDefinition>Oxygen-argon ratio of underway sample corrected for air values</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>

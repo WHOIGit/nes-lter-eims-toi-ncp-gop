@@ -4,7 +4,7 @@ Samples were collected from the water column at multiple depths using Niskin bot
 
 # Underway science seawater supplied to the EIMS
 
-Continuously during R/V Endeavor cruises, underway science seawater is supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. The EIMS samples [at approximately 20-sec intervals] from the diaphragm-pump supply unless otherwise noted. Samples were processed aboard the ship.
+Continuously during R/V Endeavor cruises, underway science seawater is supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. The EIMS samples were from the diaphragm-pump supply unless otherwise noted. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.
 
 # Calibrations and Derivations
 

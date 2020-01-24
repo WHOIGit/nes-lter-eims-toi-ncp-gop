@@ -5,5 +5,5 @@ lat	Latitude of sample event	numeric	degree
 lon	Longitude of sample event	numeric	degree			
 temp	Temperature of sampling	numeric	celsius		NaN	Missing value
 sal	Salinity of sampling in PSU	numeric	dimensionless		NaN	Missing value
-biosat	Biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio	numeric	dimensionless		NaN	Missing value
-O2_Ar_corrected	Oxygen-argon ratio corrected for air values	numeric	dimensionless		NaN	Missing value
+biosat	Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio	numeric	dimensionless		NaN	Missing value
+O2_Ar_ratio	Oxygen-argon ratio of underway sample corrected for air values	numeric	dimensionless		NaN	Missing value
