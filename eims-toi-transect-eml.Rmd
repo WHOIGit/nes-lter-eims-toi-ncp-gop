@@ -102,16 +102,19 @@ for (j in 1:nrow(bottle)) {
 
 ```
 
-## Correct UTC datetime for bottle samples
+## Correct UTC datetime and depth for bottle samples
 
-Issue: The datetime_utc for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired. 
+Issues: 
+  • The datetime_utc for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired
+  • Differences in the given depth vs. those in the bottle summary
 
 Solution: 
   • load in the bottle summary for the appropriate cruise
   • find the associated cast based on nearest time
   • find the time at which the bottle was fired based on cast and niskin
+  • find associated depth based on nearest time
+  • compare the given depth to api provided
   
-Other Issues: Correct depth field
 ```{r}
 
 # read in bottle summary for en617
@@ -156,9 +159,10 @@ for (i in 1:nrow(bottle)) {
 }
 
 # isolate instances of large depth differences
-depth_diff <- abs(bottle$depth - bottle$depth_api)
-depth_conflicts <- bottle[which(depth_diff > 1),]
+bottle$depth_diff <- bottle$depth - bottle$depth_api
+depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
 
+# write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
 ```
 
 
@@ -184,8 +188,8 @@ for (i in 1:nrow(bottle)) {
   ind <- which.min(abs(sampletime - underway$date))
   
   # store bottle time 
-  bottle$latitude[i] <- underway$latitude[ind]
-  bottle$longitude[i] <- underway$longitude[ind]
+  bottle$latitude[i] <- underway$gps_furuno_latitude[ind]
+  bottle$longitude[i] <- underway$gps_furuno_longitude[ind]
 }
 
 ```
