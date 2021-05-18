@@ -244,10 +244,13 @@ bottle_edi <- bottle[, bottle_headers]
 ra_edi <- ra[, ra_headers]
 
 # write files for upload to EDI
-write.csv(bottle_edi, paste0(dir, "/eims-toi-transect/bottleEn617withoutincubation.csv"), 
-          row.names = FALSE)
-write.csv(ra_edi, file.path(dir, "/eims-toi-transect/RaEn617withbiosat.csv"), 
-          row.names = FALSE)
+#write.csv(bottle_edi, paste0(dir, "/eims-toi-transect/bottleEn617withoutincubation.csv"), 
+ #         row.names = FALSE)
+#write.csv(ra_edi, file.path(dir, "/eims-toi-transect/RaEn617withbiosat.csv"), 
+ #         row.names = FALSE)
+
+write.csv(bottle_edi, here("eims-toi-transect", 'bottleEn617withoutincubation.csv'), row.names = FALSE)
+write.csv(bottle_edi, here("eims-toi-transect", 'RaEn617withbiosat.csv'), row.names = FALSE)
 
 ```
 
@@ -272,18 +275,18 @@ file_descriptions <- c("Oxygen-argon dissolved gas ratios and TOI from bottle sa
 pkg_id <- "knb-lter-nes.6.1"
 
 # Make EML Templates 
-xlsx_to_template(metadata.path = paste0(dir, metadata),
-                 output.path = paste0(dir, project_folder),
+xlsx_to_template(metadata.path = metadata,
+                 output.path = project_folder,
                  edi.filename = NULL, 
                  rights = "CCBY")
 # toi bottle samples
-xlsx_to_template(metadata.path = paste0(dir, project_folder, bottles_file), 
-                 output.path = paste0(dir, project_folder),
+xlsx_to_template(metadata.path = here(project_folder, bottles_file), 
+                 output.path = project_folder,
                  edi.filename = bottles_file, 
                  rights = "CCBY")
 # underway samples
-xlsx_to_template(metadata.path = paste0(dir, project_folder, ra_file), 
-                 output.path = paste0(dir, project_folder),
+xlsx_to_template(metadata.path = here(project_folder, ra_file), 
+                 output.path = project_folder,
                  edi.filename = ra_file, 
                  rights = "CCBY")
 
@@ -298,7 +301,7 @@ lon_col <- ra_edi$longitude
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
-make_eml(path = paste0(dir, project_folder),
+make_eml(path = project_folder,
          dataset.title = "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018",
          data.table = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
@@ -312,7 +315,7 @@ make_eml(path = paste0(dir, project_folder),
 
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, 
-               xml.path = paste0(dir, project_folder))
+               xml.path = project_folder)
 ```
 
 
@@ -367,9 +370,10 @@ ncplter_edi <- ncplter[, ncp_headers]
 
 # write files for upload to EDI
 write.csv(rates_edi, 
-          paste0(dir, "ncp-gop-transect-summer-2018/discreteratesEn617.csv"), 
+          "ncp-gop-transect-summer-2018/discreteratesEn617.csv", 
           row.names = FALSE)
-write.csv(ncplter_edi, paste0(dir, "ncp-gop-transect-summer-2018/ncplterEn617.csv"), 
+write.csv(ncplter_edi, 
+          "ncp-gop-transect-summer-2018/ncplterEn617.csv", 
           row.names = FALSE)
 ```
 
@@ -395,18 +399,18 @@ file_descriptions <- c("Discrete rates of NCP and GOP", "NCP derived from high f
 pkg_id <- "knb-lter-nes.7.1"
 
 # Make EML Templates 
-xlsx_to_template(metadata.path = paste0(dir, metadata),
-                 output.path = paste0(dir, project_folder),
+xlsx_to_template(metadata.path = metadata,
+                 output.path = project_folder,
                  edi.filename = NULL, 
                  rights = "CCBY")
 # Discrete Rates
-xlsx_to_template(metadata.path = paste0(dir, project_folder, rates_file), 
-                 output.path = paste0(dir, project_folder),
+xlsx_to_template(metadata.path = here(project_folder, rates_file), 
+                 output.path = project_folder,
                  edi.filename = rates_file, 
                  rights = "CCBY")
 # Ncplter 
-xlsx_to_template(metadata.path = paste0(dir, project_folder, ncp_file), 
-                 output.path = paste0(dir, project_folder),
+xlsx_to_template(metadata.path = here(project_folder, ncp_file), 
+                 output.path = project_folder,
                  edi.filename = ncp_file, 
                  rights = "CCBY")
 
@@ -420,7 +424,7 @@ lon_col <- c(ncplter_edi$longitude, rates_edi$longitude)
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
-make_eml(path = paste0(dir, project_folder),
+make_eml(path = project_folder,
          dataset.title = "Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018",
          data.table = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
@@ -434,6 +438,6 @@ make_eml(path = paste0(dir, project_folder),
 
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, 
-               xml.path = paste0(dir, project_folder))
+               xml.path = project_folder)
 ```
  
