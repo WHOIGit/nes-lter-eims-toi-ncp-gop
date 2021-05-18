@@ -1,6 +1,6 @@
 ---
 title: "NES-LTER EIMS TOI Transect"
-author: "Jaxine Wolfe"
+author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
 date: "Dec 2, 2019"
 output: html_document
 ---
@@ -10,16 +10,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
-# clear workspace for local development
-#rm(list = ls())
-
 # set environment timezone to UTC
 Sys.setenv(TZ = "UTC")
-
-# assign relative path to directory
-#dir <- "/Users/wanglab/Documents/GitHub/nes-lter-eims-toi-ncp-gop/"
-# set as working directory
-#setwd(dir)
 
 #set path to root of project
 library(here)
