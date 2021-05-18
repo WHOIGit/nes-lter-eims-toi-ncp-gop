@@ -11,15 +11,19 @@ output: html_document
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 # clear workspace for local development
-rm(list = ls())
+#rm(list = ls())
 
 # set environment timezone to UTC
 Sys.setenv(TZ = "UTC")
 
 # assign relative path to directory
-dir <- "/Users/jaxinewolfe/Documents/WHOI/NESLTER/nes-lter-eims-toi-ncp-gop/"
+#dir <- "/Users/wanglab/Documents/GitHub/nes-lter-eims-toi-ncp-gop/"
 # set as working directory
-setwd(dir)
+#setwd(dir)
+
+#set path to root of project
+library(here)
+here("nes-lter-eims-toi-ncp-gop")
 
 # define source for functions developed for the EDI packaging workflow
 source("edi-utilities.R")
@@ -432,4 +436,4 @@ make_eml(path = paste0(dir, project_folder),
 project_insert(edi_pkg = pkg_id, 
                xml.path = paste0(dir, project_folder))
 ```
-
+ 
