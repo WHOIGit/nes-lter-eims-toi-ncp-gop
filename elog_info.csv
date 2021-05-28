@@ -1,0 +1,7 @@
+Cruise,EIMS_start,EIMS_stop,Pumps
+EN608,yes,yes,Unclear from elog which pump used for EIMS but discrete TOI samples sourced from diaphragm for 1 day and impeller for 2 days
+EN617,yes,yes,Diaphragm 2 days then impeller 3 days for EIMS and same for discrete TOI samples
+EN627,yes,yes,Diaphragm 2 days then impeller 3 days for EIMS and same for discrete TOI samples
+EN644,yes,yes,Unclear from elog which pump used but diaphragm used for discrete TOI samples
+EN649,yes,yes,Unclear from elog which pump used for EIMS but diaphragm used for discrete TOI samples
+EN655,yes,yes,Unclear from elog which pump used for EIMS but diaphragm used for discrete TOI samples
