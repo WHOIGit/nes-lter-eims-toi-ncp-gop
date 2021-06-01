@@ -8,5 +8,5 @@ temp	Temperature of sampling	numeric	celsius		NaN	Missing value
 sal	Salinity of sampling in PSU	numeric	dimensionless		NaN	Missing value
 biosat	Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio	numeric	dimensionless		NaN	Missing value
 O2_Ar_ratio_corrected	Oxygen-argon ratio of EIMS sample from underway corrected for air values	numeric	dimensionless		NaN	Missing value
-ncp	Rate of net community production integrated over the mixed layer	numeric	micromolePerMeterSquaredPerDay		NaN	Missing value
+ncp	Rate of net community production integrated over the mixed layer	numeric	millimolePerMeterSquaredPerDay		NaN	Missing value
 k	Gas transfer velocity that was used when calculating ncp from the O2/Ar ratio	numeric	metersPerDay		NaN	Missing value

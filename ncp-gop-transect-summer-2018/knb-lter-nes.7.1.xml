@@ -23,6 +23,16 @@
     </creator>
     <associatedParty>
       <individualName>
+        <givenName>Rachel</givenName>
+        <surName>Stanley</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+      <role>Principalinvestigator</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
         <givenName>Kevin</givenName>
         <surName>Cahill</surName>
       </individualName>
@@ -48,7 +58,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-05-18</pubDate>
+    <pubDate>2021-06-01</pubDate>
     <keywordSet>
       <keyword>inorganic nutrients</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -221,12 +231,42 @@
         <para>NSF Award OCE-1655686</para>
       </funding>
     </project>
+    <otherEntity>
+      <entityName>ncplterEn617.mat</entityName>
+      <entityDescription>Original Matlab-format high frequency NCP rate data derived from raw EIMS data</entityDescription>
+      <physical>
+        <objectName>ncplterEn617.mat</objectName>
+        <size unit="bytes">983098</size>
+        <authentication method="MD5">6ed62b7ce00753b4aaeeaad324695e2f</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>Unknown</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+    <otherEntity>
+      <entityName>discreteratesEn617.mat</entityName>
+      <entityDescription>Original Matlab-format low frequency GOP rate data derived from subset raw TOI data</entityDescription>
+      <physical>
+        <objectName>discreteratesEn617.mat</objectName>
+        <size unit="bytes">3410</size>
+        <authentication method="MD5">7ef45da1349f07307f95ee05472d832d</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>Unknown</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
   </dataset>
   <additionalMetadata>
     <metadata>
       <unitList>
-        <unit id="micromolePerMeterSquaredPerDay" multiplierToSI="1e-06" name="micromolePerMeterSquaredPerDay" parentSI="molePerMeterSquaredPerDay" unitType="amount">
-          <description>micromoles per meter squared per day</description>
+        <unit id="millimolePerMeterSquaredPerDay" multiplierToSI="0.001" name="millimolePerMeterSquaredPerDay" parentSI="molePerMeterSquaredPerDay" unitType="amount">
+          <description>millimoles per meter squared per day</description>
         </unit>
       </unitList>
     </metadata>

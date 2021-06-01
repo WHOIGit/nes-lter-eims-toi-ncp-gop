@@ -36,7 +36,9 @@ lapply(libs, require, character.only = TRUE)
 ```{r}
 
 # store all the names of matlab files
-files <- Sys.glob("*.mat")
+#moved Matlab files to data subfolders and this is not working
+files <- c(here("eims-toi-transect", 'bottleEn617withoutincubation.mat'))
+#files <- Sys.glob("*.mat")
 # apply the readMat function to read in the files
 d <- lapply(files, readMat)
 
@@ -297,6 +299,8 @@ make_eml(path = project_folder,
          dataset.title = "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018",
          data.table = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
+         other.entity = c("bottleEn617withoutincubation.mat", "RaEn617withbiosat.mat"),
+         other.entity.description = c("Original Matlab-format low frequency TOI data from rosette and underway bottles", "Original Matlab-format high frequency raw EIMS O2/Ar data"), 
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
@@ -382,7 +386,7 @@ Step 4: Inserting a custom NES-LTER parent project node
 ```{r}
 
 # define input for EML assembly
-metadata <- "ncp-gop-transect-summer-2018/ncp-gop-transect-info"
+metadata <- "ncp-gop-transect-summer-2018/ncp-gop-transect-summer-2018-info"
 project_folder <- "ncp-gop-transect-summer-2018/"
 rates_file <- "discreteratesEn617"
 ncp_file <- "ncplterEn617"
@@ -420,6 +424,8 @@ make_eml(path = project_folder,
          dataset.title = "Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018",
          data.table = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
+         other.entity = c('ncplterEn617.mat', 'discreteratesEn617.mat'),
+         other.entity.description = c("Original Matlab-format high frequency NCP rate data derived from raw EIMS data", "Original Matlab-format low frequency GOP rate data derived from subset raw TOI data"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),

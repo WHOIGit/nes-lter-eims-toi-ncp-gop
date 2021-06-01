@@ -1,7 +1,7 @@
-Cruise,EIMS_start,EIMS_stop,Pumps
-EN608,yes,yes,Unclear from elog which pump used for EIMS but discrete TOI samples sourced from diaphragm for 1 day and impeller for 2 days
-EN617,yes,yes,Diaphragm 2 days then impeller 3 days for EIMS and same for discrete TOI samples
-EN627,yes,yes,Diaphragm 2 days then impeller 3 days for EIMS and same for discrete TOI samples
-EN644,yes,yes,Unclear from elog which pump used but diaphragm used for discrete TOI samples
-EN649,yes,yes,Unclear from elog which pump used for EIMS but diaphragm used for discrete TOI samples
-EN655,yes,yes,Unclear from elog which pump used for EIMS but diaphragm used for discrete TOI samples
+Cruise,EIMS_start,EIMS_stop,Pumps,Pump info from cruise report,More info from cruise report
+EN608,yes,yes,Unclear from elog which pump used for EIMS but discrete TOI samples sourced from diaphragm for 1 day and impeller for 2 days,"Diaphragm first, then switched to traditional underway 1 Feb 08:18 UTC. ","Describes water source setup for underway, measurement challenges, and distribution of bottle samples. "
+EN617,yes,yes,Diaphragm 2 days then impeller 3 days for EIMS and same for discrete TOI samples,"Diaphragm first, then switched to impeller due to bubbles in diaphragm supply in rougher weather. ","Describes water source setup for underway, measurement challenges, and distribution of bottle samples. "
+EN627,yes,yes,Diaphragm 2 days then impeller 3 days for EIMS and same for discrete TOI samples,"Diaphragm first with new debubbler for EIMS, then switched to impeller due to air dissolved in diaphragm supply in rougher weather. ","At CTD cast 37 at L7, Niskin water used to test agreement between Niskin and impeller water on EIMS. Describes water source setup for underway, measurement challenges, and distribution of bottle samples. "
+EN644,yes,yes,Unclear from elog which pump used but diaphragm used for discrete TOI samples,Diaphragm with debubbler (noted pulsing water flow). ,"Aanderra oxygen optode measured O2 concentration in underway water. Biological oxygen saturation was calculated at sea. Describes water source setup for underway, measurement challenges, and distribution of bottle samples. "
+EN649,yes,yes,Unclear from elog which pump used for EIMS but diaphragm used for discrete TOI samples,Diaphragm pump with inlet newly lower in sea chest to reduce bubbling. ,Collected optode and temperature data. Sting Ray  and EIMS optodes were compared. Fewer bottle samples during along-shore transects than on previous cruises. 
+EN655,yes,yes,Unclear from elog which pump used for EIMS but diaphragm used for discrete TOI samples,Diaphragm. ,Oxygen optode used. Describes water source setup for underway and distribution of bottle samples. 

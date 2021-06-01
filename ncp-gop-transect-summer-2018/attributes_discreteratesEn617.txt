@@ -3,6 +3,6 @@ datetime_utc	Date and time in UTC	Date		YYYY-MM-DD hh:mm:ss
 datetime_utc_matlab	UTC date and time in MATLAB serial date number format	numeric	dimensionless			
 latitude	Latitude of sample event	numeric	degree			
 longitude	Longitude of sample event	numeric	degree			
-gop	Gross oxygen production	numeric	micromolePerMeterSquaredPerDay		NaN	Missing value
-ncp	Rate of net community production integrated over the mixed layer	numeric	micromolePerMeterSquaredPerDay		NaN	Missing value
+gop	Gross oxygen production	numeric	millimolePerMeterSquaredPerDay		NaN	Missing value
+ncp	Rate of net community production integrated over the mixed layer	numeric	millimolePerMeterSquaredPerDay		NaN	Missing value
 ncp_per_gop	Net community production divided by gross oxygen production	numeric	dimensionless		NaN	Missing value
