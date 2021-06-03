@@ -58,7 +58,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-06-01</pubDate>
+    <pubDate>2021-06-03</pubDate>
     <keywordSet>
       <keyword>inorganic nutrients</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -231,36 +231,6 @@
         <para>NSF Award OCE-1655686</para>
       </funding>
     </project>
-    <otherEntity>
-      <entityName>ncplterEn617.mat</entityName>
-      <entityDescription>Original Matlab-format high frequency NCP rate data derived from raw EIMS data</entityDescription>
-      <physical>
-        <objectName>ncplterEn617.mat</objectName>
-        <size unit="bytes">983098</size>
-        <authentication method="MD5">6ed62b7ce00753b4aaeeaad324695e2f</authentication>
-        <dataFormat>
-          <externallyDefinedFormat>
-            <formatName>Unknown</formatName>
-          </externallyDefinedFormat>
-        </dataFormat>
-      </physical>
-      <entityType>unknown</entityType>
-    </otherEntity>
-    <otherEntity>
-      <entityName>discreteratesEn617.mat</entityName>
-      <entityDescription>Original Matlab-format low frequency GOP rate data derived from subset raw TOI data</entityDescription>
-      <physical>
-        <objectName>discreteratesEn617.mat</objectName>
-        <size unit="bytes">3410</size>
-        <authentication method="MD5">7ef45da1349f07307f95ee05472d832d</authentication>
-        <dataFormat>
-          <externallyDefinedFormat>
-            <formatName>Unknown</formatName>
-          </externallyDefinedFormat>
-        </dataFormat>
-      </physical>
-      <entityType>unknown</entityType>
-    </otherEntity>
   </dataset>
   <additionalMetadata>
     <metadata>
