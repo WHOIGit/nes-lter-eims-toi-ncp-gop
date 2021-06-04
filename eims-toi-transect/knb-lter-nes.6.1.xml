@@ -54,22 +54,30 @@
         <surName>Wolfe</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>jawolfe@whoi.edu</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-06-03</pubDate>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
+      <role>Metadataprovider</role>
+    </associatedParty>
+    <pubDate>2021-06-04</pubDate>
     <keywordSet>
-      <keyword>inorganic nutrients</keyword>
+      <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
     </keywordSet>
     <keywordSet>
       <keyword>chemistry</keyword>
       <keyword>oceanography</keyword>
       <keyword>seawater</keyword>
-      <keyword>nutrients</keyword>
-      <keyword>dissolved nutrients</keyword>
-      <keyword>inorganic nutrients</keyword>
+      <keyword>dissolved oxygen</keyword>
+      <keyword>stable isotopes</keyword>
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
     </keywordSet>
     <additionalInfo>
@@ -101,7 +109,7 @@
       </temporalCoverage>
     </coverage>
     <maintenance>
-      <description>ongoing</description>
+      <description>completed</description>
     </maintenance>
     <contact>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
