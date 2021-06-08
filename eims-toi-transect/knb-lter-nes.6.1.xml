@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-06-04</pubDate>
+    <pubDate>2021-06-08</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -109,7 +109,7 @@
       </temporalCoverage>
     </coverage>
     <maintenance>
-      <description>completed</description>
+      <description>ongoing</description>
     </maintenance>
     <contact>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
@@ -247,8 +247,8 @@
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from bottle samples</entityDescription>
       <physical>
         <objectName>bottleEn617withoutincubation.csv</objectName>
-        <size unit="bytes">15829</size>
-        <authentication method="MD5">0c28bb97e705764bbc6847a518172813</authentication>
+        <size unit="bytes">16442</size>
+        <authentication method="MD5">aeb3bd1fc259b852fddb2eb2cc29eb63</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -390,7 +390,7 @@
           </missingValueCode>
         </attribute>
         <attribute>
-          <attributeName>depth</attributeName>
+          <attributeName>depth_mat_file</attributeName>
           <attributeDefinition>Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
@@ -403,6 +403,25 @@
                 <bounds>
                   <minimum exclusive="false">0</minimum>
                   <maximum exclusive="false">80</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth_API_bottle_summary</attributeName>
+          <attributeDefinition>Depth of sample below sea surface</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.624</minimum>
+                  <maximum exclusive="false">128.995</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -505,6 +524,207 @@
         </attribute>
       </attributeList>
       <numberOfRecords>119</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>RaEn617withbiosat.csv</entityName>
+      <entityDescription>Oxygen-argon dissolved gas ratios and TOI from underway</entityDescription>
+      <physical>
+        <objectName>RaEn617withbiosat.csv</objectName>
+        <size unit="bytes">2155884</size>
+        <authentication method="MD5">a53c5f4755fc5176fb3e473e8fa04cb8</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>Date and time in UTC</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc_matlab</attributeName>
+          <attributeDefinition>UTC date and time in MATLAB serial date number format</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">737261.485902778</minimum>
+                  <maximum exclusive="false">737266.39375</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude</attributeName>
+          <attributeDefinition>Latitude of sample event</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.6721050000067</minimum>
+                  <maximum exclusive="false">41.4922</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude</attributeName>
+          <attributeDefinition>Longitude of sample event</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.4187</minimum>
+                  <maximum exclusive="false">-70.5386</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">5</minimum>
+                  <maximum exclusive="false">5</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>temp</attributeName>
+          <attributeDefinition>Temperature of sampling</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">18.2748250009891</minimum>
+                  <maximum exclusive="false">23.783</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>sal</attributeName>
+          <attributeDefinition>Salinity of sampling in PSU</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">31.2266582997275</minimum>
+                  <maximum exclusive="false">34.8370000112653</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>biosat</attributeName>
+          <attributeDefinition>Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.76007477091814</minimum>
+                  <maximum exclusive="false">9.86977177057748</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_ratio_corrected</attributeName>
+          <attributeDefinition>Oxygen-argon ratio of EIMS sample from underway corrected for air values</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">20.2087305328597</minimum>
+                  <maximum exclusive="false">22.3737715353473</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>15502</numberOfRecords>
     </dataTable>
   </dataset>
 </eml:eml>

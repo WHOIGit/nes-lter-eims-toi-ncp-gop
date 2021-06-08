@@ -46,7 +46,7 @@ for (i in 1:length(files)) {
   df <- as.data.frame(d[[i]][1])
   # add a utc datetime column 
   df$datetime_utc <- as.POSIXct((df[,1] - 719529)*86400, origin = "1970-01-01", tz = "UTC")
-  # assign data to assicated file names
+  # assign data to associated file names
   assign(str_remove(basename(files[i]), ".mat"), df)
 }
 ```
@@ -61,8 +61,8 @@ Columns are named according to the description of the provided .mat files.
 
 # assign column headers
 colnames(bottleEn617withoutincubation) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio",
-                                       "depth", "D17", "d17", "d18", "niskin","datetime_utc")
-colnames(RaEn617withbiosat) <- c("matlab_date", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude", "cum_dist", "biosat", "datetime_utc")
+                                       "depth_matlab", "D17", "d17", "d18", "niskin","datetime_utc")
+colnames(RaEn617withbiosat) <- c("datetime_utc_matlab", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude", "cum_dist", "biosat", "datetime_utc")
 
 # trim unnecessary fields and rename vars
 bottle <- bottleEn617withoutincubation
@@ -96,6 +96,9 @@ for (j in 1:nrow(bottle)) {
   }
 }
 
+#rename depth column 
+bottle <- rename(bottle, depth_mat_file = depth)
+
 ```
 
 ## Correct UTC datetime and depth for bottle samples
@@ -116,7 +119,7 @@ Solution:
 # read in bottle summary for en617
 summary <- read_from_api(type = "summary", cruises = "EN617")
 
-# create column to populate with k from high thoughput
+# create column to populate with k from high throughput
 bottle$cast <- NA_integer_
 bottle$depth_api <- NA_integer_
 
@@ -155,8 +158,10 @@ for (i in 1:nrow(bottle)) {
 }
 
 # isolate instances of large depth differences
-bottle$depth_diff <- bottle$depth - bottle$depth_api
+bottle$depth_diff <- bottle$depth_mat_file - bottle$depth_api
 depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
+
+bottle <- rename(bottle, depth_API_bottle_summary = depth_api)
 
 # write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
 ```
@@ -195,8 +200,8 @@ for (i in 1:nrow(bottle)) {
 ```{r}
 
 # are there any niskins where the depth is 0?
-if (any(bottle$depth == 0)) {
-  conflicts <- bottle[which(bottle$depth == 0),]
+if (any(bottle$depth_mat_file == 0)) {
+  conflicts <- bottle[which(bottle$depth_mat_file == 0),]
   print(conflicts)
 }
 
@@ -228,19 +233,14 @@ map_locs(df = ra, xvar = "longitude", yvar = "latitude",
 ## Column Header Organization
 ```{r}
 # define headers for columns in desired order
-bottle_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "cast", "niskin", "depth", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
-ra_headers <- c("datetime_utc", "matlab_date", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected")
+bottle_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "cast", "niskin", "depth_mat_file", "depth_API_bottle_summary", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
+ra_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected")
 
 # reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
 ra_edi <- ra[, ra_headers]
 
 # write files for upload to EDI
-#write.csv(bottle_edi, paste0(dir, "/eims-toi-transect/bottleEn617withoutincubation.csv"), 
- #         row.names = FALSE)
-#write.csv(ra_edi, file.path(dir, "/eims-toi-transect/RaEn617withbiosat.csv"), 
- #         row.names = FALSE)
-
 write.csv(bottle_edi, here("eims-toi-transect", 'bottleEn617withoutincubation.csv'), row.names = FALSE)
 write.csv(ra_edi, here("eims-toi-transect", 'RaEn617withbiosat.csv'), row.names = FALSE)
 
@@ -324,9 +324,9 @@ Columns are named according to the description of the provided .mat files.
 
 ```{r}
 # assign column headers
-colnames(ncplterEn617) <- c("matlab_date", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude",
+colnames(ncplterEn617) <- c("datetime_utc_matlab", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude",
                 "cum_dist", "biosat", "ncp", "k","datetime_utc")
-colnames(discreteratesEn617) <- c("matlab_date", "latitude", "longitude", "gop", "ncp",
+colnames(discreteratesEn617) <- c("datetime_utc_matlab", "latitude", "longitude", "gop", "ncp",
                                   "ncp_per_gop","datetime_utc")
 
 # trim unnecessary fields and rename vars
@@ -358,8 +358,8 @@ map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
 ```{r}
 
 # define the desired order of columns
-rates_headers <- c("datetime_utc", "matlab_date", "latitude", "longitude", "gop", "ncp", "ncp_per_gop")
-ncp_headers <- c("datetime_utc", "matlab_date", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected", "ncp", "k")
+rates_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "gop", "ncp", "ncp_per_gop")
+ncp_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected", "ncp", "k")
 
 # reorder columns as necessary
 rates_edi <- rates[, rates_headers]

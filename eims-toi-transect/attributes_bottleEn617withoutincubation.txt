@@ -6,7 +6,8 @@ longitude	Longitude of sample event	numeric	degree
 toi_source	Bottle sample from niskin or underway	character				
 cast	CTD rosette cast number, chronological per cruise	numeric	dimensionless		NaN	Sample from underway
 niskin	Rosette bottle position number	numeric	dimensionless		NaN	Sample from underway
-depth	Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/	numeric	meter			
+depth_mat_file	Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/	numeric	meter			
+depth_API_bottle_summary	Depth of sample below sea surface	numeric	meter			
 O2_Ar_delta	Oxygen-argon ratio divided by the reference ratio (oxygen-argon ratio in air minus 1, multiplied by 100)	numeric	dimensionless			
 O2_Ar_ratio	Oxygen-argon ratio of bottle sample	numeric	dimensionless			
 D17	Triple isotopic composition of dissolved oxygen versus atmospheric O2 in parts per million	numeric	dimensionless			
