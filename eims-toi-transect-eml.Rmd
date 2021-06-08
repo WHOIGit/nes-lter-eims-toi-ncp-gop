@@ -265,8 +265,10 @@ ra_file <- "RaEn617withbiosat"
 edi_data <- c(bottles_file, ra_file)
 file_descriptions <- c("Oxygen-argon dissolved gas ratios and TOI from bottle samples", "Oxygen-argon dissolved gas ratios and TOI from underway")
 pkg_id <- "knb-lter-nes.6.1"
-#matlab_folder <- "input_data"
-#matlab_files <- c(here(matlab_folder,"bottleEn617withoutincubation.mat"), here(matlab_folder, "RaEn617withbiosat.mat"))
+matlab_folder <- "input_data/"
+matlab_bottle_file <- "bottleEn617withoutincubation" 
+matlab_rates_file <- "RaEn617withbiosat"
+matlab_data <- c(here("input_data","bottleEn617withoutincubation.mat"), here("input_data", "RaEn617withbiosat.mat"))
 
 # Make EML Templates 
 xlsx_to_template(metadata.path = metadata,
@@ -300,8 +302,9 @@ make_eml(path = project_folder,
          data.table = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.name = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.description = file_descriptions,
-         other.entity.name = c(here("input_data","bottleEn617withoutincubation.mat"), here("input_data", "RaEn617withbiosat.mat")),
-         other.entity.description = c("Original Matlab-format low frequency TOI data from rosette and underway bottles", "Original Matlab-format high frequency raw EIMS O2/Ar data"), 
+         #other.entity = matlab_data,
+         #other.entity.name = c(paste0(matlab_rates_file, ".mat"), paste0(matlab_rates_file, ".mat")),
+         #other.entity.description = c("Original Matlab-format low frequency TOI data from rosette and underway bottles", "Original Matlab-format high frequency raw EIMS O2/Ar data"), 
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
