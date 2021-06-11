@@ -69,6 +69,17 @@ bottle <- bottleEn617withoutincubation
 ra <- RaEn617withbiosat %>% select(-cum_dist)
 # add depth column to high freq EIMS data
 ra$depth <- 5
+
+#round colunns
+# round datetime_utc_matlab also? 
+ra <- ra %>%
+  mutate(latitude = round(latitude, 4)) %>% 
+  mutate(longitude = round(longitude, 4)) %>% 
+  mutate(temp = round(temp, 3))  %>%
+  mutate(sal = round(sal, 3))  %>%
+  mutate(biosat = round(biosat, 3))  %>%
+  mutate(O2_Ar_ratio_corrected = round(O2_Ar_ratio_corrected, 4)) 
+
 ```
 
 # TOI Underway vs. Bottle
@@ -96,9 +107,6 @@ for (j in 1:nrow(bottle)) {
   }
 }
 
-#rename depth column 
-bottle <- rename(bottle, depth_mat_file = depth)
-
 ```
 
 ## Correct UTC datetime and depth for bottle samples
@@ -118,6 +126,9 @@ Solution:
 
 # read in bottle summary for en617
 summary <- read_from_api(type = "summary", cruises = "EN617")
+
+#rename depth column in bottle file
+bottle <- rename(bottle, depth_mat_file = depth)
 
 # create column to populate with k from high throughput
 bottle$cast <- NA_integer_
@@ -192,6 +203,19 @@ for (i in 1:nrow(bottle)) {
   bottle$latitude[i] <- underway$gps_furuno_latitude[ind]
   bottle$longitude[i] <- underway$gps_furuno_longitude[ind]
 }
+
+# round numeric columns
+# round datetime_utc_matlab also? 
+bottle <- bottle %>%
+  mutate(latitude = round(latitude, 4)) %>% 
+  mutate(longitude = round(longitude, 4)) %>% 
+  mutate(depth_mat_file = round(depth_mat_file, 3))  %>%
+  mutate(depth_API_bottle_summary = round(depth_API_bottle_summary, 3))  %>%
+  mutate(O2_Ar_delta = round(O2_Ar_delta, 4)) %>% 
+  mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4)) %>% 
+  mutate(D17 = round(D17, 4)) %>% 
+  mutate(d17 = round(d17, 4)) %>% 
+  mutate(d18 = round(d18, 4))
 
 ```
 

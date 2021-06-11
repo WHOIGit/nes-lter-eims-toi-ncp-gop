@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-06-08</pubDate>
+    <pubDate>2021-06-11</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -94,7 +94,7 @@
           <westBoundingCoordinate>-71.4187</westBoundingCoordinate>
           <eastBoundingCoordinate>-70.5386</eastBoundingCoordinate>
           <northBoundingCoordinate>41.4922</northBoundingCoordinate>
-          <southBoundingCoordinate>39.67211</southBoundingCoordinate>
+          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -247,8 +247,8 @@
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from bottle samples</entityDescription>
       <physical>
         <objectName>bottleEn617withoutincubation.csv</objectName>
-        <size unit="bytes">16442</size>
-        <authentication method="MD5">aeb3bd1fc259b852fddb2eb2cc29eb63</authentication>
+        <size unit="bytes">14430</size>
+        <authentication method="MD5">d857b36fc74a2af76d9d42d7e74342da</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -439,8 +439,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-283.1818934</minimum>
-                  <maximum exclusive="false">78.58443149</maximum>
+                  <minimum exclusive="false">-283.1819</minimum>
+                  <maximum exclusive="false">78.5844</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -458,8 +458,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">16.0762193564777</minimum>
-                  <maximum exclusive="false">24.1896232188662</maximum>
+                  <minimum exclusive="false">16.0762</minimum>
+                  <maximum exclusive="false">24.1896</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -496,8 +496,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.901798</minimum>
-                  <maximum exclusive="false">1.88867</maximum>
+                  <minimum exclusive="false">-0.9018</minimum>
+                  <maximum exclusive="false">1.8887</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -515,8 +515,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-2.03865</minimum>
-                  <maximum exclusive="false">3.58114</maximum>
+                  <minimum exclusive="false">-2.0386</minimum>
+                  <maximum exclusive="false">3.5811</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -530,8 +530,8 @@
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from underway</entityDescription>
       <physical>
         <objectName>RaEn617withbiosat.csv</objectName>
-        <size unit="bytes">2155884</size>
-        <authentication method="MD5">a53c5f4755fc5176fb3e473e8fa04cb8</authentication>
+        <size unit="bytes">1302797</size>
+        <authentication method="MD5">ee34d63e1e33b80ce4ff61213c1e51ce</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -586,7 +586,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.6721050000067</minimum>
+                  <minimum exclusive="false">39.6721</minimum>
                   <maximum exclusive="false">41.4922</maximum>
                 </bounds>
               </numericDomain>
@@ -643,7 +643,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">18.2748250009891</minimum>
+                  <minimum exclusive="false">18.275</minimum>
                   <maximum exclusive="false">23.783</maximum>
                 </bounds>
               </numericDomain>
@@ -666,8 +666,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">31.2266582997275</minimum>
-                  <maximum exclusive="false">34.8370000112653</maximum>
+                  <minimum exclusive="false">31.227</minimum>
+                  <maximum exclusive="false">34.837</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -689,8 +689,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.76007477091814</minimum>
-                  <maximum exclusive="false">9.86977177057748</maximum>
+                  <minimum exclusive="false">-0.76</minimum>
+                  <maximum exclusive="false">9.87</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -712,8 +712,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">20.2087305328597</minimum>
-                  <maximum exclusive="false">22.3737715353473</maximum>
+                  <minimum exclusive="false">20.2087</minimum>
+                  <maximum exclusive="false">22.3738</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
