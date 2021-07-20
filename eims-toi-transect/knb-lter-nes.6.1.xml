@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-06-11</pubDate>
+    <pubDate>2021-07-20</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -530,8 +530,8 @@
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from underway</entityDescription>
       <physical>
         <objectName>RaEn617withbiosat.csv</objectName>
-        <size unit="bytes">1302797</size>
-        <authentication method="MD5">ee34d63e1e33b80ce4ff61213c1e51ce</authentication>
+        <size unit="bytes">1090242</size>
+        <authentication method="MD5">1856d4241bf90ea7ef8f14ba0ecf1ed5</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -630,52 +630,6 @@
               </numericDomain>
             </ratio>
           </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>temp</attributeName>
-          <attributeDefinition>Temperature of sampling</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>celsius</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">18.275</minimum>
-                  <maximum exclusive="false">23.783</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
-        </attribute>
-        <attribute>
-          <attributeName>sal</attributeName>
-          <attributeDefinition>Salinity of sampling in PSU</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>dimensionless</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">31.227</minimum>
-                  <maximum exclusive="false">34.837</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
         </attribute>
         <attribute>
           <attributeName>biosat</attributeName>

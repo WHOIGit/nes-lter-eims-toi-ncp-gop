@@ -258,7 +258,7 @@ map_locs(df = ra, xvar = "longitude", yvar = "latitude",
 ```{r}
 # define headers for columns in desired order
 bottle_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "cast", "niskin", "depth_mat_file", "depth_API_bottle_summary", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
-ra_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected")
+ra_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio_corrected")
 
 # reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
