@@ -363,6 +363,31 @@ rates <- discreteratesEn617
 ncplter$depth <- 5
 ```
 
+# Round columns
+
+```{r}
+
+#round colunns
+# round datetime_utc_matlab also? 
+ncplter <- ncplter %>%
+  mutate(latitude = round(latitude, 4)) %>% 
+  mutate(longitude = round(longitude, 4)) %>% 
+  mutate(temp = round(temp, 3))  %>%
+  mutate(sal = round(sal, 3))  %>%
+  mutate(biosat = round(biosat, 3))  %>%
+  mutate(O2_Ar_ratio_corrected = round(O2_Ar_ratio_corrected, 4))  %>%
+  mutate(ncp = round(ncp, 3))  %>%
+  mutate(k = round(k, 3)) 
+
+rates <- rates %>%
+  mutate(latitude = round(latitude, 4)) %>% 
+  mutate(longitude = round(longitude, 4)) %>% 
+  mutate(gop = round(gop, 3))  %>%
+  mutate(ncp = round(ncp, 3))  %>%
+  mutate(ncp_per_gop = round(ncp_per_gop, 3)) 
+
+```
+
 ## QA: Map Sampling Locations
 
 Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.

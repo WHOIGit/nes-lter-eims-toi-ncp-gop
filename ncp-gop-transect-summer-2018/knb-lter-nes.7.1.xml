@@ -90,7 +90,7 @@
           <westBoundingCoordinate>-71.4187</westBoundingCoordinate>
           <eastBoundingCoordinate>-70.5386</eastBoundingCoordinate>
           <northBoundingCoordinate>41.4922</northBoundingCoordinate>
-          <southBoundingCoordinate>39.67211</southBoundingCoordinate>
+          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -243,8 +243,8 @@
       <entityDescription>Discrete rates of NCP and GOP</entityDescription>
       <physical>
         <objectName>discreteratesEn617.csv</objectName>
-        <size unit="bytes">9746</size>
-        <authentication method="MD5">ca08567a3a4e3abee363e4f7c0800b1f</authentication>
+        <size unit="bytes">6043</size>
+        <authentication method="MD5">2285079e5dbc1fcd153385413092405e</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -299,8 +299,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7634999999972</minimum>
-                  <maximum exclusive="false">41.3247000000015</maximum>
+                  <minimum exclusive="false">39.7635</minimum>
+                  <maximum exclusive="false">41.3247</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -318,8 +318,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.1029030769407</minimum>
-                  <maximum exclusive="false">-70.5851907692162</maximum>
+                  <minimum exclusive="false">-71.1029</minimum>
+                  <maximum exclusive="false">-70.5852</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -337,8 +337,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">67.6145197828657</minimum>
-                  <maximum exclusive="false">328.599760752388</maximum>
+                  <minimum exclusive="false">67.615</minimum>
+                  <maximum exclusive="false">328.6</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -360,8 +360,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">11.2719334290515</minimum>
-                  <maximum exclusive="false">47.821884243976</maximum>
+                  <minimum exclusive="false">11.272</minimum>
+                  <maximum exclusive="false">47.822</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -383,8 +383,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.076763966241387</minimum>
-                  <maximum exclusive="false">0.355738177572024</maximum>
+                  <minimum exclusive="false">0.077</minimum>
+                  <maximum exclusive="false">0.356</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -402,8 +402,8 @@
       <entityDescription>NCP derived from high frequency EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncplterEn617.csv</objectName>
-        <size unit="bytes">2675825</size>
-        <authentication method="MD5">91a5f6ba2b9329dab601f0cb0e603b42</authentication>
+        <size unit="bytes">1415256</size>
+        <authentication method="MD5">9e549ecbd3f508be5ea5068611f6e31c</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -440,7 +440,7 @@
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">737261.485902778</minimum>
-                  <maximum exclusive="false">737266.39375</maximum>
+                  <maximum exclusive="false">737266.4</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -458,7 +458,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.6721050000067</minimum>
+                  <minimum exclusive="false">39.6721</minimum>
                   <maximum exclusive="false">41.4922</maximum>
                 </bounds>
               </numericDomain>
@@ -515,7 +515,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">18.2748250009891</minimum>
+                  <minimum exclusive="false">18.275</minimum>
                   <maximum exclusive="false">23.783</maximum>
                 </bounds>
               </numericDomain>
@@ -538,8 +538,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">31.2266582997275</minimum>
-                  <maximum exclusive="false">34.8370000112653</maximum>
+                  <minimum exclusive="false">31.227</minimum>
+                  <maximum exclusive="false">34.837</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -561,8 +561,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.76007477091814</minimum>
-                  <maximum exclusive="false">9.86977177057748</maximum>
+                  <minimum exclusive="false">-0.76</minimum>
+                  <maximum exclusive="false">9.87</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -584,8 +584,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">20.2087305328597</minimum>
-                  <maximum exclusive="false">22.3737715353473</maximum>
+                  <minimum exclusive="false">20.2087</minimum>
+                  <maximum exclusive="false">22.3738</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -607,8 +607,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-4.68435833393659</minimum>
-                  <maximum exclusive="false">59.969276599592</maximum>
+                  <minimum exclusive="false">-4.684</minimum>
+                  <maximum exclusive="false">59.969</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -630,8 +630,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">1.23724140659211</minimum>
-                  <maximum exclusive="false">4.4580745510337</maximum>
+                  <minimum exclusive="false">1.237</minimum>
+                  <maximum exclusive="false">4.458</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
