@@ -20,11 +20,6 @@ here("nes-lter-eims-toi-ncp-gop")
 # define source for functions developed for the EDI packaging workflow
 source("edi-utilities.R")
 
-# install necessary libraries
-# install.packages("devtools")
-# install_github("EDIorg/EMLassemblyline")
-# install.packages("R.matlab")
-
 # define R packages to require
 libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2", "R.matlab")
 # load libraries
@@ -36,7 +31,7 @@ lapply(libs, require, character.only = TRUE)
 ```{r}
 
 # store all the names of matlab files
-files <- Sys.glob("input_data/*.mat")
+files <- Sys.glob(c("eims-toi-transect/*.mat", "ncp-gop-transect-summer-2018/*.mat"))
 # apply the readMat function to read in the files
 d <- lapply(files, readMat)
 
@@ -289,12 +284,9 @@ ra_file <- "RaEn617withbiosat"
 edi_data <- c(bottles_file, ra_file)
 file_descriptions <- c("Oxygen-argon dissolved gas ratios and TOI from bottle samples", "Oxygen-argon dissolved gas ratios and TOI from underway")
 pkg_id <- "knb-lter-nes.6.1"
-#matlab_folder <- "input_data"
-#matlab_bottle_file <- "bottleEn617withoutincubation" 
-#matlab_rates_file <- "RaEn617withbiosat"
-#matlab_data <- c(("bottleEn617withoutincubation.mat"), ("RaEn617withbiosat.mat")) #if in same folder
-#matlab_data <- c(("./input_data/bottleEn617withoutincubation.mat"), ("./input_data/RaEn617withbiosat.mat")) #if in separate input_data folder
-#matlab_data <- c(here("input_data","bottleEn617withoutincubation.mat"), here("input_data", "RaEn617withbiosat.mat")) #if in separate folder, using "here"
+matlab_bottle_file <- "bottleEn617withoutincubation" 
+matlab_rates_file <- "RaEn617withbiosat"
+matlab_data <- c(("bottleEn617withoutincubation.mat"), ("RaEn617withbiosat.mat")) #if in same folder
 
 # Make EML Templates 
 xlsx_to_template(metadata.path = metadata,
@@ -328,8 +320,8 @@ make_eml(path = project_folder,
          data.table = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.name = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.description = file_descriptions,
-         #other.entity = matlab_data,
-         #other.entity.name = c(paste0(matlab_bottle_file, ".mat"), paste0(matlab_rates_file, ".mat")),
+         other.entity = matlab_data,
+         other.entity.name = c(paste0(matlab_bottle_file, ".mat"), paste0(matlab_rates_file, ".mat")),
          other.entity.description = c("Original Matlab-format low frequency TOI data from rosette and underway bottles", "Original Matlab-format high frequency raw EIMS O2/Ar data"), 
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
@@ -499,7 +491,7 @@ make_eml(path = project_folder,
          data.table = c(paste0(rates_file, ".csv"), paste0(ncp_file, ".csv")),
          data.table.name = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
-         #other.entity = c('../input_data/ncplterEn617.mat', '../input_data/discreteratesEn617.mat'),
+         other.entity = c('ncplterEn617.mat', 'discreteratesEn617.mat'),
          #other.entity.description = c("Original Matlab-format high frequency NCP rate data derived from raw EIMS data", "Original Matlab-format low frequency GOP rate data derived from subset raw TOI data"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",

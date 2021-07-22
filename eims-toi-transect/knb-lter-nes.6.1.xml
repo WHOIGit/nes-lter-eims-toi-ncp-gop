@@ -680,5 +680,35 @@
       </attributeList>
       <numberOfRecords>15502</numberOfRecords>
     </dataTable>
+    <otherEntity>
+      <entityName>bottleEn617withoutincubation.mat</entityName>
+      <entityDescription>Original Matlab-format low frequency TOI data from rosette and underway bottles</entityDescription>
+      <physical>
+        <objectName>bottleEn617withoutincubation.mat</objectName>
+        <size unit="bytes">5381</size>
+        <authentication method="MD5">09c9a3a562ebbaca10467f48aa6d8361</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>Unknown</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+    <otherEntity>
+      <entityName>RaEn617withbiosat.mat</entityName>
+      <entityDescription>Original Matlab-format high frequency raw EIMS O2/Ar data</entityDescription>
+      <physical>
+        <objectName>RaEn617withbiosat.mat</objectName>
+        <size unit="bytes">759718</size>
+        <authentication method="MD5">4b6244956962768622b85462c0f02630</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>Unknown</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
   </dataset>
 </eml:eml>

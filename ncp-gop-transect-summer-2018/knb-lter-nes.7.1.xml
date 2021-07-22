@@ -612,6 +612,34 @@
       </attributeList>
       <numberOfRecords>15502</numberOfRecords>
     </dataTable>
+    <otherEntity>
+      <entityName>ncplterEn617.mat</entityName>
+      <physical>
+        <objectName>ncplterEn617.mat</objectName>
+        <size unit="bytes">983098</size>
+        <authentication method="MD5">6ed62b7ce00753b4aaeeaad324695e2f</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>Unknown</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+    <otherEntity>
+      <entityName>discreteratesEn617.mat</entityName>
+      <physical>
+        <objectName>discreteratesEn617.mat</objectName>
+        <size unit="bytes">3410</size>
+        <authentication method="MD5">7ef45da1349f07307f95ee05472d832d</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>Unknown</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
   </dataset>
   <additionalMetadata>
     <metadata>
