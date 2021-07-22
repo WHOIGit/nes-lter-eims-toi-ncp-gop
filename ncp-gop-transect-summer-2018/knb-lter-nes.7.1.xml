@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-07-20</pubDate>
+    <pubDate>2021-07-22</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -243,8 +243,8 @@
       <entityDescription>Discrete rates of NCP and GOP</entityDescription>
       <physical>
         <objectName>discreteratesEn617.csv</objectName>
-        <size unit="bytes">6043</size>
-        <authentication method="MD5">2285079e5dbc1fcd153385413092405e</authentication>
+        <size unit="bytes">6296</size>
+        <authentication method="MD5">c07dbf9f7697b8405e7dfd4f7c5e48d9</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -326,6 +326,20 @@
           </measurementScale>
         </attribute>
         <attribute>
+          <attributeName>toi_source</attributeName>
+          <attributeDefinition>Bottle sample from niskin or underway</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Bottle sample from niskin or underway</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
           <attributeName>gop</attributeName>
           <attributeDefinition>Gross oxygen production</attributeDefinition>
           <storageType>float</storageType>
@@ -402,8 +416,8 @@
       <entityDescription>NCP derived from high frequency EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncplterEn617.csv</objectName>
-        <size unit="bytes">1415256</size>
-        <authentication method="MD5">9e549ecbd3f508be5ea5068611f6e31c</authentication>
+        <size unit="bytes">1286828</size>
+        <authentication method="MD5">27e5a27e36757e0ad224f79788f5c3b6</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -440,7 +454,7 @@
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">737261.485902778</minimum>
-                  <maximum exclusive="false">737266.4</maximum>
+                  <maximum exclusive="false">737266.39375</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -502,52 +516,6 @@
               </numericDomain>
             </ratio>
           </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>temp</attributeName>
-          <attributeDefinition>Temperature of sampling</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>celsius</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">18.275</minimum>
-                  <maximum exclusive="false">23.783</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
-        </attribute>
-        <attribute>
-          <attributeName>sal</attributeName>
-          <attributeDefinition>Salinity of sampling in PSU</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>dimensionless</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">31.227</minimum>
-                  <maximum exclusive="false">34.837</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
         </attribute>
         <attribute>
           <attributeName>biosat</attributeName>

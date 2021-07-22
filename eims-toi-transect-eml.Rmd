@@ -289,10 +289,12 @@ ra_file <- "RaEn617withbiosat"
 edi_data <- c(bottles_file, ra_file)
 file_descriptions <- c("Oxygen-argon dissolved gas ratios and TOI from bottle samples", "Oxygen-argon dissolved gas ratios and TOI from underway")
 pkg_id <- "knb-lter-nes.6.1"
-matlab_folder <- "input_data/"
-matlab_bottle_file <- "bottleEn617withoutincubation" 
-matlab_rates_file <- "RaEn617withbiosat"
-matlab_data <- c(here("input_data","bottleEn617withoutincubation.mat"), here("input_data", "RaEn617withbiosat.mat"))
+#matlab_folder <- "input_data"
+#matlab_bottle_file <- "bottleEn617withoutincubation" 
+#matlab_rates_file <- "RaEn617withbiosat"
+#matlab_data <- c(("bottleEn617withoutincubation.mat"), ("RaEn617withbiosat.mat")) #if in same folder
+#matlab_data <- c(("./input_data/bottleEn617withoutincubation.mat"), ("./input_data/RaEn617withbiosat.mat")) #if in separate input_data folder
+#matlab_data <- c(here("input_data","bottleEn617withoutincubation.mat"), here("input_data", "RaEn617withbiosat.mat")) #if in separate folder, using "here"
 
 # Make EML Templates 
 xlsx_to_template(metadata.path = metadata,
@@ -327,8 +329,8 @@ make_eml(path = project_folder,
          data.table.name = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.description = file_descriptions,
          #other.entity = matlab_data,
-         #other.entity.name = c(paste0(matlab_rates_file, ".mat"), paste0(matlab_rates_file, ".mat")),
-         #other.entity.description = c("Original Matlab-format low frequency TOI data from rosette and underway bottles", "Original Matlab-format high frequency raw EIMS O2/Ar data"), 
+         #other.entity.name = c(paste0(matlab_bottle_file, ".mat"), paste0(matlab_rates_file, ".mat")),
+         other.entity.description = c("Original Matlab-format low frequency TOI data from rosette and underway bottles", "Original Matlab-format high frequency raw EIMS O2/Ar data"), 
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
@@ -355,6 +357,9 @@ colnames(ncplterEn617) <- c("datetime_utc_matlab", "O2_Ar_ratio_corrected", "tem
                 "cum_dist", "biosat", "ncp", "k","datetime_utc")
 colnames(discreteratesEn617) <- c("datetime_utc_matlab", "latitude", "longitude", "gop", "ncp",
                                   "ncp_per_gop","datetime_utc")
+#matlab input should also include depth_mat_file to enable TOI source identification
+#for now create that column 
+discreteratesEn617$depth_mat_file <- NA_integer_
 
 # trim unnecessary fields and rename vars
 ncplter <- ncplterEn617 %>% select(-cum_dist)
@@ -388,6 +393,22 @@ rates <- rates %>%
 
 ```
 
+# Join with TOI data to identify TOI_source
+
+```{r}
+
+#after datetime is updated (and lat/long too?), join rates and bottle_edi on datetime and depth_mat_file to acquire toi_source from bottle_edi
+
+rates$toi_source <- NA_character_ #this won't be needed when join is working
+
+#rates_source <- left_join(rates, bottle_edi, by = c('datetime_utc_matlab' , 'latitude', 'longitude'))
+#inspect result
+
+#rates_source <- rates_source %>% select (-datetime_utc.x, -depth_mat_file.x, -datetime_utc.y, -cast, -niskin, -depth_mat_file.y, -depth_API_bottle_summary, -O2_Ar_delta, -O2_Ar_ratio, -D17, -d17, d18)
+#keep depth_API_bottle_summary column after this join or remove it?
+
+```
+
 ## QA: Map Sampling Locations
 
 Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
@@ -410,8 +431,8 @@ map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
 ```{r}
 
 # define the desired order of columns
-rates_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "gop", "ncp", "ncp_per_gop")
-ncp_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "temp", "sal", "biosat", "O2_Ar_ratio_corrected", "ncp", "k")
+rates_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "gop", "ncp", "ncp_per_gop")
+ncp_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio_corrected", "ncp", "k")
 
 # reorder columns as necessary
 rates_edi <- rates[, rates_headers]
