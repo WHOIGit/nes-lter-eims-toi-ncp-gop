@@ -1,14 +1,15 @@
-# Bottle sample seawater supplied to mass spectrometer
+# Source data
 
-Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. Samples are collected in custom-made evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise.
+These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) ratio of oxygen and argon and bottle triple oxygen isotopes (TOI) published in the data package titled "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.1 in the EDI Data Portal. 
 
-# Underway science seawater supplied to the EIMS
-
-Continuously during R/V Endeavor cruises, underway science seawater is supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. The EIMS samples were from the diaphragm-pump supply for the first two days and the impeller-pump supply for the last three days. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.
+Additional data sources for these derived data:
+-- Gas transfer velocity (wind data product, weighted over 30 days)
+-- Temperature from NES-LTER ship-provided data
+-- Salinity from NES-LTER ship-provided data
 
 # Calibrations and Derivations
 
-The data has been calibrated according to the ratio measured in air roughly every 6 hours. This gives the calibrated O2/Ar ratio that was then used to calculate rates of NCP. This data also includes the biological saturation – the O2/Ar divided by the equilibrium value of O2/Ar – which gives the expected super (or under) saturation of O2 based on biological factors. The solubility of T and S were used to derive this value.
+The NCP data table is derived from the rates data from the underway system in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table.
 
 # Data Cleaning
 
