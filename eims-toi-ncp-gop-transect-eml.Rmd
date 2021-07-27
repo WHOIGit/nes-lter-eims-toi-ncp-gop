@@ -1,7 +1,7 @@
 ---
-title: "NES-LTER EIMS TOI Transect"
+title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
-date: "Dec 2, 2019"
+date: "July 27, 2021"
 output: html_document
 ---
 
