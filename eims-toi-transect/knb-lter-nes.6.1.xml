@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-07-22</pubDate>
+    <pubDate>2021-07-29</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -128,18 +128,30 @@
     <methods>
       <methodStep>
         <description>
+          <para># Coverage</para>
+          <para>These data include winter and summer NES-LTER transect cruises on the R/V Endeavor beginning in 2018. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.</para>
           <para># Bottle sample seawater supplied to mass spectrometer</para>
-          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. Samples are collected in custom-made evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise.</para>
+          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system and and from the underway system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made [500-mL?] evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isoptes (TOI).</para>
           <para># Underway science seawater supplied to the EIMS</para>
-          <para>Continuously during R/V Endeavor cruises, underway science seawater is supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. The EIMS samples were from the diaphragm-pump supply for the first two days and the impeller-pump supply for the last three days. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.</para>
+          <para>Continuously during R/V Endeavor cruises, underway science seawater was supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. Water was supplied to the EIMS typically from the diaphragm pump and from the impeller pump depending on sea state and pump status. The Endeavor underway lines are not bleached and are flushed with freshwater between every cruise. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.</para>
+          <para>Cruise-specific pump information:&#13;
+EN608: Used diaphragm first, then switched to traditional underway 1 Feb 08:18 UTC. &#13;
+EN617: Diaphragm for first two days, then switched to impeller due to bubbles in diaphragm supply in rougher weather. &#13;
+EN627: Diaphragm first with new debubbler for EIMS, then switched to impeller due to air dissolved in diaphragm supply in rougher weather. &#13;
+EN644: Diaphragm with debubbler&#13;
+EN649: Diaphragm pump with inlet newly lower in sea chest to reduce bubbling. &#13;
+EN655: Diaphragm. </para>
           <para># Calibrations and Derivations</para>
-          <para>The data has been calibrated according to the ratio measured in air roughly every 6 hours. This gives the calibrated O2/Ar ratio that was then used to calculate rates of NCP. This data also includes the biological saturation – the O2/Ar divided by the equilibrium value of O2/Ar – which gives the expected super (or under) saturation of O2 based on biological factors. The solubility of T and S were used to derive this value.</para>
+          <para>The EIMS data have been calibrated according to the ratio measured in air roughly every 6 hours. This gives the calibrated O2/Ar ratio that was then used to calculate rates of NCP. These data also include the biological saturation – the O2/Ar divided by the equilibrium value of O2/Ar – which gives the expected super (or under) saturation of O2 based on biological factors. The solubility of T and S were used to derive this value. The rates data table includes high-frequency air-corrected O2/Ar ratio and the biological saturation value for the underway data. The bottle data set consists of O2/Ar and triple oxygen isotope (TOI) data for the bottle samples. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table.</para>
           <para># Data Cleaning</para>
           <para>For the bottle samples, a field was added to indicate whether the bottle was sampled from underway or niskin. Additionally, cast number was supplied from the REST API bottle summary and the date-time (in UTC) was corrected to reflect the time at which the rosette bottle closed. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
           <para># Quality Assurance</para>
           <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. </para>
           <para># References</para>
           <para>Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347</para>
+          <para># NCP-GOP Data Packages Derived From These Data</para>
+          <para>Net community production (NCP) and gross oxygen production (GOP) are derived from these data and published separately on a per-cruise basis. Cruises and package IDs are as follows:&#13;
+EN617 knb-lter-nes.7.1</para>
         </description>
       </methodStep>
     </methods>

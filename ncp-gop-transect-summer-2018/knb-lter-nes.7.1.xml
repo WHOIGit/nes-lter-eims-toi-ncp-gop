@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-07-22</pubDate>
+    <pubDate>2021-07-29</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -124,12 +124,14 @@
     <methods>
       <methodStep>
         <description>
-          <para># Bottle sample seawater supplied to mass spectrometer</para>
-          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system. Samples are collected in custom-made evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise.</para>
-          <para># Underway science seawater supplied to the EIMS</para>
-          <para>Continuously during R/V Endeavor cruises, underway science seawater is supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. The EIMS samples were from the diaphragm-pump supply for the first two days and the impeller-pump supply for the last three days. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.</para>
+          <para># Source data</para>
+          <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) ratio of oxygen and argon and bottle triple oxygen isotopes (TOI) published in the data package titled "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.1 in the EDI Data Portal. </para>
+          <para>Additional data sources for these derived data:&#13;
+-- Gas transfer velocity (wind data product, weighted over 30 days)&#13;
+-- Temperature from NES-LTER ship-provided data&#13;
+-- Salinity from NES-LTER ship-provided data</para>
           <para># Calibrations and Derivations</para>
-          <para>The data has been calibrated according to the ratio measured in air roughly every 6 hours. This gives the calibrated O2/Ar ratio that was then used to calculate rates of NCP. This data also includes the biological saturation – the O2/Ar divided by the equilibrium value of O2/Ar – which gives the expected super (or under) saturation of O2 based on biological factors. The solubility of T and S were used to derive this value.</para>
+          <para>The NCP data table is derived from the rates data from the underway system in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table.</para>
           <para># Data Cleaning</para>
           <para>For the bottle samples, a field was added to indicate whether the bottle was sampled from underway or niskin. Additionally, cast number was supplied from the REST API bottle summary and the date-time (in UTC) was corrected to reflect the time at which the rosette bottle closed. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
           <para># Quality Assurance</para>
