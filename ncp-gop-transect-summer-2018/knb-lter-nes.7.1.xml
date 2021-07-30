@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-07-29</pubDate>
+    <pubDate>2021-07-30</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -348,7 +348,7 @@
           <measurementScale>
             <ratio>
               <unit>
-                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+                <customUnit>millimoleOxygenPerMeterSquaredPerDay</customUnit>
               </unit>
               <numericDomain>
                 <numberType>real</numberType>
@@ -371,7 +371,7 @@
           <measurementScale>
             <ratio>
               <unit>
-                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+                <customUnit>millimoleOxygenPerMeterSquaredPerDay</customUnit>
               </unit>
               <numericDomain>
                 <numberType>real</numberType>
@@ -418,8 +418,8 @@
       <entityDescription>NCP derived from high frequency EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncplterEn617.csv</objectName>
-        <size unit="bytes">1286828</size>
-        <authentication method="MD5">27e5a27e36757e0ad224f79788f5c3b6</authentication>
+        <size unit="bytes">1286818</size>
+        <authentication method="MD5">745edf8ad5b53eb1c894a33e472aa445</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -543,7 +543,7 @@
           </missingValueCode>
         </attribute>
         <attribute>
-          <attributeName>O2_Ar_ratio_corrected</attributeName>
+          <attributeName>O2_Ar_ratio</attributeName>
           <attributeDefinition>Oxygen-argon ratio of EIMS sample from underway corrected for air values</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
@@ -572,7 +572,7 @@
           <measurementScale>
             <ratio>
               <unit>
-                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+                <customUnit>millimoleOxygenPerMeterSquaredPerDay</customUnit>
               </unit>
               <numericDomain>
                 <numberType>real</numberType>
@@ -616,6 +616,7 @@
     </dataTable>
     <otherEntity>
       <entityName>ncplterEn617.mat</entityName>
+      <entityDescription>Original Matlab-format high frequency NCP rate data derived from raw EIMS data</entityDescription>
       <physical>
         <objectName>ncplterEn617.mat</objectName>
         <size unit="bytes">983098</size>
@@ -630,6 +631,7 @@
     </otherEntity>
     <otherEntity>
       <entityName>discreteratesEn617.mat</entityName>
+      <entityDescription>Original Matlab-format low frequency GOP rate data derived from subset raw TOI data</entityDescription>
       <physical>
         <objectName>discreteratesEn617.mat</objectName>
         <size unit="bytes">3410</size>
@@ -646,8 +648,8 @@
   <additionalMetadata>
     <metadata>
       <unitList>
-        <unit id="millimolePerMeterSquaredPerDay" multiplierToSI="0.001" name="millimolePerMeterSquaredPerDay" parentSI="molePerMeterSquaredPerDay" unitType="amount">
-          <description>millimoles per meter squared per day</description>
+        <unit id="millimoleOxygenPerMeterSquaredPerDay" multiplierToSI="0.001" name="millimoleOxygenPerMeterSquaredPerDay" parentSI="molePerMeterSquaredPerDay" unitType="amount">
+          <description>millimoles oxygen per meter squared per day</description>
         </unit>
       </unitList>
     </metadata>

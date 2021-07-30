@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-07-29</pubDate>
+    <pubDate>2021-07-30</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -131,7 +131,7 @@
           <para># Coverage</para>
           <para>These data include winter and summer NES-LTER transect cruises on the R/V Endeavor beginning in 2018. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.</para>
           <para># Bottle sample seawater supplied to mass spectrometer</para>
-          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system and and from the underway system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made [500-mL?] evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isoptes (TOI).</para>
+          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system and and from the underway system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isoptes (TOI).</para>
           <para># Underway science seawater supplied to the EIMS</para>
           <para>Continuously during R/V Endeavor cruises, underway science seawater was supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. Water was supplied to the EIMS typically from the diaphragm pump and from the impeller pump depending on sea state and pump status. The Endeavor underway lines are not bleached and are flushed with freshwater between every cruise. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.</para>
           <para>Cruise-specific pump information:&#13;
@@ -259,8 +259,8 @@ EN617 knb-lter-nes.7.1</para>
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from bottle samples</entityDescription>
       <physical>
         <objectName>bottleEn617withoutincubation.csv</objectName>
-        <size unit="bytes">14430</size>
-        <authentication method="MD5">d857b36fc74a2af76d9d42d7e74342da</authentication>
+        <size unit="bytes">14449</size>
+        <authentication method="MD5">7270f7cbf4e2ed9db73e75cb9ccd7c66</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -478,8 +478,8 @@ EN617 knb-lter-nes.7.1</para>
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>D17</attributeName>
-          <attributeDefinition>Triple isotopic composition of dissolved oxygen versus atmospheric O2 in parts per million</attributeDefinition>
+          <attributeName>cap_Delta_17</attributeName>
+          <attributeDefinition>D17, triple isotopic composition of dissolved oxygen versus atmospheric O2 in per meg</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -497,8 +497,8 @@ EN617 knb-lter-nes.7.1</para>
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>d17</attributeName>
-          <attributeDefinition>Oxygen-17 composition of dissolved oxygen versus atmospheric O2 in parts per thousand</attributeDefinition>
+          <attributeName>delta_17</attributeName>
+          <attributeDefinition>Oxygen-17 composition of dissolved oxygen versus atmospheric O2 in per mil</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -516,8 +516,8 @@ EN617 knb-lter-nes.7.1</para>
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>d18</attributeName>
-          <attributeDefinition>Oxygen-18 composition of dissolved oxygen versus atmospheric O2 in parts per thousand</attributeDefinition>
+          <attributeName>delta_18</attributeName>
+          <attributeDefinition>Oxygen-18 composition of dissolved oxygen versus atmospheric O2 in per mil</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -542,8 +542,8 @@ EN617 knb-lter-nes.7.1</para>
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from underway</entityDescription>
       <physical>
         <objectName>RaEn617withbiosat.csv</objectName>
-        <size unit="bytes">1090242</size>
-        <authentication method="MD5">1856d4241bf90ea7ef8f14ba0ecf1ed5</authentication>
+        <size unit="bytes">1090232</size>
+        <authentication method="MD5">2fb8da26f32478cbf3f34418da5e9e13</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -667,7 +667,7 @@ EN617 knb-lter-nes.7.1</para>
           </missingValueCode>
         </attribute>
         <attribute>
-          <attributeName>O2_Ar_ratio_corrected</attributeName>
+          <attributeName>O2_Ar_ratio</attributeName>
           <attributeDefinition>Oxygen-argon ratio of EIMS sample from underway corrected for air values</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>

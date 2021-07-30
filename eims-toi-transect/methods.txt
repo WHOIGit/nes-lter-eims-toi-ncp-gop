@@ -4,7 +4,7 @@ These data include winter and summer NES-LTER transect cruises on the R/V Endeav
 
 # Bottle sample seawater supplied to mass spectrometer
 
-Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system and and from the underway system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made [500-mL?] evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isoptes (TOI).
+Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system and and from the underway system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isoptes (TOI).
 
 # Underway science seawater supplied to the EIMS
 

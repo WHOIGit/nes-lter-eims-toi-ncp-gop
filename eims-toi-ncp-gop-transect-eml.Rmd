@@ -56,8 +56,8 @@ Columns are named according to the description of the provided .mat files.
 
 # assign column headers
 colnames(bottleEn617withoutincubation) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio",
-                                       "depth_matlab", "D17", "d17", "d18", "niskin","datetime_utc")
-colnames(RaEn617withbiosat) <- c("datetime_utc_matlab", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude", "cum_dist", "biosat", "datetime_utc")
+                                       "depth_matlab", "cap_Delta_17", "delta_17", "delta_18", "niskin","datetime_utc")
+colnames(RaEn617withbiosat) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude", "longitude", "cum_dist", "biosat", "datetime_utc")
 
 # trim unnecessary fields and rename vars
 bottle <- bottleEn617withoutincubation
@@ -73,7 +73,7 @@ ra <- ra %>%
   mutate(temp = round(temp, 3))  %>%
   mutate(sal = round(sal, 3))  %>%
   mutate(biosat = round(biosat, 3))  %>%
-  mutate(O2_Ar_ratio_corrected = round(O2_Ar_ratio_corrected, 4)) 
+  mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4)) 
 
 ```
 
@@ -208,9 +208,9 @@ bottle <- bottle %>%
   mutate(depth_API_bottle_summary = round(depth_API_bottle_summary, 3))  %>%
   mutate(O2_Ar_delta = round(O2_Ar_delta, 4)) %>% 
   mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4)) %>% 
-  mutate(D17 = round(D17, 4)) %>% 
-  mutate(d17 = round(d17, 4)) %>% 
-  mutate(d18 = round(d18, 4))
+  mutate(cap_Delta_17 = round(cap_Delta_17, 4)) %>% 
+  mutate(delta_17 = round(delta_17, 4)) %>% 
+  mutate(delta_18 = round(delta_18, 4))
 
 ```
 
@@ -252,8 +252,8 @@ map_locs(df = ra, xvar = "longitude", yvar = "latitude",
 ## Column Header Organization
 ```{r}
 # define headers for columns in desired order
-bottle_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "cast", "niskin", "depth_mat_file", "depth_API_bottle_summary", "O2_Ar_delta", "O2_Ar_ratio", "D17", "d17", "d18")
-ra_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio_corrected")
+bottle_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "cast", "niskin", "depth_mat_file", "depth_API_bottle_summary", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17", "delta_17", "delta_18")
+ra_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio")
 
 # reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
@@ -345,7 +345,7 @@ Columns are named according to the description of the provided .mat files.
 
 ```{r}
 # assign column headers
-colnames(ncplterEn617) <- c("datetime_utc_matlab", "O2_Ar_ratio_corrected", "temp", "sal", "latitude", "longitude",
+colnames(ncplterEn617) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude", "longitude",
                 "cum_dist", "biosat", "ncp", "k","datetime_utc")
 colnames(discreteratesEn617) <- c("datetime_utc_matlab", "latitude", "longitude", "gop", "ncp",
                                   "ncp_per_gop","datetime_utc")
@@ -372,7 +372,7 @@ ncplter <- ncplter %>%
   mutate(temp = round(temp, 3))  %>%
   mutate(sal = round(sal, 3))  %>%
   mutate(biosat = round(biosat, 3))  %>%
-  mutate(O2_Ar_ratio_corrected = round(O2_Ar_ratio_corrected, 4))  %>%
+  mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4))  %>%
   mutate(ncp = round(ncp, 3))  %>%
   mutate(k = round(k, 3)) 
 
@@ -396,7 +396,7 @@ rates$toi_source <- NA_character_ #this won't be needed when join is working
 #rates_source <- left_join(rates, bottle_edi, by = c('datetime_utc_matlab' , 'latitude', 'longitude'))
 #inspect result
 
-#rates_source <- rates_source %>% select (-datetime_utc.x, -depth_mat_file.x, -datetime_utc.y, -cast, -niskin, -depth_mat_file.y, -depth_API_bottle_summary, -O2_Ar_delta, -O2_Ar_ratio, -D17, -d17, d18)
+#rates_source <- rates_source %>% select (-datetime_utc.x, -depth_mat_file.x, -datetime_utc.y, -cast, -niskin, -depth_mat_file.y, -depth_API_bottle_summary, -O2_Ar_delta, -O2_Ar_ratio, -cap_Delta_17, -delta_17, delta_18)
 #keep depth_API_bottle_summary column after this join or remove it?
 
 ```
@@ -424,7 +424,7 @@ map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
 
 # define the desired order of columns
 rates_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "toi_source", "gop", "ncp", "ncp_per_gop")
-ncp_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio_corrected", "ncp", "k")
+ncp_headers <- c("datetime_utc", "datetime_utc_matlab", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
 
 # reorder columns as necessary
 rates_edi <- rates[, rates_headers]
@@ -492,7 +492,7 @@ make_eml(path = project_folder,
          data.table.name = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
          other.entity = c('ncplterEn617.mat', 'discreteratesEn617.mat'),
-         #other.entity.description = c("Original Matlab-format high frequency NCP rate data derived from raw EIMS data", "Original Matlab-format low frequency GOP rate data derived from subset raw TOI data"),
+         other.entity.description = c("Original Matlab-format high frequency NCP rate data derived from raw EIMS data", "Original Matlab-format low frequency GOP rate data derived from subset raw TOI data"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
