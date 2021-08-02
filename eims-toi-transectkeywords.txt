@@ -1,0 +1,7 @@
+keyword	keywordThesaurus
+primary production	LTER Core Research Areas
+chemistry	LTER Controlled Vocabulary
+oceanography	LTER Controlled Vocabulary
+seawater	LTER Controlled Vocabulary
+dissolved oxygen	LTER Controlled Vocabulary
+stable isotopes	LTER Controlled Vocabulary

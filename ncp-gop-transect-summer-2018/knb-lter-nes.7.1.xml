@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-07-30</pubDate>
+    <pubDate>2021-08-02</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -241,10 +241,10 @@
       </funding>
     </project>
     <dataTable>
-      <entityName>discreteratesEn617.csv</entityName>
+      <entityName>gop-transect-en617.csv</entityName>
       <entityDescription>Discrete rates of NCP and GOP</entityDescription>
       <physical>
-        <objectName>discreteratesEn617.csv</objectName>
+        <objectName>gop-transect-en617.csv</objectName>
         <size unit="bytes">6296</size>
         <authentication method="MD5">c07dbf9f7697b8405e7dfd4f7c5e48d9</authentication>
         <dataFormat>
@@ -414,10 +414,10 @@
       <numberOfRecords>80</numberOfRecords>
     </dataTable>
     <dataTable>
-      <entityName>ncplterEn617.csv</entityName>
+      <entityName>ncp-transect-en617.csv</entityName>
       <entityDescription>NCP derived from high frequency EIMS sampling of underway seawater</entityDescription>
       <physical>
-        <objectName>ncplterEn617.csv</objectName>
+        <objectName>ncp-transect-en617.csv</objectName>
         <size unit="bytes">1286818</size>
         <authentication method="MD5">745edf8ad5b53eb1c894a33e472aa445</authentication>
         <dataFormat>

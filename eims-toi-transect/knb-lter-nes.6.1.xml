@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-07-30</pubDate>
+    <pubDate>2021-08-02</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -255,10 +255,10 @@ EN617 knb-lter-nes.7.1</para>
       </funding>
     </project>
     <dataTable>
-      <entityName>bottleEn617withoutincubation.csv</entityName>
+      <entityName>toi-transect.csv</entityName>
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from bottle samples</entityDescription>
       <physical>
-        <objectName>bottleEn617withoutincubation.csv</objectName>
+        <objectName>toi-transect.csv</objectName>
         <size unit="bytes">14449</size>
         <authentication method="MD5">7270f7cbf4e2ed9db73e75cb9ccd7c66</authentication>
         <dataFormat>
@@ -538,10 +538,10 @@ EN617 knb-lter-nes.7.1</para>
       <numberOfRecords>119</numberOfRecords>
     </dataTable>
     <dataTable>
-      <entityName>RaEn617withbiosat.csv</entityName>
+      <entityName>eims-transect.csv</entityName>
       <entityDescription>Oxygen-argon dissolved gas ratios and TOI from underway</entityDescription>
       <physical>
-        <objectName>RaEn617withbiosat.csv</objectName>
+        <objectName>eims-transect.csv</objectName>
         <size unit="bytes">1090232</size>
         <authentication method="MD5">2fb8da26f32478cbf3f34418da5e9e13</authentication>
         <dataFormat>

@@ -1,0 +1,8 @@
+attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+datetime_utc	Date and time in UTC	Date		YYYY-MM-DD hh:mm:ss		
+datetime_utc_matlab	UTC date and time in MATLAB serial date number format	numeric	dimensionless			
+latitude	Latitude of sample event	numeric	degree			
+longitude	Longitude of sample event	numeric	degree			
+depth	Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/	numeric	meter			
+biosat	Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio	numeric	dimensionless		NaN	Missing value
+O2_Ar_ratio	Oxygen-argon ratio of EIMS sample from underway corrected for air values	numeric	dimensionless		NaN	Missing value

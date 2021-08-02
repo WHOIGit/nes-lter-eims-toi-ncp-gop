@@ -260,8 +260,8 @@ bottle_edi <- bottle[, bottle_headers]
 ra_edi <- ra[, ra_headers]
 
 # write files for upload to EDI
-write.csv(bottle_edi, here("eims-toi-transect", 'bottleEn617withoutincubation.csv'), row.names = FALSE)
-write.csv(ra_edi, here("eims-toi-transect", 'RaEn617withbiosat.csv'), row.names = FALSE)
+write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect.csv'), row.names = FALSE)
+write.csv(ra_edi, here("eims-toi-transect", 'eims-transect.csv'), row.names = FALSE)
 
 ```
 
@@ -279,8 +279,8 @@ Step 4: Inserting a custom NES-LTER parent project node
 # define input for EML assembly
 metadata <- "eims-toi-transect/eims-toi-transect-info"
 project_folder <- "eims-toi-transect/"
-bottles_file <- "bottleEn617withoutincubation"
-ra_file <- "RaEn617withbiosat"
+bottles_file <- "toi-transect"
+ra_file <- "eims-transect"
 edi_data <- c(bottles_file, ra_file)
 file_descriptions <- c("Oxygen-argon dissolved gas ratios and TOI from bottle samples", "Oxygen-argon dissolved gas ratios and TOI from underway")
 pkg_id <- "knb-lter-nes.6.1"
@@ -431,12 +431,9 @@ rates_edi <- rates[, rates_headers]
 ncplter_edi <- ncplter[, ncp_headers]
 
 # write files for upload to EDI
-write.csv(rates_edi, 
-          "ncp-gop-transect-summer-2018/discreteratesEn617.csv", 
-          row.names = FALSE)
-write.csv(ncplter_edi, 
-          "ncp-gop-transect-summer-2018/ncplterEn617.csv", 
-          row.names = FALSE)
+write.csv(rates_edi, here("ncp-gop-transect-summer-2018", "gop-transect-en617.csv"), row.names = FALSE)
+write.csv(ncplter_edi, here("ncp-gop-transect-summer-2018", "ncp-transect-en617.csv"), row.names = FALSE)
+
 ```
 
 
@@ -454,8 +451,8 @@ Step 4: Inserting a custom NES-LTER parent project node
 # define input for EML assembly
 metadata <- "ncp-gop-transect-summer-2018/ncp-gop-transect-summer-2018-info"
 project_folder <- "ncp-gop-transect-summer-2018/"
-rates_file <- "discreteratesEn617"
-ncp_file <- "ncplterEn617"
+rates_file <- "gop-transect-en617"
+ncp_file <- "ncp-transect-en617"
 edi_data <- c(rates_file, ncp_file)
 file_descriptions <- c("Discrete rates of NCP and GOP", "NCP derived from high frequency EIMS sampling of underway seawater")
 pkg_id <- "knb-lter-nes.7.1"
