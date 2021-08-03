@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-08-02</pubDate>
+    <pubDate>2021-08-03</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -242,7 +242,7 @@
     </project>
     <dataTable>
       <entityName>gop-transect-en617.csv</entityName>
-      <entityDescription>Discrete rates of NCP and GOP</entityDescription>
+      <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
         <objectName>gop-transect-en617.csv</objectName>
         <size unit="bytes">6296</size>
@@ -415,7 +415,7 @@
     </dataTable>
     <dataTable>
       <entityName>ncp-transect-en617.csv</entityName>
-      <entityDescription>NCP derived from high frequency EIMS sampling of underway seawater</entityDescription>
+      <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncp-transect-en617.csv</objectName>
         <size unit="bytes">1286818</size>
@@ -616,7 +616,7 @@
     </dataTable>
     <otherEntity>
       <entityName>ncplterEn617.mat</entityName>
-      <entityDescription>Original Matlab-format high frequency NCP rate data derived from raw EIMS data</entityDescription>
+      <entityDescription>Package input high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncplterEn617.mat</objectName>
         <size unit="bytes">983098</size>
@@ -631,7 +631,7 @@
     </otherEntity>
     <otherEntity>
       <entityName>discreteratesEn617.mat</entityName>
-      <entityDescription>Original Matlab-format low frequency GOP rate data derived from subset raw TOI data</entityDescription>
+      <entityDescription>Package input discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
         <objectName>discreteratesEn617.mat</objectName>
         <size unit="bytes">3410</size>

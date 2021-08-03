@@ -67,7 +67,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-08-02</pubDate>
+    <pubDate>2021-08-03</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -256,7 +256,7 @@ EN617 knb-lter-nes.7.1</para>
     </project>
     <dataTable>
       <entityName>toi-transect.csv</entityName>
-      <entityDescription>Oxygen-argon dissolved gas ratios and TOI from bottle samples</entityDescription>
+      <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
         <size unit="bytes">14449</size>
@@ -539,7 +539,7 @@ EN617 knb-lter-nes.7.1</para>
     </dataTable>
     <dataTable>
       <entityName>eims-transect.csv</entityName>
-      <entityDescription>Oxygen-argon dissolved gas ratios and TOI from underway</entityDescription>
+      <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
         <objectName>eims-transect.csv</objectName>
         <size unit="bytes">1090232</size>
@@ -694,7 +694,7 @@ EN617 knb-lter-nes.7.1</para>
     </dataTable>
     <otherEntity>
       <entityName>bottleEn617withoutincubation.mat</entityName>
-      <entityDescription>Original Matlab-format low frequency TOI data from rosette and underway bottles</entityDescription>
+      <entityDescription>Package input bottle sample triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>bottleEn617withoutincubation.mat</objectName>
         <size unit="bytes">5381</size>
@@ -709,7 +709,7 @@ EN617 knb-lter-nes.7.1</para>
     </otherEntity>
     <otherEntity>
       <entityName>RaEn617withbiosat.mat</entityName>
-      <entityDescription>Original Matlab-format high frequency raw EIMS O2/Ar data</entityDescription>
+      <entityDescription>Package input high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
         <objectName>RaEn617withbiosat.mat</objectName>
         <size unit="bytes">759718</size>

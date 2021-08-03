@@ -282,7 +282,7 @@ project_folder <- "eims-toi-transect/"
 bottles_file <- "toi-transect"
 ra_file <- "eims-transect"
 edi_data <- c(bottles_file, ra_file)
-file_descriptions <- c("Oxygen-argon dissolved gas ratios and TOI from bottle samples", "Oxygen-argon dissolved gas ratios and TOI from underway")
+file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
 pkg_id <- "knb-lter-nes.6.1"
 matlab_bottle_file <- "bottleEn617withoutincubation" 
 matlab_rates_file <- "RaEn617withbiosat"
@@ -322,7 +322,7 @@ make_eml(path = project_folder,
          data.table.description = file_descriptions,
          other.entity = matlab_data,
          other.entity.name = c(paste0(matlab_bottle_file, ".mat"), paste0(matlab_rates_file, ".mat")),
-         other.entity.description = c("Original Matlab-format low frequency TOI data from rosette and underway bottles", "Original Matlab-format high frequency raw EIMS O2/Ar data"), 
+         other.entity.description = c("Package input bottle sample triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles", "Package input high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements"), 
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
@@ -454,7 +454,7 @@ project_folder <- "ncp-gop-transect-summer-2018/"
 rates_file <- "gop-transect-en617"
 ncp_file <- "ncp-transect-en617"
 edi_data <- c(rates_file, ncp_file)
-file_descriptions <- c("Discrete rates of NCP and GOP", "NCP derived from high frequency EIMS sampling of underway seawater")
+file_descriptions <- c("Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer", "Data product high frequency NCP derived from EIMS sampling of underway seawater")
 pkg_id <- "knb-lter-nes.7.1"
 
 # Make EML Templates 
@@ -489,7 +489,7 @@ make_eml(path = project_folder,
          data.table.name = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
          other.entity = c('ncplterEn617.mat', 'discreteratesEn617.mat'),
-         other.entity.description = c("Original Matlab-format high frequency NCP rate data derived from raw EIMS data", "Original Matlab-format low frequency GOP rate data derived from subset raw TOI data"),
+         other.entity.description = c("Package input high frequency NCP derived from EIMS sampling of underway seawater", "Package input discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
