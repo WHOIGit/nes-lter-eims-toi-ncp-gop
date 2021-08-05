@@ -10,6 +10,6 @@ depth_mat_file	Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/co
 depth_API_bottle_summary	Depth of sample below sea surface	numeric	meter			
 O2_Ar_delta	Oxygen-argon ratio divided by the reference ratio (oxygen-argon ratio in air minus 1, multiplied by 100)	numeric	dimensionless			
 O2_Ar_ratio	Oxygen-argon ratio of bottle sample	numeric	dimensionless			
-cap_Delta_17	D17, triple isotopic composition of dissolved oxygen versus atmospheric O2 in per meg	numeric	dimensionless			
-delta_17	Oxygen-17 composition of dissolved oxygen versus atmospheric O2 in per mil	numeric	dimensionless			
-delta_18	Oxygen-18 composition of dissolved oxygen versus atmospheric O2 in per mil	numeric	dimensionless			
+cap_Delta_17	D17, triple isotopic composition of dissolved oxygen versus atmospheric O2 https://doi.org/10.1016/j.jmarsys.2014.04.006	numeric	dimensionless			
+delta_17	Oxygen-17 composition of dissolved oxygen versus atmospheric O2 https://doi.org/10.1016/j.jmarsys.2014.04.006	numeric	dimensionless			
+delta_18	Oxygen-18 composition of dissolved oxygen versus atmospheric O2 https://doi.org/10.1016/j.jmarsys.2014.04.006	numeric	dimensionless			

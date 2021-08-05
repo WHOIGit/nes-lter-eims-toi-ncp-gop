@@ -37,14 +37,7 @@
         <surName>Cahill</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <role>Technician</role>
-    </associatedParty>
-    <associatedParty>
-      <individualName>
-        <givenName>Zoe</givenName>
-        <surName>Sandwith</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
       <role>Technician</role>
     </associatedParty>
     <associatedParty>
@@ -67,7 +60,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-08-03</pubDate>
+    <pubDate>2021-08-05</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -79,6 +72,9 @@
       <keyword>dissolved oxygen</keyword>
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
     </keywordSet>
+    <additionalInfo>
+      <para>Acknowledgments to technician Zoe Sandwith, who contributed sea time and lab analyses for cruises in 2018 and 2019. Also to the students who participated in each cruise. </para>
+    </additionalInfo>
     <intellectualRights>
       <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data (\"Data User\" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available \"as is.\" The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.&#13;
 </para>
@@ -131,13 +127,15 @@
 -- Temperature from NES-LTER ship-provided data&#13;
 -- Salinity from NES-LTER ship-provided data</para>
           <para># Calibrations and Derivations</para>
-          <para>The NCP data table is derived from the rates data from the underway system in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table.</para>
+          <para>The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Walker (2021). </para>
           <para># Data Cleaning</para>
           <para>For the bottle samples, a field was added to indicate whether the bottle was sampled from underway or niskin. Additionally, cast number was supplied from the REST API bottle summary and the date-time (in UTC) was corrected to reflect the time at which the rosette bottle closed. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
           <para># Quality Assurance</para>
           <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. </para>
           <para># References</para>
-          <para>Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347</para>
+          <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
+          <para>&#13;
+</para>
         </description>
       </methodStep>
     </methods>
