@@ -21,29 +21,9 @@ here("nes-lter-eims-toi-ncp-gop")
 source("edi-utilities.R")
 
 # define R packages to require
-libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2", "R.matlab")
+libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
 # load libraries
 lapply(libs, require, character.only = TRUE)
-```
-
-## Load in Provided Matlab files
-
-```{r}
-
-# store all the names of matlab files
-files <- Sys.glob(c("eims-toi-transect/*.mat", "ncp-gop-transect-summer-2018/*.mat"))
-# apply the readMat function to read in the files
-d <- lapply(files, readMat)
-
-# loop through matlab data files
-for (i in 1:length(files)) {
-  # isolate data in mat file and convert to data frame
-  df <- as.data.frame(d[[i]][1])
-  # add a utc datetime column 
-  df$datetime_utc <- as.POSIXct((df[,1] - 719529)*86400, origin = "1970-01-01", tz = "UTC")
-  # assign data to associated file names
-  assign(str_remove(basename(files[i]), ".mat"), df)
-}
 ```
 
 ## EIMS-TOI-TRANSECT DATA ------------
@@ -57,59 +37,38 @@ toi_input <- read_csv("eims-toi-transect/bottleEN617withoutincubation.csv", col_
 eims_transect_input <- read_csv("eims-toi-transect/RaEn617withbiosat.csv", col_names = FALSE)
 
 #provide column names
-colnames(toi_input) <- c("datetime_utc", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17", "delta_17", "delta_18", "niskin")
-colnames(eims_transect_input) <- c("datetime_utc", "O2_Ar_ratio", "temp", "sal", "latitude", "longitude", "cumulative_dist", "biosat")
-eims_transect_input <- eims_transect_input %>% select(-cumulative_dist)
+colnames(toi_input) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17", "delta_17", "delta_18", "niskin")
+colnames(eims_transect_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat")
+eims_transect_input <- eims_transect_input %>% select(-temp, -sal, -cumulative_dist)
 eims_transect_input$depth <- 5
                            
 #convert datetime format
-toi_input$datetime_utc <- as.POSIXct(toi_input$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
-eims_transect_input$datetime_utc <- as.POSIXct(eims_transect_input$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
+toi_input$datetime_utc_matlab <- as.POSIXct(toi_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+eims_transect_input$datetime_utc_matlab <- as.POSIXct(eims_transect_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
 
 ```
 
-# Plotting fun 
+# Initial QA for input csv data. 
 
 ```{r}
 
-# plot to check datetime, latitude, longitude
-ggplot(eims_transect_input, aes(x= datetime_utc, y = latitude))+ geom_point()
-ggplot(eims_transect_input, aes(x= datetime_utc, y = longitude))+ geom_point()
+# plot values to check for outliers
 
-ggplot(eims_transect_input, aes(x= datetime_utc, y = biosat))+ geom_point()
-ggplot(eims_transect_input, aes(x= datetime_utc, y = O2_Ar_ratio))+ geom_point()
-ggplot(eims_transect_input, aes(x= datetime_utc, y = temp))+ geom_point()
+ggplot(eims_transect_input, aes(x= datetime_utc_matlab, y = biosat))+ geom_point()
+ggplot(eims_transect_input, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
 
-ggplot(toi_input, aes(x= datetime_utc, y = O2_Ar_ratio))+ geom_point()
-ggplot(toi_input, aes(x= datetime_utc, y = O2_Ar_delta))+ geom_point()
-ggplot(toi_input, aes(x= datetime_utc, y = cap_Delta_17))+ geom_point()
-
-```
-
-
-```{r}
+ggplot(toi_input, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
+ggplot(toi_input, aes(x= datetime_utc_matlab, y = O2_Ar_delta))+ geom_point()
+ggplot(toi_input, aes(x= datetime_utc_matlab, y = cap_Delta_17))+ geom_point()
 
 # map check
-map_locs(df = eims_transect_input, xvar = "longitude", yvar = "latitude", region = "transect", colorvar = NULL)
+map_locs(df = eims_transect_input, xvar = "longitude_matlab", yvar = "latitude_matlab", region = "transect", colorvar = NULL)
 
-````
-
-# Define column headers
-
-Columns are named according to the description of the provided .mat files.
+```
+## Round columns. Is this still needed? 
 
 ```{r}
 
-# # assign column headers
-# colnames(bottleEn617withoutincubation) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio",
-#                                        "depth_matlab", "cap_Delta_17", "delta_17", "delta_18", "niskin","datetime_utc")
-# colnames(RaEn617withbiosat) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude", "longitude", "cum_dist", "biosat", "datetime_utc")
-# 
-# # trim unnecessary fields and rename vars
-# bottle <- bottleEn617withoutincubation
-# ra <- RaEn617withbiosat %>% select(-cum_dist)
-# # add depth column to high freq EIMS data
-# ra$depth <- 5
 # 
 # #round colunns
 # # round datetime_utc_matlab also? 
@@ -132,13 +91,12 @@ bottle <- toi_input
 
 ```
   
-  
-
 # TOI Underway vs. Bottle
 
 Add a toi_source field to the bottle dataset to clarify whether a bottle was sampled from niskin vs. underway water. Assign underway sampling to a depth of 5m.
 
 ```{r}
+
 # define bottle vs underway based on niskin
 toi_source <- ifelse(bottle$niskin == 0, 
                      yes = "toi_underway", no = "toi_niskin")
@@ -189,7 +147,7 @@ bottle$depth_api <- NA_integer_
 for (i in 1:nrow(bottle)) {
   # store values
   nisk <- bottle$niskin[i]
-  sampletime <- bottle$datetime_utc[i]
+  sampletime <- bottle$datetime_utc_matlab[i]
   
   # skip row if underway
   if (is.na(nisk)) {
@@ -220,6 +178,9 @@ for (i in 1:nrow(bottle)) {
   bottle$depth_api[i] <- smry$depth
 }
 
+# convert API date time from seconds to POXIX ## need to check that this conversion is correct
+ bottle$datetime_utc <- as.POSIXct(bottle$datetime_utc, origin = "1970-01-01", tz = "GMT")
+
 # isolate instances of large depth differences
 bottle$depth_diff <- bottle$depth_matlab - bottle$depth_api
 depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
@@ -228,7 +189,6 @@ bottle <- rename(bottle, depth_API_bottle_summary = depth_api)
 
 # write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
 ```
-
 
 ## Supply lat/lon for bottles data from underway api
 
@@ -241,6 +201,7 @@ underway <- read_from_api(type = "underway", cruises = "EN617")
 # match to datetime
 # figure out which lat/lon to use
 
+# for toi file
 bottle$latitude <- NA_integer_
 bottle$longitude <- NA_integer_
 
@@ -256,18 +217,41 @@ for (i in 1:nrow(bottle)) {
   bottle$longitude[i] <- underway$gps_furuno_longitude[ind]
 }
 
+# for eims file
+ra$latitude_API <- NA_integer_
+ra$longitude_API <- NA_integer_
+
+for (i in 1:nrow(bottle)) {
+  # store values
+  sampletime <- ra$datetime_utc_matlab[i]
+  
+  # find the index of the nearest datetime
+  ind <- which.min(abs(sampletime - underway$date))
+  
+  # store bottle time 
+  ra$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+  ra$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+}
+
+
+```
+
+## Round columns. Is this still needed? 
+
+```{r}
+
 # round numeric columns
 # round datetime_utc_matlab also? 
-bottle <- bottle %>%
-  mutate(latitude = round(latitude, 4)) %>% 
-  mutate(longitude = round(longitude, 4)) %>% 
-  mutate(depth_matlab = round(depth_matlab, 3))  %>%
-  mutate(depth_API_bottle_summary = round(depth_API_bottle_summary, 3))  %>%
-  mutate(O2_Ar_delta = round(O2_Ar_delta, 4)) %>% 
-  mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4)) %>% 
-  mutate(cap_Delta_17 = round(cap_Delta_17, 4)) %>% 
-  mutate(delta_17 = round(delta_17, 4)) %>% 
-  mutate(delta_18 = round(delta_18, 4))
+# bottle <- bottle %>%
+#   mutate(latitude = round(latitude, 4)) %>% 
+#   mutate(longitude = round(longitude, 4)) %>% 
+#   mutate(depth_matlab = round(depth_matlab, 3))  %>%
+#   mutate(depth_API_bottle_summary = round(depth_API_bottle_summary, 3))  %>%
+#   mutate(O2_Ar_delta = round(O2_Ar_delta, 4)) %>% 
+#   mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4)) %>% 
+#   mutate(cap_Delta_17 = round(cap_Delta_17, 4)) %>% 
+#   mutate(delta_17 = round(delta_17, 4)) %>% 
+#   mutate(delta_18 = round(delta_18, 4))
 
 ```
 
@@ -276,14 +260,15 @@ bottle <- bottle %>%
 ```{r}
 
 # are there any niskins where the depth is 0?
-if (any(bottle$depth_mat_file == 0)) {
-  conflicts <- bottle[which(bottle$depth_mat_file == 0),]
+if (any(bottle$depth_matlab == 0)) {
+  conflicts <- bottle[which(bottle$depth_matlab == 0),]
   print(conflicts)
 }
 
 # write.csv(conflicts, "bottlesamples_conflict.csv")
 # write.csv(summary, "bottlesummary_EN617.csv")
 
+# why do we have this line? 
 summary %>% filter(cast == 14 | cast == 29)
 
 ```
@@ -300,17 +285,29 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 map_locs(df = bottle, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = NULL)
 
-# underway 02/Ar
-map_locs(df = ra, xvar = "longitude", yvar = "latitude",
-         region = "transect", colorvar = NULL)
+# underway 02/Ar  # trying to plot both sets together. Not working quite right. 
+map_locs(df = ra, xvar = "longitude_matlab", yvar = "latitude_matlab",
+         region = "transect", colorvar = as.factor("latitude_matlab")) + geom_point(df = ra, xvar = "longitude_API", yvar = "latitude_API",
+         region = "transect", color = as.factor("blue"))
+
+# plotting eims matlab lat long
+map_locs(df = ra, xvar = "longitude_matlab", yvar = "latitude_matlab",
+         region = "transect", colorvar = as.factor("latitude_matlab")) 
+
+# plotting eims lat long from API # most locations do not have API lat long. Need to find out why. 
+map_locs(df = ra, xvar = "longitude_API", yvar = "latitude_API",
+         region = "transect", colorvar = as.factor("latitude_API")) 
+
 
 ```
 
 ## Column Header Organization
+
 ```{r}
+
 # define headers for columns in desired order
-bottle_headers <- c("datetime_utc", "latitude", "longitude", "toi_source", "cast", "niskin", "depth_matlab", "depth_API_bottle_summary", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17", "delta_17", "delta_18")
-ra_headers <- c("datetime_utc", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio")
+bottle_headers <- c("datetime_utc_matlab","datetime_utc", "latitude", "longitude", "toi_source", "cast", "niskin", "depth_matlab", "depth_API_bottle_summary", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17", "delta_17", "delta_18")
+ra_headers <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "latitude_API", "longitude_API", "depth", "biosat", "O2_Ar_ratio")
 
 # reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
@@ -364,7 +361,7 @@ xlsx_to_template(metadata.path = here(project_folder, ra_file),
 # Data Coverage
 # combine the dates for both datasets
 # isolate date and geospatial columns for input
-date_col <- as.Date(c(ra_edi$datetime_utc,
+date_col <- as.Date(c(ra_edi$datetime_utc_matlab,
                       bottle_edi$datetime_utc))
 lat_col <- ra_edi$latitude
 lon_col <- ra_edi$longitude
@@ -400,7 +397,7 @@ project_insert(edi_pkg = pkg_id,
 
 Columns are named according to the description of the provided .mat files.
 
-# ```{r}
+```{r}
 # # assign column headers
 # colnames(ncplterEn617) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude", "longitude",
 #                 "cum_dist", "biosat", "ncp", "k","datetime_utc")
@@ -414,6 +411,7 @@ Columns are named according to the description of the provided .mat files.
 # rates <- discreteratesEn617
 # # add depth column to high freq EIMS data
 # ncplter$depth <- 5
+
 ```
 ## Read in Provided CSV Files
 
