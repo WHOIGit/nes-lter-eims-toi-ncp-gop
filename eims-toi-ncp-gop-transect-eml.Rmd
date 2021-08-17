@@ -221,7 +221,7 @@ for (i in 1:nrow(bottle)) {
 ra$latitude_API <- NA_integer_
 ra$longitude_API <- NA_integer_
 
-for (i in 1:nrow(bottle)) {
+for (i in 1:nrow(ra)) {
   # store values
   sampletime <- ra$datetime_utc_matlab[i]
   
@@ -294,7 +294,7 @@ map_locs(df = ra, xvar = "longitude_matlab", yvar = "latitude_matlab",
 map_locs(df = ra, xvar = "longitude_matlab", yvar = "latitude_matlab",
          region = "transect", colorvar = as.factor("latitude_matlab")) 
 
-# plotting eims lat long from API # most locations do not have API lat long. Need to find out why. 
+# plotting eims lat long from API 
 map_locs(df = ra, xvar = "longitude_API", yvar = "latitude_API",
          region = "transect", colorvar = as.factor("latitude_API")) 
 

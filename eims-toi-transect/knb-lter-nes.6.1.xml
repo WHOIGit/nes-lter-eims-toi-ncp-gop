@@ -519,8 +519,8 @@ EN655: Diaphragm. </para>
       <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
         <objectName>eims-transect.csv</objectName>
-        <size unit="bytes">923919</size>
-        <authentication method="MD5">5df7ae852810f50876429b9255812865</authentication>
+        <size unit="bytes">1089737</size>
+        <authentication method="MD5">80e4ee35c8bdaba7dcd7ba80dad9f114</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -594,7 +594,7 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">41.3522</minimum>
+                  <minimum exclusive="false">39.6721</minimum>
                   <maximum exclusive="false">41.4922</maximum>
                 </bounds>
               </numericDomain>
@@ -614,7 +614,7 @@ EN655: Diaphragm. </para>
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">-71.4187</minimum>
-                  <maximum exclusive="false">-71.2606</maximum>
+                  <maximum exclusive="false">-70.5386</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
