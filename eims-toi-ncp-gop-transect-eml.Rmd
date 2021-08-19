@@ -65,7 +65,7 @@ ggplot(toi_input, aes(x= datetime_utc_matlab, y = cap_Delta_17))+ geom_point()
 map_locs(df = eims_transect_input, xvar = "longitude_matlab", yvar = "latitude_matlab", region = "transect", colorvar = NULL)
 
 ```
-## Round columns. Is this still needed? 
+## Round columns, if needed.
 
 ```{r}
 
@@ -84,7 +84,7 @@ map_locs(df = eims_transect_input, xvar = "longitude_matlab", yvar = "latitude_m
 
 ```{r}
 
-# rename csv input data to df names bottle and ra #change these names after checking errors
+# rename csv input data to df names bottle and ra 
 
 ra <- eims_transect_input
 bottle <- toi_input
@@ -93,33 +93,42 @@ bottle <- toi_input
   
 # TOI Underway vs. Bottle
 
-Add a toi_source field to the bottle dataset to clarify whether a bottle was sampled from niskin vs. underway water. Assign underway sampling to a depth of 5m.
+Add a toi_source field to the TOI data set to clarify whether a bottle was sampled from Niskin vs. underway water. 
+Assign underway sampling to a depth of 5m.
 
 ```{r}
 
 # define bottle vs underway based on niskin
-toi_source <- ifelse(bottle$niskin == 0, 
+bottle$toi_source <- ifelse(bottle$niskin == 0, 
                      yes = "toi_underway", no = "toi_niskin")
-# add categorical column to data
-bottle$toi_source <- toi_source
 
 # assign NA to niskin bottle 0
 bottle$niskin[bottle$niskin == 0] <- NA_integer_
 
-# assign depths of 0 as 5m if it was an underway sample
-for (j in 1:nrow(bottle)) {
-  if (bottle$depth_matlab[j] == 0 &
-      bottle$toi_source[j] == "toi_underway") {
-    bottle$depth_matlab[j] <- 5
-  } else {
-    j <- j + 1
-    next
-  }
-}
+# for underway samples, assign depth to 5m 
+bottle <- bottle %>%
+  mutate(depth_matlab = case_when(depth_matlab == 0 & toi_source =="toi_underway" ~ 5,
+                                  TRUE ~ depth_matlab))
+# for (j in 1:nrow(bottle)) {
+#   if (bottle$depth_matlab[j] == 0 &
+#       bottle$toi_source[j] == "toi_underway") {
+#     bottle$depth_matlab[j] <- 5
+#   } else {
+#     j <- j + 1
+#     next
+#   }
+# }
+
+# for (j in 1:nrow(bottle)) {
+#   if (bottle$depth_matlab[j] == 0 &
+#       bottle$toi_source[j] == "toi_underway") {
+#     bottle$depth_matlab[j] <- 5
+#   } 
+# }
 
 ```
 
-## Correct UTC datetime and depth for bottle samples
+## Supply correct UTC datetime and depth for bottle samples
 
 Issues: 
   • The datetime_utc for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired
@@ -134,15 +143,13 @@ Solution:
   
 ```{r}
 
-# read in bottle summary for en617
+# read in CTD bottle summary data from NES-LTER API
 summary <- read_from_api(type = "summary", cruises = "EN617")
 
-#rename depth column in bottle file
-#bottle <- rename(bottle, depth_matlab = depth)
-
-# create column to populate with k from high throughput
+# create columns to populate from API
 bottle$cast <- NA_integer_
-bottle$depth_api <- NA_integer_
+bottle$depth_API <- NA_integer_
+bottle$datetime_utc_API <- as.POSIXct(NA)
 
 for (i in 1:nrow(bottle)) {
   # store values
@@ -151,7 +158,6 @@ for (i in 1:nrow(bottle)) {
   
   # skip row if underway
   if (is.na(nisk)) {
-    i <- i + 1
     next
   }
   
@@ -169,74 +175,78 @@ for (i in 1:nrow(bottle)) {
   # case: smry subset is empty
   if (nrow(smry) == 0) {
     print(paste0("Niskin ", nisk, " not found in bottle summary for cast ", smry_cast))
-    i <- i + 1
     next
   }
   
-  # store bottle time 
-  bottle$datetime_utc[i] <- smry$date
-  bottle$depth_api[i] <- smry$depth
+  # add parameters from API to TOI data frame
+  bottle$datetime_utc_API[i] <- smry$date
+  bottle$depth_API[i] <- smry$depth
+  bottle$latitude_API[i] <- smry$latitude
+  bottle$longitude_API[i] <- smry$longitude
 }
 
-# convert API date time from seconds to POXIX ## need to check that this conversion is correct
- bottle$datetime_utc <- as.POSIXct(bottle$datetime_utc, origin = "1970-01-01", tz = "GMT")
+bottle <- bottle %>%
+  mutate(datetime_utc = case_when(toi_source =="toi_underway" ~ datetime_utc_matlab,
+                                  TRUE ~ datetime_utc_API))
 
 # isolate instances of large depth differences
-bottle$depth_diff <- bottle$depth_matlab - bottle$depth_api
+bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
 depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
 
-bottle <- rename(bottle, depth_API_bottle_summary = depth_api)
+#bottle <- rename(bottle, depth_API_bottle_summary = depth_api)
 
 # write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
 ```
 
-## Supply lat/lon for bottles data from underway api
+## Supply lat/lon for underway data from underway api
 
 Using the corrected datetimes, pull geospatial data from the underway log
 
 ```{r}
 
+# read in 1-minute position underway data from NES-LTER API 
 underway <- read_from_api(type = "underway", cruises = "EN617")
 
 # match to datetime
 # figure out which lat/lon to use
 
 # for toi file
-bottle$latitude <- NA_integer_
-bottle$longitude <- NA_integer_
-
 for (i in 1:nrow(bottle)) {
   # store values
-  sampletime <- bottle$datetime_utc[i]
+  nisk <- bottle$niskin[i]
+  sampletime <- bottle$datetime_utc_matlab[i]
+  
+  # skip row if niskin
+  if (!is.na(nisk)) {
+    next
+  }
   
   # find the index of the nearest datetime
   ind <- which.min(abs(sampletime - underway$date))
   
-  # store bottle time 
-  bottle$latitude[i] <- underway$gps_furuno_latitude[ind]
-  bottle$longitude[i] <- underway$gps_furuno_longitude[ind]
+  # store lat long 
+  bottle$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+  bottle$longitude_API[i] <- underway$gps_furuno_longitude[ind]
 }
+# need to confirm that this is not overwriting niskin lat long
+
 
 # for eims file
-ra$latitude_API <- NA_integer_
-ra$longitude_API <- NA_integer_
-
 for (i in 1:nrow(ra)) {
   # store values
-  sampletime <- ra$datetime_utc_matlab[i]
+  sampletime <- ra$datetime_utc_matlab[i]  # need to confirm that we will use PI-provided timestamp here
   
   # find the index of the nearest datetime
   ind <- which.min(abs(sampletime - underway$date))
   
-  # store bottle time 
+  # store lat long 
   ra$latitude_API[i] <- underway$gps_furuno_latitude[ind]
   ra$longitude_API[i] <- underway$gps_furuno_longitude[ind]
 }
 
-
 ```
 
-## Round columns. Is this still needed? 
+## Round columns, if needed. 
 
 ```{r}
 
@@ -282,13 +292,13 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 # Map Check
 
 # bottle
-map_locs(df = bottle, xvar = "longitude", yvar = "latitude",
+map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API",
          region = "transect", colorvar = NULL)
 
 # underway 02/Ar  # trying to plot both sets together. Not working quite right. 
-map_locs(df = ra, xvar = "longitude_matlab", yvar = "latitude_matlab",
-         region = "transect", colorvar = as.factor("latitude_matlab")) + geom_point(df = ra, xvar = "longitude_API", yvar = "latitude_API",
-         region = "transect", color = as.factor("blue"))
+#map_locs(df = ra, xvar = "longitude_matlab", yvar = "latitude_matlab",
+#         region = "transect", colorvar = as.factor("latitude_matlab")) + geom_point(df = ra, xvar = "longitude_API", yvar = "latitude_API",
+#         region = "transect", color = as.factor("blue"))
 
 # plotting eims matlab lat long
 map_locs(df = ra, xvar = "longitude_matlab", yvar = "latitude_matlab",
@@ -306,7 +316,7 @@ map_locs(df = ra, xvar = "longitude_API", yvar = "latitude_API",
 ```{r}
 
 # define headers for columns in desired order
-bottle_headers <- c("datetime_utc_matlab","datetime_utc", "latitude", "longitude", "toi_source", "cast", "niskin", "depth_matlab", "depth_API_bottle_summary", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17", "delta_17", "delta_18")
+bottle_headers <- c("datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth_matlab", "depth_API", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17", "delta_17", "delta_18")
 ra_headers <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "latitude_API", "longitude_API", "depth", "biosat", "O2_Ar_ratio")
 
 # reorder columns as necessary
@@ -393,26 +403,7 @@ project_insert(edi_pkg = pkg_id,
 
 ## NCP-GOP-TRANSECT ----------
 
-# Define column headers
 
-Columns are named according to the description of the provided .mat files.
-
-```{r}
-# # assign column headers
-# colnames(ncplterEn617) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude", "longitude",
-#                 "cum_dist", "biosat", "ncp", "k","datetime_utc")
-# colnames(discreteratesEn617) <- c("datetime_utc_matlab", "latitude", "longitude", "gop", "ncp", "ncp_per_gop","datetime_utc")
-# #matlab input should also include depth_mat_file to enable TOI source identification
-# #for now create that column 
-# discreteratesEn617$depth_mat_file <- NA_integer_
-# 
-# # trim unnecessary fields and rename vars
-# ncplter <- ncplterEn617 %>% select(-cum_dist)
-# rates <- discreteratesEn617
-# # add depth column to high freq EIMS data
-# ncplter$depth <- 5
-
-```
 ## Read in Provided CSV Files
 
 ```{r}
@@ -422,9 +413,9 @@ ncpgop_input <- read_csv("ncp-gop-transect-summer-2018/discreteratesEn617.csv", 
 ncp_hifreq_input <- read_csv("ncp-gop-transect-summer-2018/ncplterEN617.csv", col_names = FALSE)
 
 #provide column names
-colnames(ncp_hifreq_input) <- c("datetime_utc", "O2_Ar_ratio", "temp", "sal", "latitude", "longitude", "cumulative_dist", "biosat", "ncp", "k")
-colnames(ncpgop_input) <- c("datetime_utc", "latitude", "longitude", "gop", "ncp","ncp_per_gop")
-ncp_hifreq_input <- ncp_hifreq_input %>% select(-cumulative_dist)
+colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
+colnames(ncpgop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop")
+ncp_hifreq_input <- ncp_hifreq_input %>% select(-temp, -sal, -cumulative_dist)
 #eims_transect_input$depth <- 5
 
 #input should also include depth_matlab to enable TOI source identification
@@ -436,42 +427,16 @@ ncp_hifreq_input$depth <- 5
 
                            
 #convert datetime format
-ncpgop_input$datetime_utc <- as.POSIXct(ncpgop_input$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
-ncp_hifreq_input$datetime_utc <- as.POSIXct(ncp_hifreq_input$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
+ncpgop_input$datetime_utc_matlab <- as.POSIXct(ncpgop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+ncp_hifreq_input$datetime_utc_matlab <- as.POSIXct(ncp_hifreq_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
 
 ```
 
 ```{r}
-# rename csv input data to df names bottle and ra #change these names after checking errors
+# rename csv input data 
 
-ncplter <- ncp_hifreq_input
-rates <- ncpgop_input
-
-```
-
-
-# Round columns
-
-```{r}
-
-#round colunns
-# round datetime_utc_matlab also? 
-ncplter <- ncplter %>%
-  mutate(latitude = round(latitude, 4)) %>% 
-  mutate(longitude = round(longitude, 4)) %>% 
-  mutate(temp = round(temp, 3))  %>%
-  mutate(sal = round(sal, 3))  %>%
-  mutate(biosat = round(biosat, 3))  %>%
-  mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4))  %>%
-  mutate(ncp = round(ncp, 3))  %>%
-  mutate(k = round(k, 3)) 
-
-rates <- rates %>%
-  mutate(latitude = round(latitude, 4)) %>% 
-  mutate(longitude = round(longitude, 4)) %>% 
-  mutate(gop = round(gop, 3))  %>%
-  mutate(ncp = round(ncp, 3))  %>%
-  mutate(ncp_per_gop = round(ncp_per_gop, 3)) 
+ncp_hifreq <- ncp_hifreq_input
+ncp_gop <- ncpgop_input
 
 ```
 
@@ -481,9 +446,9 @@ rates <- rates %>%
 
 #after datetime is updated (and lat/long too?), join rates and bottle_edi on datetime and depth_mat_file to acquire toi_source from bottle_edi
 
-rates$toi_source <- NA_character_ #this won't be needed when join is working
+ncp_gop$toi_source <- NA_character_ #this won't be needed when join is working
 
-#rates_source <- left_join(rates, bottle_edi, by = c('datetime_utc_matlab' , 'latitude', 'longitude'))
+#rates_source <- left_join(ncp_gop, bottle_edi, by = c('datetime_utc_matlab' , 'latitude', 'longitude'))
 #inspect result
 
 #rates_source <- rates_source %>% select (-datetime_utc.x, -depth_mat_file.x, -datetime_utc.y, -cast, -niskin, -depth_mat_file.y, -depth_API_bottle_summary, -O2_Ar_delta, -O2_Ar_ratio, -cap_Delta_17, -delta_17, delta_18)
@@ -499,13 +464,73 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 
 # Map Check
 
-# ncplter
-map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
+# ncp gop discrete rates
+map_locs(df = ncp_gop, xvar = "longitude_matlab", yvar = "latitude_matlab",
          region = "transect", colorvar = NULL)
 
-# discrete rates
-map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
+# ncp high frequency
+map_locs(df = ncp_hifreq, xvar = "longitude_matlab", yvar = "latitude_matlab",
          region = "transect", colorvar = NULL)
+
+```
+# Add datetime, latitude, and longitude from API
+
+```{r}
+
+# read in bottle summary for en617
+summary <- read_from_api(type = "summary", cruises = "EN617")
+
+for (i in 1:nrow(ncp_hifreq)) {
+  # store values
+  sampletime <- ncp_hifreq$datetime_utc_matlab[i]
+  
+  # find the index of the nearest datetime
+  ind <- which.min(abs(sampletime - underway$date))
+  
+  # store lat long 
+  ncp_hifreq$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+  ncp_hifreq$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+}
+
+#ncp_hifreq <- ncp_hifreq %>%
+#  rename(latitude_API = latitude) %>%
+#  rename(longitude_API = longitude)
+
+for (i in 1:nrow(ncp_gop)) {
+  # store values
+  sampletime <- ncp_gop$datetime_utc_matlab[i]
+  
+  # find the index of the nearest datetime
+  ind <- which.min(abs(sampletime - underway$date))
+  
+  # store lat long
+  ncp_gop$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+  ncp_gop$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+}
+
+
+#ncp_gop <- ncp_gop %>%
+#  rename(latitude_API = latitude) %>%
+#  rename(longitude_API = longitude)
+
+
+```
+
+## QA: Map Sampling Locations
+
+Call the map_locs function from edi-utility.R to map the sampling locations as sourced from API. Perform a visual check.
+
+```{r}
+
+# # Map Check
+# 
+# # ncp high frequency
+# map_locs(df = ncp_hifreq, xvar = "longitude_API", yvar = "latitude_API",
+#          region = "transect", colorvar = NULL)
+# 
+# # ncp gop discrete rates
+# map_locs(df = ncp_gop, xvar = "longitude_API", yvar = "latitude_API",
+#          region = "transect", colorvar = NULL)
 
 ```
 
@@ -513,16 +538,16 @@ map_locs(df = ncplter, xvar = "longitude", yvar = "latitude",
 ```{r}
 
 # define the desired order of columns
-rates_headers <- c("datetime_utc", "latitude", "longitude", "toi_source", "gop", "ncp", "ncp_per_gop")
-ncp_headers <- c("datetime_utc", "latitude", "longitude", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
+ncp_gop_headers <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "toi_source", "gop", "ncp", "ncp_per_gop")
+ncp_hifreq_headers <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab","latitude_API", "longitude_API", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
 
 # reorder columns as necessary
-rates_edi <- rates[, rates_headers]
-ncplter_edi <- ncplter[, ncp_headers]
+ncp_gop_edi <- ncp_gop[, ncp_gop_headers]
+ncp_hifreq_edi <- ncp_hifreq [, ncp_hifreq_headers]
 
 # write files for upload to EDI
-write.csv(rates_edi, here("ncp-gop-transect-summer-2018", "gop-transect-en617.csv"), row.names = FALSE)
-write.csv(ncplter_edi, here("ncp-gop-transect-summer-2018", "ncp-transect-en617.csv"), row.names = FALSE)
+write.csv(ncp_gop_edi, here("ncp-gop-transect-summer-2018", "gop-transect-en617.csv"), row.names = FALSE)
+write.csv(ncp_hifreq_edi, here("ncp-gop-transect-summer-2018", "ncp-transect-en617.csv"), row.names = FALSE)
 
 ```
 
@@ -541,9 +566,9 @@ Step 4: Inserting a custom NES-LTER parent project node
 # define input for EML assembly
 metadata <- "ncp-gop-transect-summer-2018/ncp-gop-transect-summer-2018-info"
 project_folder <- "ncp-gop-transect-summer-2018/"
-rates_file <- "gop-transect-en617"
-ncp_file <- "ncp-transect-en617"
-edi_data <- c(rates_file, ncp_file)
+ncp_gop_file <- "gop-transect-en617"
+ncp_hifreq_file <- "ncp-transect-en617"
+edi_data <- c(ncp_gop_file, ncp_file)
 file_descriptions <- c("Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer", "Data product high frequency NCP derived from EIMS sampling of underway seawater")
 pkg_id <- "knb-lter-nes.7.1"
 
@@ -553,29 +578,29 @@ xlsx_to_template(metadata.path = metadata,
                  edi.filename = NULL, 
                  rights = "CCBY")
 # Discrete Rates
-xlsx_to_template(metadata.path = here(project_folder, rates_file), 
+xlsx_to_template(metadata.path = here(project_folder, ncp_gop_file), 
                  output.path = project_folder,
-                 edi.filename = rates_file, 
+                 edi.filename = ncp_gop_file, 
                  rights = "CCBY")
 # Ncplter 
-xlsx_to_template(metadata.path = here(project_folder, ncp_file), 
+xlsx_to_template(metadata.path = here(project_folder, ncp_hifreq_file), 
                  output.path = project_folder,
-                 edi.filename = ncp_file, 
+                 edi.filename = ncp_hifreq_file, 
                  rights = "CCBY")
 
 # Data Coverage
 # combine the dates and lat/lon for both datasets
 # isolate date and geospatial columns for input
-date_col <- as.Date(c(ncplter_edi$datetime_utc, rates_edi$datetime_utc))
-lat_col <- c(ncplter_edi$latitude, rates_edi$latitude)
-lon_col <- c(ncplter_edi$longitude, rates_edi$longitude)
+date_col <- as.Date(c(ncp_hifreq_edi$datetime_utc, ncp_gop_edi$datetime_utc))
+lat_col <- c(ncp_hifreq_edi$latitude, ncp_gop_edi$latitude)
+lon_col <- c(ncp_hifreq_edi$longitude, ncp_gop_edi$longitude)
 # run function to determine geospatial and temporal coverage
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
 make_eml(path = project_folder,
          dataset.title = "Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018",
-         data.table = c(paste0(rates_file, ".csv"), paste0(ncp_file, ".csv")),
+         data.table = c(paste0(ncp_gop_file, ".csv"), paste0(ncp_hifreq_file, ".csv")),
          data.table.name = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
          other.entity = c('ncplterEn617.mat', 'discreteratesEn617.mat'),

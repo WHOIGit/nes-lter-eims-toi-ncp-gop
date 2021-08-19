@@ -59,7 +59,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-08-17</pubDate>
+    <pubDate>2021-08-19</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
@@ -244,8 +244,8 @@ EN655: Diaphragm. </para>
       <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
-        <size unit="bytes">14389</size>
-        <authentication method="MD5">1fb40cd25932a127c942f17b72576aa9</authentication>
+        <size unit="bytes">14477</size>
+        <authentication method="MD5">e0718bf97f150b42582ff0b9d6707b3a</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -259,6 +259,17 @@ EN655: Diaphragm. </para>
       </physical>
       <attributeList>
         <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>Data product UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
           <attributeName>datetime_utc_matlab</attributeName>
           <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
           <storageType>date</storageType>
@@ -270,19 +281,8 @@ EN655: Diaphragm. </para>
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>datetime_utc</attributeName>
-          <attributeDefinition>Product UTC date and time from NES-LTER API</attributeDefinition>
-          <storageType>date</storageType>
-          <measurementScale>
-            <dateTime>
-              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
-              <dateTimeDomain/>
-            </dateTime>
-          </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>latitude</attributeName>
-          <attributeDefinition>Latitude of sample event</attributeDefinition>
+          <attributeName>latitude_API</attributeName>
+          <attributeDefinition>Latitude of sample event provided by NES-LTER API</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -292,7 +292,7 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7638</minimum>
+                  <minimum exclusive="false">39.7635</minimum>
                   <maximum exclusive="false">41.3247</maximum>
                 </bounds>
               </numericDomain>
@@ -300,8 +300,8 @@ EN655: Diaphragm. </para>
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>longitude</attributeName>
-          <attributeDefinition>Longitude of sample event</attributeDefinition>
+          <attributeName>longitude_API</attributeName>
+          <attributeDefinition>Longitude of sample event provided by NES-LTER API</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -311,7 +311,7 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-70.9924</minimum>
+                  <minimum exclusive="false">-71.1029</minimum>
                   <maximum exclusive="false">-70.5852</maximum>
                 </bounds>
               </numericDomain>
@@ -398,8 +398,8 @@ EN655: Diaphragm. </para>
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>depth_API_bottle_summary</attributeName>
-          <attributeDefinition>Product depth of sample below sea surface from NES-LTER API</attributeDefinition>
+          <attributeName>depth_API</attributeName>
+          <attributeDefinition>Data product depth of sample below sea surface from CTD summary data in NES-LTER  API</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
