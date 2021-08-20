@@ -185,9 +185,15 @@ for (i in 1:nrow(bottle)) {
   bottle$longitude_API[i] <- smry$longitude
 }
 
+# populate new datetime column with API-provided datetime for Niskin samples and PI-provided datetime for underway samples
 bottle <- bottle %>%
   mutate(datetime_utc = case_when(toi_source =="toi_underway" ~ datetime_utc_matlab,
                                   TRUE ~ datetime_utc_API))
+
+# store niskin lat & long for check after populating underway lat & long
+niskin_check <- bottle %>%
+    filter(toi_source == "toi_niskin") %>%
+    select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc)
 
 # isolate instances of large depth differences
 bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
@@ -196,6 +202,22 @@ depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
 #bottle <- rename(bottle, depth_API_bottle_summary = depth_api)
 
 # write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
+```
+# Check underway TOI bottle sample datetime
+
+```{r}
+
+#perform visual inspection of underway TOI bottle samples against event log
+
+toi_check <- bottle %>%
+  filter(toi_source == "toi_underway") %>%
+  select(-niskin, -cast, -depth_API, -datetime_utc_API, -depth_diff)
+ 
+#view(toi_check)
+
+# could add code here to read in elog
+# for en617 these match exactly
+
 ```
 
 ## Supply lat/lon for underway data from underway api
@@ -228,7 +250,11 @@ for (i in 1:nrow(bottle)) {
   bottle$latitude_API[i] <- underway$gps_furuno_latitude[ind]
   bottle$longitude_API[i] <- underway$gps_furuno_longitude[ind]
 }
-# need to confirm that this is not overwriting niskin lat long
+
+# confirm that this is not overwriting niskin lat long
+niskin2_check <- bottle %>%
+    filter(toi_source == "toi_niskin") %>%
+    select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc, -depth_diff)
 
 
 # for eims file
@@ -473,45 +499,98 @@ map_locs(df = ncp_hifreq, xvar = "longitude_matlab", yvar = "latitude_matlab",
          region = "transect", colorvar = NULL)
 
 ```
-# Add datetime, latitude, and longitude from API
+# Add datetime from API for bottle samples 
 
+# this can't work this way right now because we don't have niskin, depth, or toi source in input file 
 ```{r}
 
-# read in bottle summary for en617
-summary <- read_from_api(type = "summary", cruises = "EN617")
-
-for (i in 1:nrow(ncp_hifreq)) {
-  # store values
-  sampletime <- ncp_hifreq$datetime_utc_matlab[i]
-  
-  # find the index of the nearest datetime
-  ind <- which.min(abs(sampletime - underway$date))
-  
-  # store lat long 
-  ncp_hifreq$latitude_API[i] <- underway$gps_furuno_latitude[ind]
-  ncp_hifreq$longitude_API[i] <- underway$gps_furuno_longitude[ind]
-}
-
-#ncp_hifreq <- ncp_hifreq %>%
-#  rename(latitude_API = latitude) %>%
-#  rename(longitude_API = longitude)
-
-for (i in 1:nrow(ncp_gop)) {
-  # store values
-  sampletime <- ncp_gop$datetime_utc_matlab[i]
-  
-  # find the index of the nearest datetime
-  ind <- which.min(abs(sampletime - underway$date))
-  
-  # store lat long
-  ncp_gop$latitude_API[i] <- underway$gps_furuno_latitude[ind]
-  ncp_gop$longitude_API[i] <- underway$gps_furuno_longitude[ind]
-}
-
-
-#ncp_gop <- ncp_gop %>%
-#  rename(latitude_API = latitude) %>%
-#  rename(longitude_API = longitude)
+# # read in CTD bottle summary data from NES-LTER API
+# summary <- read_from_api(type = "summary", cruises = "EN617")
+# 
+# # create columns to populate from API
+# ncp_gop$cast <- NA_integer_
+# ncp_gop$depth_API <- NA_integer_
+# ncp_gop$datetime_utc_API <- as.POSIXct(NA)
+# 
+# for (i in 1:nrow(bottle)) {
+#   # store values
+#   nisk <- ncp_gop$niskin[i]
+#   sampletime <- ncp_gop$datetime_utc_matlab[i]
+#   
+#   # skip row if underway
+#   if (is.na(nisk)) {
+#     next
+#   }
+#   
+#   # find the index of the nearest datetime
+#   ind <- which.min(abs(sampletime - summary$date))
+#   smry_cast <- summary$cast[ind]
+# 
+#   # populate cast column from summary
+#   ncp_gop$cast[i] <- smry_cast
+#   
+#   # store cast to find bottle time
+#   smry <- summary %>% filter(cast == smry_cast &
+#                                niskin == nisk)
+#   
+#   # case: smry subset is empty
+#   if (nrow(smry) == 0) {
+#     print(paste0("Niskin ", nisk, " not found in bottle summary for cast ", smry_cast))
+#     next
+#   }
+#   
+#   # add parameters from API to TOI data frame
+#   ncp_gop$datetime_utc_API[i] <- smry$date
+#   ncp_gop$depth_API[i] <- smry$depth
+#   ncp_gop$latitude_API[i] <- smry$latitude
+#   ncp_gop$longitude_API[i] <- smry$longitude
+# }
+# 
+# ncp_gop <- ncp_gop %>%
+#   mutate(datetime_utc = case_when(toi_source =="toi_underway" ~ datetime_utc_matlab,
+#                                   TRUE ~ datetime_utc_API))
+# ```
+# 
+# 
+# # Add latitude and longitude from Underway API
+# 
+# ```{r}
+# 
+# # read in bottle summary for en617
+# underway <- read_from_api(type = "summary", cruises = "EN617")
+# 
+# for (i in 1:nrow(ncp_hifreq)) {
+#   # store values
+#   sampletime <- ncp_hifreq$datetime_utc_matlab[i]
+#   
+#   # find the index of the nearest datetime
+#   ind <- which.min(abs(sampletime - underway$date))
+#   
+#   # store lat long 
+#   ncp_hifreq$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+#   ncp_hifreq$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+# }
+# 
+# #ncp_hifreq <- ncp_hifreq %>%
+# #  rename(latitude_API = latitude) %>%
+# #  rename(longitude_API = longitude)
+# 
+# for (i in 1:nrow(ncp_gop)) {
+#   # store values
+#   sampletime <- ncp_gop$datetime_utc_matlab[i]
+#   
+#   # find the index of the nearest datetime
+#   ind <- which.min(abs(sampletime - underway$date))
+#   
+#   # store lat long
+#   ncp_gop$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+#   ncp_gop$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+# }
+# 
+# 
+# #ncp_gop <- ncp_gop %>%
+# #  rename(latitude_API = latitude) %>%
+# #  rename(longitude_API = longitude)
 
 
 ```
