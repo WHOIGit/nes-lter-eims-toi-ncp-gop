@@ -1,4 +1,5 @@
 attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
+cruise	Identifier for research cruise generally including abbreviation for research vessel and voyage number	character				
 datetime_utc	Data product UTC date and time	Date		YYYY-MM-DD hh:mm:ss		
 datetime_utc_matlab	PI-provided UTC date and time	Date		YYYY-MM-DD hh:mm:ss		
 latitude_API	Latitude of sample event provided by NES-LTER API	numeric	degree			
@@ -6,8 +7,8 @@ longitude_API	Longitude of sample event provided by NES-LTER API	numeric	degree
 toi_source	Source of bottle sample whether from Niskin or underway	categorical				
 cast	CTD rosette cast number, chronological per cruise	numeric	dimensionless		NaN	Sample from underway
 niskin	Rosette bottle position number	numeric	dimensionless		NaN	Sample from underway
+depth	Data product depth of sample below sea surface, for underway samples depth of ship's intake, for Niskins from CTD summary data in NES-LTER  API	numeric	meter			
 depth_matlab	PI-provided depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/	numeric	meter			
-depth_API	Data product depth of sample below sea surface from CTD summary data in NES-LTER  API	numeric	meter			
 O2_Ar_delta	Oxygen-argon ratio divided by the reference ratio (oxygen-argon ratio in air minus 1, multiplied by 100)	numeric	dimensionless			
 O2_Ar_ratio	Oxygen-argon ratio of bottle sample	numeric	dimensionless			
 cap_Delta_17	D17, triple isotopic composition of dissolved oxygen versus atmospheric O2 https://doi.org/10.1016/j.jmarsys.2014.04.006	numeric	dimensionless			

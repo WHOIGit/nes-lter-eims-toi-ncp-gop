@@ -59,9 +59,10 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-08-20</pubDate>
+    <pubDate>2021-08-26</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
+      <keyword>inorganic matter</keyword>
       <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
     </keywordSet>
     <keywordSet>
@@ -80,6 +81,15 @@
 </para>
     </intellectualRights>
     <coverage>
+      <geographicCoverage>
+        <geographicDescription>NES-LTER Transect</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-71.4187</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.5386</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.4922</northBoundingCoordinate>
+          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
       <temporalCoverage>
         <rangeOfDates>
           <beginDate>
@@ -244,8 +254,8 @@ EN655: Diaphragm. </para>
       <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
-        <size unit="bytes">14477</size>
-        <authentication method="MD5">e0718bf97f150b42582ff0b9d6707b3a</authentication>
+        <size unit="bytes">15367</size>
+        <authentication method="MD5">f1cc489e0620703c920a4db697e8b916</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -258,6 +268,20 @@ EN655: Diaphragm. </para>
         </dataFormat>
       </physical>
       <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
         <attribute>
           <attributeName>datetime_utc</attributeName>
           <attributeDefinition>Data product UTC date and time</attributeDefinition>
@@ -379,6 +403,25 @@ EN655: Diaphragm. </para>
           </missingValueCode>
         </attribute>
         <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Data product depth of sample below sea surface, for underway samples depth of ship's intake, for Niskins from CTD summary data in NES-LTER  API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.624</minimum>
+                  <maximum exclusive="false">128.995</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
           <attributeName>depth_matlab</attributeName>
           <attributeDefinition>PI-provided depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
           <storageType>float</storageType>
@@ -392,25 +435,6 @@ EN655: Diaphragm. </para>
                 <bounds>
                   <minimum exclusive="false">0</minimum>
                   <maximum exclusive="false">80</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>depth_API</attributeName>
-          <attributeDefinition>Data product depth of sample below sea surface from CTD summary data in NES-LTER  API</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>meter</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">1.624</minimum>
-                  <maximum exclusive="false">128.995</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -519,8 +543,8 @@ EN655: Diaphragm. </para>
       <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
         <objectName>eims-transect.csv</objectName>
-        <size unit="bytes">1089737</size>
-        <authentication method="MD5">80e4ee35c8bdaba7dcd7ba80dad9f114</authentication>
+        <size unit="bytes">1213762</size>
+        <authentication method="MD5">16e582e125b4e237fd20196527bf958d</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -533,6 +557,20 @@ EN655: Diaphragm. </para>
         </dataFormat>
       </physical>
       <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
         <attribute>
           <attributeName>datetime_utc_matlab</attributeName>
           <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
@@ -719,4 +757,16 @@ EN655: Diaphragm. </para>
       <entityType>unknown</entityType>
     </otherEntity>
   </dataset>
+  <additionalMetadata>
+    <metadata>
+      <unitList>
+        <unit id="perMeg" multiplierToSI="1e-06" name="perMeg" parentSI="molePerMole" unitType="amount">
+          <description>molar ratio</description>
+        </unit>
+        <unit id="perMil" multiplierToSI="0.001" name="perMil" parentSI="molePerMole" unitType="amount">
+          <description>molar ratio</description>
+        </unit>
+      </unitList>
+    </metadata>
+  </additionalMetadata>
 </eml:eml>
