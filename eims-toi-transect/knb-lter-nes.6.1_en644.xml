@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.7.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/ eml.xsd" system="edi">
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.6.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/ eml.xsd" system="edi">
   <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
     <allow>
       <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
@@ -11,7 +11,7 @@
     </allow>
   </access>
   <dataset>
-    <title>Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018</title>
+    <title>Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018</title>
     <creator>
       <individualName>
         <givenName>Rachel</givenName>
@@ -37,7 +37,6 @@
         <surName>Cahill</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
       <role>Technician</role>
     </associatedParty>
     <associatedParty>
@@ -60,7 +59,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-09-13</pubDate>
+    <pubDate>2021-09-09</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keyword>inorganic matter</keyword>
@@ -71,6 +70,7 @@
       <keyword>oceanography</keyword>
       <keyword>seawater</keyword>
       <keyword>dissolved oxygen</keyword>
+      <keyword>stable isotopes</keyword>
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
     </keywordSet>
     <additionalInfo>
@@ -84,25 +84,25 @@
       <geographicCoverage>
         <geographicDescription>NES-LTER Transect</geographicDescription>
         <boundingCoordinates>
-          <westBoundingCoordinate>-71.4187</westBoundingCoordinate>
-          <eastBoundingCoordinate>-70.5386</eastBoundingCoordinate>
-          <northBoundingCoordinate>41.4922</northBoundingCoordinate>
-          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
+          <westBoundingCoordinate>-71.3399</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.5816</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.3322</northBoundingCoordinate>
+          <southBoundingCoordinate>39.7497</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
         <rangeOfDates>
           <beginDate>
-            <calendarDate>2018-07-20</calendarDate>
+            <calendarDate>2019-08-20</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2018-07-25</calendarDate>
+            <calendarDate>2019-08-25</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
     </coverage>
     <maintenance>
-      <description>completed</description>
+      <description>ongoing</description>
     </maintenance>
     <contact>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
@@ -121,22 +121,32 @@
     <methods>
       <methodStep>
         <description>
-          <para># Source data</para>
-          <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) ratio of oxygen and argon and bottle triple oxygen isotopes (TOI) published in the data package titled "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.1 in the EDI Data Portal. </para>
-          <para>Additional data sources for these derived data:&#13;
--- Gas transfer velocity (wind data product, weighted over 30 days)&#13;
--- Temperature from NES-LTER ship-provided data&#13;
--- Salinity from NES-LTER ship-provided data</para>
+          <para># Coverage</para>
+          <para>These data include winter and summer NES-LTER transect cruises on the R/V Endeavor beginning in 2018. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.</para>
+          <para># Related packages</para>
+          <para>Net community production (NCP) and gross oxygen production (GOP) are derived from these data and published separately on a per-cruise basis. Cruise and package IDs are as follows:&#13;
+EN617 knb-lter-nes.7.1</para>
+          <para># Bottle sample seawater supplied to mass spectrometer</para>
+          <para>Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system and and from the underway system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isotopes (TOI) following the methods of Stanley et al. (2015).</para>
+          <para># Underway science seawater supplied to the EIMS</para>
+          <para>Continuously during R/V Endeavor cruises, underway science seawater was supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. Water was supplied to the EIMS typically from the diaphragm pump and from the impeller pump depending on sea state and pump status. The Endeavor underway lines are not bleached and are flushed with freshwater between every cruise. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.</para>
+          <para>Cruise-specific pump information:&#13;
+EN608: Used diaphragm first, then switched to traditional underway 1 Feb 08:18 UTC. &#13;
+EN617: Diaphragm for first two days, then switched to impeller due to bubbles in diaphragm supply in rougher weather. &#13;
+EN627: Diaphragm first with new debubbler for EIMS, then switched to impeller due to air dissolved in diaphragm supply in rougher weather. &#13;
+EN644: Diaphragm with debubbler&#13;
+EN649: Diaphragm pump with inlet newly lower in sea chest to reduce bubbling. &#13;
+EN655: Diaphragm. </para>
           <para># Calibrations and Derivations</para>
-          <para>The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Walker (2021). </para>
+          <para>The EIMS data have been calibrated according to the ratio measured in air roughly every 6 hours. This gives the calibrated O2/Ar ratio that was then used to calculate rates of NCP. These data also include the biological saturation – the O2/Ar divided by the equilibrium value of O2/Ar – which gives the expected super (or under) saturation of O2 based on biological factors. The solubility of T and S were used to derive this value. The rates data table includes high-frequency air-corrected O2/Ar ratio and the biological saturation value for the underway data. The bottle data set consists of O2/Ar and triple oxygen isotope (TOI) data for the bottle samples. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table.</para>
           <para># Data Cleaning</para>
           <para>For the bottle samples, a field was added to indicate whether the bottle was sampled from underway or niskin. Additionally, cast number was supplied from the REST API bottle summary and the date-time (in UTC) was corrected to reflect the time at which the rosette bottle closed. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
           <para># Quality Assurance</para>
           <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. </para>
           <para># References</para>
-          <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
-          <para>&#13;
-</para>
+          <para>Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347. https://doi.org/10.1016/S0304-4203(98)00090-5</para>
+          <para>Stanley, Rachel H.R., Zoe O. Sandwith, William J. Williams. 2015. Rates of summertime biological productivity in the Beaufort Gyre: A comparison between the low and record-low ice conditions of August 2011 and 2012. Journal of Marine Systems 147:29-44. https://doi.org/10.1016/j.jmarsys.2014.04.006</para>
+          <para/>
         </description>
       </methodStep>
     </methods>
@@ -240,12 +250,12 @@
       </funding>
     </project>
     <dataTable>
-      <entityName>gop-transect-en617.csv</entityName>
-      <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
+      <entityName>toi-transect.csv</entityName>
+      <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
-        <objectName>gop-transect-en617.csv</objectName>
-        <size unit="bytes">9344</size>
-        <authentication method="MD5">b76444e83dd954f73a5d93346ced2035</authentication>
+        <objectName>toi-transect.csv</objectName>
+        <size unit="bytes">17136</size>
+        <authentication method="MD5">091ce0c26a745f934422c03ba8ac35d9</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -295,44 +305,6 @@
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>latitude_matlab</attributeName>
-          <attributeDefinition>Latitude of sample event provided by PI</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>degree</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">39.7635</minimum>
-                  <maximum exclusive="false">41.3247</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>longitude_matlab</attributeName>
-          <attributeDefinition>Longitude of sample event provided by PI</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>degree</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">-71.1029</minimum>
-                  <maximum exclusive="false">-70.5852</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-        </attribute>
-        <attribute>
           <attributeName>latitude_API</attributeName>
           <attributeDefinition>Latitude of sample event provided by NES-LTER API</attributeDefinition>
           <storageType>float</storageType>
@@ -344,8 +316,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7635</minimum>
-                  <maximum exclusive="false">41.3247</maximum>
+                  <minimum exclusive="false">39.75754</minimum>
+                  <maximum exclusive="false">41.31872</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -363,8 +335,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.1029</minimum>
-                  <maximum exclusive="false">-70.5852</maximum>
+                  <minimum exclusive="false">-71.1119</minimum>
+                  <maximum exclusive="false">-70.58512</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -372,67 +344,105 @@
         </attribute>
         <attribute>
           <attributeName>toi_source</attributeName>
-          <attributeDefinition>Bottle sample from niskin or underway</attributeDefinition>
+          <attributeDefinition>Source of bottle sample whether from Niskin or underway</attributeDefinition>
           <storageType>string</storageType>
           <measurementScale>
             <nominal>
               <nonNumericDomain>
                 <textDomain>
-                  <definition>Bottle sample from niskin or underway</definition>
+                  <definition>Source of bottle sample whether from Niskin or underway</definition>
                 </textDomain>
               </nonNumericDomain>
             </nominal>
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>gop</attributeName>
-          <attributeDefinition>Gross oxygen production</attributeDefinition>
+          <attributeName>cast</attributeName>
+          <attributeDefinition>CTD rosette cast number, chronological per cruise</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
               <unit>
-                <customUnit>millimoleOxygenPerMeterSquaredPerDay</customUnit>
+                <standardUnit>dimensionless</standardUnit>
               </unit>
               <numericDomain>
-                <numberType>real</numberType>
+                <numberType>natural</numberType>
                 <bounds>
-                  <minimum exclusive="false">67.61</minimum>
-                  <maximum exclusive="false">328.6</maximum>
+                  <minimum exclusive="false">1</minimum>
+                  <maximum exclusive="false">29</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
           </measurementScale>
           <missingValueCode>
             <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
+            <codeExplanation>Sample from underway</codeExplanation>
           </missingValueCode>
         </attribute>
         <attribute>
-          <attributeName>ncp</attributeName>
-          <attributeDefinition>Rate of net community production integrated over the mixed layer</attributeDefinition>
+          <attributeName>niskin</attributeName>
+          <attributeDefinition>Rosette bottle position number</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
               <unit>
-                <customUnit>millimoleOxygenPerMeterSquaredPerDay</customUnit>
+                <standardUnit>dimensionless</standardUnit>
               </unit>
               <numericDomain>
-                <numberType>real</numberType>
+                <numberType>natural</numberType>
                 <bounds>
-                  <minimum exclusive="false">13.76</minimum>
-                  <maximum exclusive="false">57.82</maximum>
+                  <minimum exclusive="false">1</minimum>
+                  <maximum exclusive="false">24</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
           </measurementScale>
           <missingValueCode>
             <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
+            <codeExplanation>Sample from underway</codeExplanation>
           </missingValueCode>
         </attribute>
         <attribute>
-          <attributeName>ncp_per_gop</attributeName>
-          <attributeDefinition>Net community production divided by gross oxygen production</attributeDefinition>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Data product depth of sample below sea surface, for underway samples depth of ship's intake, for Niskins from CTD summary data in NES-LTER  API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.708</minimum>
+                  <maximum exclusive="false">90.104</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth_matlab</attributeName>
+          <attributeDefinition>PI-provided depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">90</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_delta</attributeName>
+          <attributeDefinition>Oxygen-argon ratio divided by the reference ratio (oxygen-argon ratio in air minus 1, multiplied by 100)</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -442,27 +452,99 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.0768</minimum>
-                  <maximum exclusive="false">0.356</maximum>
+                  <minimum exclusive="false">-405.5</minimum>
+                  <maximum exclusive="false">32.435</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
           </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_ratio</attributeName>
+          <attributeDefinition>Oxygen-argon ratio of bottle sample</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">13.3329</minimum>
+                  <maximum exclusive="false">23.1546</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>cap_Delta_17</attributeName>
+          <attributeDefinition>D17, triple isotopic composition of dissolved oxygen versus atmospheric O2 https://doi.org/10.1016/j.jmarsys.2014.04.006</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">14.8</minimum>
+                  <maximum exclusive="false">164</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>delta_17</attributeName>
+          <attributeDefinition>Oxygen-17 composition of dissolved oxygen versus atmospheric O2 https://doi.org/10.1016/j.jmarsys.2014.04.006</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.888</minimum>
+                  <maximum exclusive="false">3.002</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>delta_18</attributeName>
+          <attributeDefinition>Oxygen-18 composition of dissolved oxygen versus atmospheric O2 https://doi.org/10.1016/j.jmarsys.2014.04.006</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-1.853</minimum>
+                  <maximum exclusive="false">5.743</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
         </attribute>
       </attributeList>
-      <numberOfRecords>80</numberOfRecords>
+      <numberOfRecords>133</numberOfRecords>
     </dataTable>
     <dataTable>
-      <entityName>ncp-transect-en617.csv</entityName>
-      <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
+      <entityName>eims-transect.csv</entityName>
+      <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
-        <objectName>ncp-transect-en617.csv</objectName>
-        <size unit="bytes">1380084</size>
-        <authentication method="MD5">c4c45a48743f14e6a1b964a17df1dad6</authentication>
+        <objectName>eims-transect.csv</objectName>
+        <size unit="bytes">1187802</size>
+        <authentication method="MD5">ea7a138473a96f2d287e8a71a3568890</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -512,8 +594,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.6721</minimum>
-                  <maximum exclusive="false">41.4922</maximum>
+                  <minimum exclusive="false">39.7497</minimum>
+                  <maximum exclusive="false">41.332</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -531,8 +613,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.4187</minimum>
-                  <maximum exclusive="false">-70.5386</maximum>
+                  <minimum exclusive="false">-71.3398</minimum>
+                  <maximum exclusive="false">-70.5816</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -550,8 +632,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.6721</minimum>
-                  <maximum exclusive="false">41.4922</maximum>
+                  <minimum exclusive="false">39.7497</minimum>
+                  <maximum exclusive="false">41.3322</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -569,8 +651,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.4187</minimum>
-                  <maximum exclusive="false">-70.5386</maximum>
+                  <minimum exclusive="false">-71.3399</minimum>
+                  <maximum exclusive="false">-70.5816</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -607,8 +689,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.7601</minimum>
-                  <maximum exclusive="false">9.87</maximum>
+                  <minimum exclusive="false">-0.08143</minimum>
+                  <maximum exclusive="false">16.83</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -630,54 +712,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">20.2087</minimum>
-                  <maximum exclusive="false">22.3738</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
-        </attribute>
-        <attribute>
-          <attributeName>ncp</attributeName>
-          <attributeDefinition>Rate of net community production integrated over the mixed layer</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <customUnit>millimoleOxygenPerMeterSquaredPerDay</customUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">-4.684</minimum>
-                  <maximum exclusive="false">59.97</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
-        </attribute>
-        <attribute>
-          <attributeName>k</attributeName>
-          <attributeDefinition>Gas transfer velocity that was used when calculating ncp from the O2/Ar ratio</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>metersPerDay</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">1.24</minimum>
-                  <maximum exclusive="false">4.46</maximum>
+                  <minimum exclusive="false">20.3372</minimum>
+                  <maximum exclusive="false">23.7843</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -688,15 +724,15 @@
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>15502</numberOfRecords>
+      <numberOfRecords>15138</numberOfRecords>
     </dataTable>
     <otherEntity>
-      <entityName>ncplterEn617.mat</entityName>
-      <entityDescription>Package input high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
+      <entityName>bottleEn644.mat</entityName>
+      <entityDescription>Package input bottle sample triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
-        <objectName>ncplterEn617.mat</objectName>
-        <size unit="bytes">983098</size>
-        <authentication method="MD5">6ed62b7ce00753b4aaeeaad324695e2f</authentication>
+        <objectName>bottleEn644.mat</objectName>
+        <size unit="bytes">6112</size>
+        <authentication method="MD5">e5f2c8ce2442f584fd330288c05fc471</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>Unknown</formatName>
@@ -706,12 +742,12 @@
       <entityType>unknown</entityType>
     </otherEntity>
     <otherEntity>
-      <entityName>discreteratesEn617.mat</entityName>
-      <entityDescription>Package input discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
+      <entityName>RaEn644withbiosat.mat</entityName>
+      <entityDescription>Package input high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
-        <objectName>discreteratesEn617.mat</objectName>
-        <size unit="bytes">3410</size>
-        <authentication method="MD5">7ef45da1349f07307f95ee05472d832d</authentication>
+        <objectName>RaEn644withbiosat.mat</objectName>
+        <size unit="bytes">741038</size>
+        <authentication method="MD5">88a64634753ecbf28f8d9b7bed53eda1</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>Unknown</formatName>
@@ -724,8 +760,11 @@
   <additionalMetadata>
     <metadata>
       <unitList>
-        <unit id="millimoleOxygenPerMeterSquaredPerDay" multiplierToSI="0.001" name="millimoleOxygenPerMeterSquaredPerDay" parentSI="molePerMeterSquaredPerDay" unitType="amount">
-          <description>millimoles oxygen per meter squared per day</description>
+        <unit id="perMeg" multiplierToSI="1e-06" name="perMeg" parentSI="molePerMole" unitType="amount">
+          <description>molar ratio</description>
+        </unit>
+        <unit id="perMil" multiplierToSI="0.001" name="perMil" parentSI="molePerMole" unitType="amount">
+          <description>molar ratio</description>
         </unit>
       </unitList>
     </metadata>

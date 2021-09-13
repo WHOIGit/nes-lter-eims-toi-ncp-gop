@@ -34,7 +34,10 @@ lapply(libs, require, character.only = TRUE)
 ## TOI data
 #read in PI-provided csv data
 #toi_input_files <- Sys.glob("*bottle*.csv")
-toi_input_files <- c("eims-toi-transect/bottleEN617withoutincubation.csv")
+#toi_input_files <- c("eims-toi-transect/bottleEN617withoutincubation.csv")
+toi_input_files <- c("eims-toi-transect/bottleEN608.csv")
+#toi_input_files <- c("eims-toi-transect/bottleEN627.csv")
+#toi_input_files <- c("eims-toi-transect/bottleEN644.csv")
  # toi_input_files <- c("eims-toi-transect/bottleEN617withoutincubation.csv",
  #                      "eims-toi-transect/bottleEN608.csv",
  #                      "eims-toi-transect/bottleEN627.csv",
@@ -68,7 +71,10 @@ toi <- toi[order(toi$datetime_utc_matlab),]
 ## EIMS data
 #read in PI-provided csv data
 #eims_input_files <- Sys.glob("*withbiosat*.csv")
-eims_input_files <- c("eims-toi-transect/RaEn617withbiosat.csv")
+#eims_input_files <- c("eims-toi-transect/RaEn617withbiosat.csv")
+eims_input_files <- c("eims-toi-transect/RaEn608withbiosat.csv")
+#eims_input_files <- c("eims-toi-transect/RaEn627withbiosat.csv")
+#eims_input_files <- c("eims-toi-transect/RaEn644withbiosat.csv")
 # eims_input_files <- c("eims-toi-transect/RaEn617withbiosat.csv",
 #                      "eims-toi-transect/RaEn608withbiosat.csv",
 #                      "eims-toi-transect/RaEn627withbiosat.csv",
@@ -166,7 +172,10 @@ Solution:
 ```{r}
 
 # read in CTD bottle summary data from NES-LTER API
-cruiselist <- c("EN617")
+#cruiselist <- c("EN617")
+cruiselist <- c("EN608")
+#cruiselist <- c("EN627")
+#cruiselist <- c("EN644")
 #cruiselist <- c("EN608", "EN617", "EN627", "EN644")
 summary <- read_from_api(type = "summary", cruises = cruiselist)
 
@@ -309,10 +318,6 @@ niskin2_check <- bottle %>%
 
 ```{r}
 
-# initialize eims lat long columns
-eims$latitude_API <- NA_integer_
-eims$longitude_API <- NA_integer_
-
 # check for samples without timestamp
 if (any(is.na(eims$datetime_utc_matlab))) {
   missingdate <- eims[which(is.na(eims$datetime_utc_matlab)),]
@@ -320,8 +325,12 @@ if (any(is.na(eims$datetime_utc_matlab))) {
 }
 
 #two eims records out of the four cruises are missing datetime_utc_matlab. loop below doesn't work with those missing values 
-#missingdate <- eims %>% filter(is.na(datetime_utc_matlab))
+missingdate <- eims %>% filter(is.na(datetime_utc_matlab))
 eimshasdate <- eims %>% filter(!is.na(datetime_utc_matlab))
+
+# initialize eims lat long columns
+eimshasdate$latitude_API <- NA_integer_
+eimshasdate$longitude_API <- NA_integer_
 
 # for eims file
 for (i in 1:nrow(eimshasdate)) {
@@ -458,11 +467,8 @@ ra_file <- "eims-transect"
 edi_data <- c(bottles_file, ra_file)
 file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
 pkg_id <- "knb-lter-nes.6.1"
-matlab_bottle_file <- "bottleEn617withoutincubation" 
-matlab_rates_file <- "RaEn617withbiosat"
-matlab_data <- c(("bottleEn617withoutincubation.mat"), ("RaEn617withbiosat.mat")) #if in same folder
 
-# Make EML Templates 
+# Make EML Templates
 xlsx_to_template(metadata.path = metadata,
                  output.path = project_folder,
                  edi.filename = NULL, 
@@ -494,9 +500,10 @@ make_eml(path = project_folder,
          data.table = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.name = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.description = file_descriptions,
-         other.entity = matlab_data,
-         other.entity.name = c(paste0(matlab_bottle_file, ".mat"), paste0(matlab_rates_file, ".mat")),
-         other.entity.description = c("Package input bottle sample triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles", "Package input high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements"), 
+         other.entity = c("input_data_csv.zip", "input_data_matlab.zip"),
+         #other.entity = "input_data_csv.zip",
+         #other.entity.name = c(paste0("input_data_csv.zip", "input_data_matlab.zip")),
+         other.entity.description = c("Package input data files in csv format","Package input data files in Matlab format"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
@@ -513,14 +520,28 @@ project_insert(edi_pkg = pkg_id,
 
 ## NCP-GOP-TRANSECT ----------
 
+## Read in identifiers for each cruise
+
+```{r}
+
+cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
+
+# edit package id to select package to assemble 
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.1")
+
+#identify input file names
+ncp_gop_csv <- paste0(this_pkg$folder, "/", this_pkg$ncp_gop_input, ".csv")
+ncp_hifreq_input <- paste0(this_pkg$folder, "/", this_pkg$ncp_hifreq_input, ".csv")
+
+```
 
 ## Read in Provided CSV Files
 
 ```{r}
 
 #read in PI-provided csv data
-ncp_gop_input <- read_csv("ncp-gop-transect-summer-2018/discreteratesEn617.csv", col_names = FALSE)
-ncp_hifreq_input <- read_csv("ncp-gop-transect-summer-2018/ncplterEN617.csv", col_names = FALSE)
+ncp_gop_input <- read_csv(ncp_gop_csv, col_names = FALSE)
+ncp_hifreq_input <- read_csv(ncp_hifreq_input, col_names = FALSE)
 
 #provide column names
 colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop")
@@ -540,6 +561,8 @@ ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, for
 
 ```{r}
 
+## this matching doesn't work for EN608 because 7 underway values are included in toi but not in discreterates input file
+
 ## read in toi data product table
 toi_transect <- read_csv("eims-toi-transect/toi-transect.csv")
 
@@ -547,7 +570,22 @@ toi_transect <- read_csv("eims-toi-transect/toi-transect.csv")
 # filter for rows depth less than Rachel's depthcutoff 6 m
 # check for length discrepancy
 # so far toi_transect only has en617
-toi_transect_surface <- filter(toi_transect, cruise == "EN617" & depth_matlab <= 6)
+toi_transect_surface <- filter(toi_transect, cruise == this_pkg$cruise_id & depth_matlab <= 6)
+nrow(toi_transect_surface)
+nrow(ncp_gop_input)
+
+toi_transect_surface <- toi_transect_surface %>%
+  mutate(extras = case_when(cruise == "EN608" & datetime_utc_matlab == "2018-02-02 21:00:00" ~1,
+                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 19:00:00" ~1,
+                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:08:00" ~1,
+                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:12:00" ~1,
+                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 21:23:00" ~1,
+                            cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:09:00" ~1,
+                            cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:41:00" ~1,
+                            TRUE ~ 0))
+
+toi_transect_surface <- filter(toi_transect_surface, extras == 0)
+
 nrow(toi_transect_surface)
 nrow(ncp_gop_input)
 
@@ -586,8 +624,10 @@ ncp_gop_edi <- ncp_gop_transect_wide[, gopheaders]
 eims_transect <- read_csv("eims-toi-transect/eims-transect.csv")
 #or use data frame already in environment
 
-eims_transect_cruise <- filter(eims_transect,cruise == "EN617")
+eims_transect_cruise <- filter(eims_transect,cruise == this_pkg$cruise_id)
 nrow(eims_transect_cruise)
+
+ncp_hifreq <- ncp_hifreq %>% filter(!is.na(datetime_utc_matlab))
 nrow(ncp_hifreq)
 # column bind if same length
 
@@ -658,8 +698,8 @@ map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab
 #ncp_hifreq_edi <- ncp_hifreq [, ncp_hifreq_headers]
 
 # write files for upload to EDI
-write.csv(ncp_gop_edi, here("ncp-gop-transect-summer-2018", "gop-transect-en617.csv"), row.names = FALSE)
-write.csv(ncp_hifreq_edi, here("ncp-gop-transect-summer-2018", "ncp-transect-en617.csv"), row.names = FALSE)
+write.csv(ncp_gop_edi, paste0(here(this_pkg$folder, this_pkg$gop_product), ".csv"), row.names = FALSE)
+write.csv(ncp_hifreq_edi, paste0(here(this_pkg$folder, this_pkg$hifreq_product), ".csv"), row.names = FALSE)
 
 ```
 
@@ -676,27 +716,27 @@ Step 4: Inserting a custom NES-LTER parent project node
 ```{r}
 
 # define input for EML assembly
-metadata <- "ncp-gop-transect-summer-2018/ncp-gop-transect-summer-2018-info"
-project_folder <- "ncp-gop-transect-summer-2018/"
-ncp_gop_file <- "gop-transect-en617"
-ncp_hifreq_file <- "ncp-transect-en617"
+metadata <- this_pkg$metadata_file
+project_folder <- this_pkg$folder
+ncp_gop_file <- this_pkg$gop_product
+ncp_hifreq_file <- this_pkg$hifreq_product
 edi_data <- c(ncp_gop_file, ncp_hifreq_file)
 file_descriptions <- c("Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer", "Data product high frequency NCP derived from EIMS sampling of underway seawater")
-pkg_id <- "knb-lter-nes.7.1"
+pkg_id <- this_pkg$package_id
 
 # Make EML Templates 
-xlsx_to_template(metadata.path = metadata,
-                 output.path = project_folder,
+xlsx_to_template(metadata.path = here(project_folder, metadata),
+                 output.path = paste0(here(this_pkg$folder),"/"),
                  edi.filename = NULL, 
                  rights = "CCBY")
 # Discrete Rates
 xlsx_to_template(metadata.path = here(project_folder, ncp_gop_file), 
-                 output.path = project_folder,
+                 output.path = paste0(here(this_pkg$folder),"/"),
                  edi.filename = ncp_gop_file, 
                  rights = "CCBY")
 # Ncplter 
 xlsx_to_template(metadata.path = here(project_folder, ncp_hifreq_file), 
-                 output.path = project_folder,
+                 output.path = paste0(here(this_pkg$folder),"/"),
                  edi.filename = ncp_hifreq_file, 
                  rights = "CCBY")
 
@@ -710,12 +750,12 @@ lon_col <- c(ncp_hifreq_edi$longitude_matlab, ncp_gop_edi$longitude_matlab)
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
-make_eml(path = project_folder,
-         dataset.title = "Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018",
+make_eml(path = here(project_folder),
+         dataset.title = this_pkg$dataset_title,
          data.table = c(paste0(ncp_gop_file, ".csv"), paste0(ncp_hifreq_file, ".csv")),
          data.table.name = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
-         other.entity = c('ncplterEn617.mat', 'discreteratesEn617.mat'),
+         other.entity = c(this_pkg$ncp_matlab, this_pkg$gop_matlab),
          other.entity.description = c("Package input high frequency NCP derived from EIMS sampling of underway seawater", "Package input discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
@@ -727,6 +767,7 @@ make_eml(path = project_folder,
 
 # Insert Custom Project Node
 project_insert(edi_pkg = pkg_id, 
-               xml.path = project_folder)
+               xml.path = paste0(here(this_pkg$folder),"/"))
+
 ```
  

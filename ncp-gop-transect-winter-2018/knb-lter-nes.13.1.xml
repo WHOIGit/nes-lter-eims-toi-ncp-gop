@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.7.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/ eml.xsd" system="edi">
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.13.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/ eml.xsd" system="edi">
   <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
     <allow>
       <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
@@ -11,7 +11,7 @@
     </allow>
   </access>
   <dataset>
-    <title>Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018</title>
+    <title>Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise winter 2018.</title>
     <creator>
       <individualName>
         <givenName>Rachel</givenName>
@@ -73,30 +73,27 @@
       <keyword>dissolved oxygen</keyword>
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
     </keywordSet>
-    <additionalInfo>
-      <para>Acknowledgments to technician Zoe Sandwith, who contributed sea time and lab analyses for cruises in 2018 and 2019. Also to the students who participated in each cruise. </para>
-    </additionalInfo>
     <intellectualRights>
-      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data (\"Data User\" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available \"as is.\" The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.&#13;
+      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
 </para>
     </intellectualRights>
     <coverage>
       <geographicCoverage>
         <geographicDescription>NES-LTER Transect</geographicDescription>
         <boundingCoordinates>
-          <westBoundingCoordinate>-71.4187</westBoundingCoordinate>
-          <eastBoundingCoordinate>-70.5386</eastBoundingCoordinate>
-          <northBoundingCoordinate>41.4922</northBoundingCoordinate>
-          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
+          <westBoundingCoordinate>-71.4127</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.5659</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.499</northBoundingCoordinate>
+          <southBoundingCoordinate>39.7631</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
         <rangeOfDates>
           <beginDate>
-            <calendarDate>2018-07-20</calendarDate>
+            <calendarDate>2018-01-31</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2018-07-25</calendarDate>
+            <calendarDate>2018-02-05</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
@@ -240,12 +237,12 @@
       </funding>
     </project>
     <dataTable>
-      <entityName>gop-transect-en617.csv</entityName>
+      <entityName>gop-transect-en608.csv</entityName>
       <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
-        <objectName>gop-transect-en617.csv</objectName>
-        <size unit="bytes">9344</size>
-        <authentication method="MD5">b76444e83dd954f73a5d93346ced2035</authentication>
+        <objectName>gop-transect-en608.csv</objectName>
+        <size unit="bytes">10652</size>
+        <authentication method="MD5">a648135b15ace567178159af056300a8</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -306,8 +303,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7635</minimum>
-                  <maximum exclusive="false">41.3247</maximum>
+                  <minimum exclusive="false">39.7631</minimum>
+                  <maximum exclusive="false">41.3224</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -325,8 +322,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.1029</minimum>
-                  <maximum exclusive="false">-70.5852</maximum>
+                  <minimum exclusive="false">-71.1034</minimum>
+                  <maximum exclusive="false">-70.5761</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -344,8 +341,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7635</minimum>
-                  <maximum exclusive="false">41.3247</maximum>
+                  <minimum exclusive="false">39.7631</minimum>
+                  <maximum exclusive="false">41.32218</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -363,8 +360,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.1029</minimum>
-                  <maximum exclusive="false">-70.5852</maximum>
+                  <minimum exclusive="false">-71.10668</minimum>
+                  <maximum exclusive="false">-70.57412</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -396,8 +393,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">67.61</minimum>
-                  <maximum exclusive="false">328.6</maximum>
+                  <minimum exclusive="false">3.543</minimum>
+                  <maximum exclusive="false">211.2</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -419,8 +416,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">13.76</minimum>
-                  <maximum exclusive="false">57.82</maximum>
+                  <minimum exclusive="false">-82.13</minimum>
+                  <maximum exclusive="false">94.76</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -442,8 +439,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">0.0768</minimum>
-                  <maximum exclusive="false">0.356</maximum>
+                  <minimum exclusive="false">-2.05</minimum>
+                  <maximum exclusive="false">0.98</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -454,15 +451,15 @@
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>80</numberOfRecords>
+      <numberOfRecords>90</numberOfRecords>
     </dataTable>
     <dataTable>
-      <entityName>ncp-transect-en617.csv</entityName>
+      <entityName>ncp-transect-en608.csv</entityName>
       <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
-        <objectName>ncp-transect-en617.csv</objectName>
-        <size unit="bytes">1380084</size>
-        <authentication method="MD5">c4c45a48743f14e6a1b964a17df1dad6</authentication>
+        <objectName>ncp-transect-en608.csv</objectName>
+        <size unit="bytes">2643269</size>
+        <authentication method="MD5">129e451ab4154755184d949f72273eef</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -512,8 +509,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.6721</minimum>
-                  <maximum exclusive="false">41.4922</maximum>
+                  <minimum exclusive="false">39.7702</minimum>
+                  <maximum exclusive="false">41.499</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -531,8 +528,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.4187</minimum>
-                  <maximum exclusive="false">-70.5386</maximum>
+                  <minimum exclusive="false">-71.4127</minimum>
+                  <maximum exclusive="false">-70.5659</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -550,8 +547,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.6721</minimum>
-                  <maximum exclusive="false">41.4922</maximum>
+                  <minimum exclusive="false">39.7702</minimum>
+                  <maximum exclusive="false">41.4992</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -569,8 +566,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.4187</minimum>
-                  <maximum exclusive="false">-70.5386</maximum>
+                  <minimum exclusive="false">-71.4128</minimum>
+                  <maximum exclusive="false">-70.5659</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -607,8 +604,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.7601</minimum>
-                  <maximum exclusive="false">9.87</maximum>
+                  <minimum exclusive="false">-5.01</minimum>
+                  <maximum exclusive="false">5.534</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -630,8 +627,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">20.2087</minimum>
-                  <maximum exclusive="false">22.3738</maximum>
+                  <minimum exclusive="false">19.2328</minimum>
+                  <maximum exclusive="false">21.7529</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -653,8 +650,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-4.684</minimum>
-                  <maximum exclusive="false">59.97</maximum>
+                  <minimum exclusive="false">-90.96</minimum>
+                  <maximum exclusive="false">102.4</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -676,8 +673,8 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">1.24</minimum>
-                  <maximum exclusive="false">4.46</maximum>
+                  <minimum exclusive="false">4.92</minimum>
+                  <maximum exclusive="false">7.13</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -688,15 +685,15 @@
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>15502</numberOfRecords>
+      <numberOfRecords>29187</numberOfRecords>
     </dataTable>
     <otherEntity>
-      <entityName>ncplterEn617.mat</entityName>
+      <entityName>ncplterEn608.mat</entityName>
       <entityDescription>Package input high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
-        <objectName>ncplterEn617.mat</objectName>
-        <size unit="bytes">983098</size>
-        <authentication method="MD5">6ed62b7ce00753b4aaeeaad324695e2f</authentication>
+        <objectName>ncplterEn608.mat</objectName>
+        <size unit="bytes">1796603</size>
+        <authentication method="MD5">08e411ea3b996a47c49c91c90f99d2d2</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>Unknown</formatName>
@@ -706,12 +703,12 @@
       <entityType>unknown</entityType>
     </otherEntity>
     <otherEntity>
-      <entityName>discreteratesEn617.mat</entityName>
+      <entityName>discreteratesEn608.mat</entityName>
       <entityDescription>Package input discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
-        <objectName>discreteratesEn617.mat</objectName>
-        <size unit="bytes">3410</size>
-        <authentication method="MD5">7ef45da1349f07307f95ee05472d832d</authentication>
+        <objectName>discreteratesEn608.mat</objectName>
+        <size unit="bytes">3366461</size>
+        <authentication method="MD5">f1880a0faf6afc47d6c6a5f843229e3f</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>Unknown</formatName>

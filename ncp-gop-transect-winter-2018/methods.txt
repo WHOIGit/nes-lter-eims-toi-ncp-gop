@@ -1,0 +1,26 @@
+# Source data
+
+These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) ratio of oxygen and argon and bottle triple oxygen isotopes (TOI) published in the data package titled "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.1 in the EDI Data Portal. 
+
+Additional data sources for these derived data:
+-- Gas transfer velocity (wind data product, weighted over 30 days)
+-- Temperature from NES-LTER ship-provided data
+-- Salinity from NES-LTER ship-provided data
+
+# Calibrations and Derivations
+
+The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Walker (2021). 
+
+# Data Cleaning
+
+For the bottle samples, a field was added to indicate whether the bottle was sampled from underway or niskin. Additionally, cast number was supplied from the REST API bottle summary and the date-time (in UTC) was corrected to reflect the time at which the rosette bottle closed. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. 
+
+# Quality Assurance
+
+We assured that the geographic and temporal coverage of the clean data table were within expected ranges. 
+
+# References
+
+Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856
+
+
