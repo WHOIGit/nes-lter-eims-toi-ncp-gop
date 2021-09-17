@@ -543,11 +543,19 @@ ncp_hifreq_input <- paste0(this_pkg$folder, "/", this_pkg$ncp_hifreq_input, ".cs
 ncp_gop_input <- read_csv(ncp_gop_csv, col_names = FALSE)
 ncp_hifreq_input <- read_csv(ncp_hifreq_input, col_names = FALSE)
 
-#provide column names
+## provide column names
+# ncp-gop
+# if 6 columns provided (EN617 & EN608)
 colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop")
+# if 8 columns provided (EN627)
+#colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin")
+# if 9 columns provided (EN644)
+#colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality")
+## next need to add quality column for input files that don't have it, convert to IODE flags, and deal with new input depth & niskin columns downstream
+
+# ncp-hifreq
 colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
 ncp_hifreq <- ncp_hifreq_input %>% select(-temp, -sal, -cumulative_dist)
-
 # add depth column to high freq EIMS data
 ncp_hifreq$depth <- 5
 
@@ -561,7 +569,7 @@ ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, for
 
 ```{r}
 
-## this matching doesn't work for EN608 because 7 underway values are included in toi but not in discreterates input file
+
 
 ## read in toi data product table
 toi_transect <- read_csv("eims-toi-transect/toi-transect.csv")
@@ -574,6 +582,7 @@ toi_transect_surface <- filter(toi_transect, cruise == this_pkg$cruise_id & dept
 nrow(toi_transect_surface)
 nrow(ncp_gop_input)
 
+## this matching doesn't work for EN608 because 7 underway values are included in toi but not in discreterates input file
 toi_transect_surface <- toi_transect_surface %>%
   mutate(extras = case_when(cruise == "EN608" & datetime_utc_matlab == "2018-02-02 21:00:00" ~1,
                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 19:00:00" ~1,
@@ -725,6 +734,9 @@ file_descriptions <- c("Data product discrete rates of NCP and GOP from bottle T
 pkg_id <- this_pkg$package_id
 
 # Make EML Templates 
+if (file.exists(paste0(here(this_pkg$folder),"/", metadata, ".xlsx"))) {
+    print("metadata already exists")
+  } else {
 xlsx_to_template(metadata.path = here(project_folder, metadata),
                  output.path = paste0(here(this_pkg$folder),"/"),
                  edi.filename = NULL, 
@@ -739,6 +751,7 @@ xlsx_to_template(metadata.path = here(project_folder, ncp_hifreq_file),
                  output.path = paste0(here(this_pkg$folder),"/"),
                  edi.filename = ncp_hifreq_file, 
                  rights = "CCBY")
+}
 
 # Data Coverage
 # combine the dates and lat/lon for both datasets
