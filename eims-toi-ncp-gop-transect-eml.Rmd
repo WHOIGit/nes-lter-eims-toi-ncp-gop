@@ -19,54 +19,210 @@ here("nes-lter-eims-toi-ncp-gop")
 
 # define source for functions developed for the EDI packaging workflow
 source("edi-utilities.R")
+source("prep-rachel-data.R")
 
 # define R packages to require
 libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
 # load libraries
 lapply(libs, require, character.only = TRUE)
+
 ```
 
 ## EIMS-TOI-TRANSECT DATA ------------
 
-## Read in Provided CSV Files
+## Read in List of Cruises to Include in Package, with Cruise-Specific Info
 
 ```{r}
-## TOI data
-#read in PI-provided csv data
-#toi_input_files <- Sys.glob("*bottle*.csv")
-#toi_input_files <- c("eims-toi-transect/bottleEN617withoutincubation.csv")
-toi_input_files <- c("eims-toi-transect/bottleEN608.csv")
-#toi_input_files <- c("eims-toi-transect/bottleEN627.csv")
-#toi_input_files <- c("eims-toi-transect/bottleEN644.csv")
- # toi_input_files <- c("eims-toi-transect/bottleEN617withoutincubation.csv",
- #                      "eims-toi-transect/bottleEN608.csv",
- #                      "eims-toi-transect/bottleEN627.csv",
- #                      "eims-toi-transect/bottleEN644.csv")
-toi <- map_dfr(toi_input_files, read_csv, col_names = FALSE)
 
-# provide column names
-colnames(toi) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17", "delta_17", "delta_18", "niskin")
+cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
+# include in cruise_list only cruises to assemble in cruise_list (or find a good way to skip rows in loop below)
 
-# use datetime string to populate cruise
-toi <- toi %>%
-  mutate(datestring = str_sub(datetime_utc_matlab, 4, 11)) 
-toi <- toi %>%  
-  mutate(cruise = case_when(datestring == "Jul-2018" ~ "EN617",
-                            datestring == "Jan-2018" ~ "EN608",
-                            datestring == "Feb-2018" ~ "EN608",
-                            datestring == "Feb-2019" ~ "EN627",
-                            datestring == "Aug-2019" ~ "EN644"))
+```
 
-# check cruise column
-unique(toi$cruise)
+## Read in Provided CSV Files
 
-toi <- toi  %>% select(-datestring)
+Add a toi_source field to the TOI data set to clarify whether a bottle was sampled from Niskin vs. underway water. 
+Assign underway sampling to a depth of 5m.
 
-# convert datetime format
-toi$datetime_utc_matlab <- as.POSIXct(toi$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
-# ensure rows are in time order
-toi <- toi[order(toi$datetime_utc_matlab),]
+## Supply correct UTC datetime, depth, and lat long for bottle samples
 
+Issues: 
+  • The datetime_utc for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired
+  • Differences in the given depth vs. those in the bottle summary
+
+Solution: 
+  • load in the bottle summary for the appropriate cruise
+  • find the associated cast based on nearest time
+  • find the time at which the bottle was fired based on API cast and PI-provided niskin
+  • find the depth, latitude, and longitude for that bottle based on nearest time
+  • compare the given depth to api provided
+  
+  Using the corrected datetimes, pull geospatial data from the underway log
+
+```{r}
+
+#for each item in cruiselist, filter cruise_list by cruise_id, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, return dataframe idenfied with cruise id
+
+# include in cruise_list only cruises to assemble. if additional cruises are included without toi_input, loop works but produces error when reaches missing toi_input
+## currently this makes no modifications to the Niskins of 99, Depth 999
+  
+ #  for each cruise in cruise_list, read in toi data and edit columns as needed 
+for (i in 1:nrow(cruise_list)){
+      
+  cruisename <- cruise_list$cruise_id[i]
+  this <- cruise_list %>% filter(cruise_id == cruisename) 
+  
+  toi <- read_toi(this$toi_input, this$cruise_id)
+  toi <- time_toi(toi$datetime_utc_matlab)
+  
+  # identify toi source based on Niskin value and assign underway samples to depth 5 m 
+  toi <- set_toi_source(toi$niskin, toi$depth_matlab, toi$toi_source)
+  
+  
+  # read in api data for Niskin samples for given cruise
+  summary <- read_from_api(type = "summary", cruises = cruisename)
+  
+  # create columns to populate from API 
+  toi$cast <- NA_integer_
+  toi$depth_API <- NA_integer_
+  toi$datetime_utc_API <- as.POSIXct(NA)
+  toi$latitude_API <- NA_integer_
+  toi$longitude_API <- NA_integer_
+  
+  # match API data to TOI data based on datetime
+  # get cast, depth, dateime, lat, long from API
+  for (i in 1:nrow(toi)) {
+    # store values
+    nisk <- toi$niskin[i]
+    sampletime <- toi$datetime_utc_matlab[i]
+    
+    # skip row if underway
+    if (is.na(nisk)) {
+      next
+    }
+    
+    # find the index of the nearest datetime
+    ind <- which.min(abs(sampletime - summary$date))
+    smry_cast <- summary$cast[ind]
+    
+    # populate cast column from summary
+    toi$cast[i] <- smry_cast
+    
+    # store cast to find bottle time
+    smry <- summary %>% filter(cast == smry_cast &
+                                 niskin == nisk)
+    
+    # case: smry subset is empty  
+    if (nrow(smry) == 0) {
+      print(paste0(cruisename, " Niskin ", nisk, " not found in bottle summary for cast ", smry_cast))
+      next
+    }
+    
+    # add parameters from API to TOI data frame
+    toi$datetime_utc_API[i] <- smry$date
+    toi$depth_API[i] <- smry$depth
+    toi$latitude_API[i] <- smry$latitude
+    toi$longitude_API[i] <- smry$longitude
+  }
+  
+  # make new datetime and depth columns that combine PI-provided column (for underway) with API-provided column (for niskin)
+  toi <- toi %>%
+    mutate(datetime_utc = case_when(toi_source =="toi_underway" ~ datetime_utc_matlab,
+                                    toi_source == "toi_niskin" ~ datetime_utc_API)) %>%
+    mutate(depth = case_when(toi_source =="toi_underway" ~ depth_matlab,
+                             toi_source == "toi_niskin" ~ depth_API)) %>%
+    mutate(depth = round(depth, 3)) # round to 1 or 2 decimal places instead of to milimeter? 
+  
+  # read in 1-minute position underway data from NES-LTER API 
+  underway <- read_from_api(type = "underway", cruises = cruisename)
+  
+  # for underway bottle samples, match API lat long to sample based on datetime
+  for (i in 1:nrow(toi)) {
+    # store values
+    nisk <- toi$niskin[i]
+    sampletime <- toi$datetime_utc_matlab[i]
+    
+    # skip row if niskin
+    if (!is.na(nisk)) {
+      next
+    }
+    
+    # find the index of the nearest datetime
+    ind <- which.min(abs(sampletime - underway$date))
+    
+    # store lat long 
+    toi$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+    toi$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+  }
+
+
+  #output data frame for cruise
+  assign(paste0("toi_", cruisename), toi) 
+
+}  
+  
+```
+
+# Combine individual cruise toi data into one dataframe
+
+```{r}
+
+
+bottle <- rbind(toi_EN608, toi_EN617, toi_EN627, toi_EN644)
+
+
+```
+## QA for TOI data
+
+• compare the given time to api provided
+• compare the given depth to api provided
+• isolate underway samples for visual comparison to event log
+• check for samples recorded as Niskin with depth of 0
+
+
+```{r}
+
+# check time differences
+bottle$time_diff <- bottle$datetime_utc_matlab - bottle$datetime_utc_API
+bottle$time_diff <- round(bottle$time_diff, 1)
+toi_time_diffs <- bottle %>%
+  group_by(cruise) %>%
+  summarise(avg = mean(time_diff, na.rm = TRUE),
+            min = min(time_diff, na.rm = TRUE),
+            max = max(time_diff, na.rm = TRUE))
+
+# # store niskin lat & long for check after populating underway lat & long
+# niskin_check <- bottle %>%
+#     filter(toi_source == "toi_niskin") %>%
+#     select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc)
+
+# isolate instances of large depth differences
+bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
+toi_depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
+
+# write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
+
+# isolate underway samples
+# -> perform visual inspection of underway TOI bottle samples against event log
+toi_check <- bottle %>%
+  filter(toi_source == "toi_underway") %>%
+  select(-niskin, -cast, -depth_API, -datetime_utc_API, -depth_diff)
+
+# # confirm that this is not overwriting niskin lat long
+# niskin2_check <- bottle %>%
+#     filter(toi_source == "toi_niskin") %>%
+#     select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc, -depth_diff)
+# # visual check, or join to niskin_check and check for differences in lat/long columns
+
+# check for samples recorded as Niskin with depth of 0
+if (any(bottle$depth_matlab == 0)) {
+  toi_conflicts <- bottle[which(bottle$depth_matlab == 0),]
+  print(toi_conflicts)
+}
+
+```
+
+```{r}
 
 ## EIMS data
 #read in PI-provided csv data
@@ -127,151 +283,6 @@ map_locs(df = eims, xvar = "longitude_matlab", yvar = "latitude_matlab", region 
 
 ```
 
-# TOI Transects: Underway vs. Bottle
-
-Add a toi_source field to the TOI data set to clarify whether a bottle was sampled from Niskin vs. underway water. 
-Assign underway sampling to a depth of 5m.
-
-```{r}
-# rename dataframe
-bottle <- toi
-
-# check with Rachel to make sure this is accurate. Seven records from EN608 have depth = 999 and Niskin = 99. Are they underway, or Niskin samples missing information? 
-# for now, convert depths of 999 and Niskin of 99 to 0
-bottle <- bottle %>%
-  mutate(depth_matlab=replace(depth_matlab, depth_matlab==999, 0)) %>%
-  mutate(niskin=replace(niskin, niskin == 99, 0))
-
-# define bottle vs underway based on niskin
-bottle$toi_source <- ifelse(bottle$niskin == 0, 
-                     yes = "toi_underway", no = "toi_niskin")
-
-# assign NA to niskin bottle 0
-bottle$niskin[bottle$niskin == 0] <- NA_integer_
-
-# for underway samples, assign depth to 5m 
-bottle <- bottle %>%
-  mutate(depth_matlab = case_when(depth_matlab == 0 & toi_source =="toi_underway" ~ 5,
-                                  TRUE ~ depth_matlab))
-
-```
-
-## Supply correct UTC datetime, depth, and lat long for bottle samples
-
-Issues: 
-  • The datetime_utc for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired
-  • Differences in the given depth vs. those in the bottle summary
-
-Solution: 
-  • load in the bottle summary for the appropriate cruise
-  • find the associated cast based on nearest time
-  • find the time at which the bottle was fired based on API cast and PI-provided niskin
-  • find the depth, latitude, and longitude for that bottle based on nearest time
-  • compare the given depth to api provided
-  
-```{r}
-
-# read in CTD bottle summary data from NES-LTER API
-#cruiselist <- c("EN617")
-cruiselist <- c("EN608")
-#cruiselist <- c("EN627")
-#cruiselist <- c("EN644")
-#cruiselist <- c("EN608", "EN617", "EN627", "EN644")
-summary <- read_from_api(type = "summary", cruises = cruiselist)
-
-# create columns to populate from API
-bottle$cast <- NA_integer_
-bottle$depth_API <- NA_integer_
-bottle$datetime_utc_API <- as.POSIXct(NA)
-bottle$latitude_API <- NA_integer_
-bottle$longitude_API <- NA_integer_
-
-for (i in 1:nrow(bottle)) {
-  # store values
-  cruise <- bottle$cruise[i]
-  nisk <- bottle$niskin[i]
-  sampletime <- bottle$datetime_utc_matlab[i]
-  
-  # skip row if underway
-  if (is.na(nisk)) {
-    next
-  }
-  
-  # find the index of the nearest datetime
-  ind <- which.min(abs(sampletime - summary$date))
-  smry_cast <- summary$cast[ind]
-
-  # populate cast column from summary
-  bottle$cast[i] <- smry_cast
-  
-  # store cast to find bottle time
-  smry <- summary %>% filter(cast == smry_cast &
-                               niskin == nisk)
-  
-  # case: smry subset is empty  
-  if (nrow(smry) == 0) {
-    print(paste0("Cruise ", cruise, " Niskin ", nisk, " not found in bottle summary for cast ", smry_cast))
-    next
-  }
-  
-  # add parameters from API to TOI data frame
-  bottle$datetime_utc_API[i] <- smry$date
-  bottle$depth_API[i] <- smry$depth
-  bottle$latitude_API[i] <- smry$latitude
-  bottle$longitude_API[i] <- smry$longitude
-}
-
-# error message: number of items to replace is not a multiple of replacement length
-# do Niskin values of 99 need to be converted to NA? check cruise logs
-
-# check time differences
-bottle$time_diff <- bottle$datetime_utc_matlab - bottle$datetime_utc_API
-bottle$time_diff <- round(bottle$time_diff, 1)
-time_diffs <- bottle %>%
-  group_by(cruise) %>%
-  summarise(avg = mean(time_diff, na.rm = TRUE),
-            min = min(time_diff, na.rm = TRUE),
-            max = max(time_diff, na.rm = TRUE))
-# time difference is very large after EN608. Find a way to apply API datetime by cruise instead of in one loop over whole df
-
-# populate new datetime column with API-provided datetime for Niskin samples and PI-provided datetime for underway samples
-# populate new depth column with API-provided datetime for Niskin samples and depth of underway intake for underway system
-# underway depth will need to be updated when Armstrong cruises are added
-bottle <- bottle %>%
-  mutate(datetime_utc = case_when(toi_source =="toi_underway" ~ datetime_utc_matlab,
-                                  toi_source == "toi_niskin" ~ datetime_utc_API)) %>%
-  mutate(depth = case_when(toi_source =="toi_underway" ~ depth_matlab,
-                           toi_source == "toi_niskin" ~ depth_API)) %>%
-  mutate(depth = round(depth, 3)) # round to 1 or 2 decimal places instead of to milimeter? 
-                                  
-# store niskin lat & long for check after populating underway lat & long
-niskin_check <- bottle %>%
-    filter(toi_source == "toi_niskin") %>%
-    select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc)
-
-# isolate instances of large depth differences
-bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
-depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
-
-# write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
-```
-# Check underway TOI bottle sample datetime
-
-```{r}
-
-#perform visual inspection of underway TOI bottle samples against event log
-
-toi_check <- bottle %>%
-  filter(toi_source == "toi_underway") %>%
-  select(-niskin, -cast, -depth_API, -datetime_utc_API, -depth_diff)
- 
-#view(toi_check)
-
-# could add code here to read in elog
-# for en617 these match exactly
-
-```
-
 ## Supply lat/lon for underway data from underway api
 
 Using the corrected datetimes, pull geospatial data from the underway log
@@ -280,37 +291,37 @@ Using the corrected datetimes, pull geospatial data from the underway log
 
 ```{r}
 
-# read in 1-minute position underway data from NES-LTER API 
-underway <- read_from_api(type = "underway", cruises = cruiselist)
+# # read in 1-minute position underway data from NES-LTER API 
+# underway <- read_from_api(type = "underway", cruises = cruiselist)
+# underway <- read_from_api(type = "underway", cruises = unique(bottle$cruise))
+# 
+# # match to datetime
+# # figure out which lat/lon to use
+# 
+# # for toi file
+# for (i in 1:nrow(bottle)) {
+#   # store values
+#   nisk <- bottle$niskin[i]
+#   sampletime <- bottle$datetime_utc_matlab[i]
+#   
+#   # skip row if niskin
+#   if (!is.na(nisk)) {
+#     next
+#   }
+#   
+#   # find the index of the nearest datetime
+#   ind <- which.min(abs(sampletime - underway$date))
+#   
+#   # store lat long 
+#   bottle$latitude_API[i] <- underway$gps_furuno_latitude[ind]
+#   bottle$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+# }
 
-
-# match to datetime
-# figure out which lat/lon to use
-
-# for toi file
-for (i in 1:nrow(bottle)) {
-  # store values
-  nisk <- bottle$niskin[i]
-  sampletime <- bottle$datetime_utc_matlab[i]
-  
-  # skip row if niskin
-  if (!is.na(nisk)) {
-    next
-  }
-  
-  # find the index of the nearest datetime
-  ind <- which.min(abs(sampletime - underway$date))
-  
-  # store lat long 
-  bottle$latitude_API[i] <- underway$gps_furuno_latitude[ind]
-  bottle$longitude_API[i] <- underway$gps_furuno_longitude[ind]
-}
-
-# confirm that this is not overwriting niskin lat long
-niskin2_check <- bottle %>%
-    filter(toi_source == "toi_niskin") %>%
-    select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc, -depth_diff)
-# visual check, or join to niskin_check and check for differences in lat/long columns
+# # confirm that this is not overwriting niskin lat long
+# niskin2_check <- bottle %>%
+#     filter(toi_source == "toi_niskin") %>%
+#     select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc, -depth_diff)
+# # visual check, or join to niskin_check and check for differences in lat/long columns
 
 ```
 
@@ -383,19 +394,6 @@ for (i in 1:nrow(eimshasdate)) {
 ```
 
 
-## QA: Checking Data Integrity
-```{r}
-
-# check for samples recorded as Niskin with depth of 0
-if (any(bottle$depth_matlab == 0)) {
-  conflicts <- bottle[which(bottle$depth_matlab == 0),]
-  print(conflicts)
-}
-# EN617: the bottle from cast 29 is missing API depth, time, latitude, longitude
-
-# write.csv(conflicts, "bottlesamples_conflict.csv")
-
-```
 ## QA: Check location differences
 
 ```{r}
@@ -582,21 +580,22 @@ toi_transect_surface <- filter(toi_transect, cruise == this_pkg$cruise_id & dept
 nrow(toi_transect_surface)
 nrow(ncp_gop_input)
 
-## this matching doesn't work for EN608 because 7 underway values are included in toi but not in discreterates input file
-toi_transect_surface <- toi_transect_surface %>%
-  mutate(extras = case_when(cruise == "EN608" & datetime_utc_matlab == "2018-02-02 21:00:00" ~1,
-                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 19:00:00" ~1,
-                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:08:00" ~1,
-                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:12:00" ~1,
-                            cruise == "EN608" & datetime_utc_matlab == "2018-02-03 21:23:00" ~1,
-                            cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:09:00" ~1,
-                            cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:41:00" ~1,
-                            TRUE ~ 0))
-
-toi_transect_surface <- filter(toi_transect_surface, extras == 0)
-
-nrow(toi_transect_surface)
-nrow(ncp_gop_input)
+## this matching doesn't work for EN608 because 7 values are included in toi but not in discreterates input file
+## they are the rows with provided Niskin 99 and Depth of 999. Need this hard coding if they are converted to values of 0 at outset. Don't need it if converted to NA. 
+# toi_transect_surface <- toi_transect_surface %>%
+#   mutate(extras = case_when(cruise == "EN608" & datetime_utc_matlab == "2018-02-02 21:00:00" ~1,
+#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 19:00:00" ~1,
+#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:08:00" ~1,
+#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:12:00" ~1,
+#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 21:23:00" ~1,
+#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:09:00" ~1,
+#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:41:00" ~1,
+#                             TRUE ~ 0))
+# 
+# toi_transect_surface <- filter(toi_transect_surface, extras == 0)
+# 
+# nrow(toi_transect_surface)
+# nrow(ncp_gop_input)
 
 ## column bind if same length
 # make sure using different column names

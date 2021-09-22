@@ -59,7 +59,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-09-17</pubDate>
+    <pubDate>2021-09-20</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keyword>inorganic matter</keyword>
@@ -254,8 +254,8 @@ EN655: Diaphragm. </para>
       <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
-        <size unit="bytes">16329</size>
-        <authentication method="MD5">9e015374cbdeea006ddf19361d226330</authentication>
+        <size unit="bytes">16140</size>
+        <authentication method="MD5">c11e2b844fd99f4dacd2213ac9ae0d50</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
