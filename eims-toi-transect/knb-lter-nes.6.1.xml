@@ -59,7 +59,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-09-20</pubDate>
+    <pubDate>2021-09-23</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keyword>inorganic matter</keyword>
@@ -84,10 +84,10 @@
       <geographicCoverage>
         <geographicDescription>NES-LTER Transect</geographicDescription>
         <boundingCoordinates>
-          <westBoundingCoordinate>-71.4128</westBoundingCoordinate>
-          <eastBoundingCoordinate>-70.5659</eastBoundingCoordinate>
-          <northBoundingCoordinate>41.4992</northBoundingCoordinate>
-          <southBoundingCoordinate>39.7702</southBoundingCoordinate>
+          <westBoundingCoordinate>-71.4212</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.448</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.5864</northBoundingCoordinate>
+          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -96,7 +96,7 @@
             <calendarDate>2018-01-31</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2018-02-05</calendarDate>
+            <calendarDate>2019-08-25</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
@@ -254,8 +254,8 @@ EN655: Diaphragm. </para>
       <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
-        <size unit="bytes">16140</size>
-        <authentication method="MD5">c11e2b844fd99f4dacd2213ac9ae0d50</authentication>
+        <size unit="bytes">63062</size>
+        <authentication method="MD5">f54e17e2f16953851c43d9bca9f7671d</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -316,8 +316,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7485</minimum>
-                  <maximum exclusive="false">41.32218</maximum>
+                  <minimum exclusive="false">39.75754</minimum>
+                  <maximum exclusive="false">41.3247</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -335,8 +335,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.10668</minimum>
-                  <maximum exclusive="false">-70.57412</maximum>
+                  <minimum exclusive="false">-71.1119</minimum>
+                  <maximum exclusive="false">-70.52544</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -369,7 +369,7 @@ EN655: Diaphragm. </para>
                 <numberType>natural</numberType>
                 <bounds>
                   <minimum exclusive="false">1</minimum>
-                  <maximum exclusive="false">30</maximum>
+                  <maximum exclusive="false">45</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -392,7 +392,7 @@ EN655: Diaphragm. </para>
                 <numberType>natural</numberType>
                 <bounds>
                   <minimum exclusive="false">1</minimum>
-                  <maximum exclusive="false">22</maximum>
+                  <maximum exclusive="false">99</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -414,7 +414,7 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">2.772</minimum>
+                  <minimum exclusive="false">1.584</minimum>
                   <maximum exclusive="false">151.604</maximum>
                 </bounds>
               </numericDomain>
@@ -433,8 +433,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">2</minimum>
-                  <maximum exclusive="false">150</maximum>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">999</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -452,8 +452,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-232.92</minimum>
-                  <maximum exclusive="false">-43.01</maximum>
+                  <minimum exclusive="false">-405.5</minimum>
+                  <maximum exclusive="false">78.584</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -471,8 +471,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">17.2036</minimum>
-                  <maximum exclusive="false">21.4626</maximum>
+                  <minimum exclusive="false">13.3329</minimum>
+                  <maximum exclusive="false">24.1896</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -491,7 +491,7 @@ EN655: Diaphragm. </para>
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">6.29</minimum>
-                  <maximum exclusive="false">34.2</maximum>
+                  <maximum exclusive="false">169</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -509,8 +509,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.08266</minimum>
-                  <maximum exclusive="false">1.277</maximum>
+                  <minimum exclusive="false">-0.9018</minimum>
+                  <maximum exclusive="false">3.002</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -528,23 +528,23 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-0.2184</minimum>
-                  <maximum exclusive="false">2.415</maximum>
+                  <minimum exclusive="false">-2.039</minimum>
+                  <maximum exclusive="false">5.743</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
           </measurementScale>
         </attribute>
       </attributeList>
-      <numberOfRecords>127</numberOfRecords>
+      <numberOfRecords>495</numberOfRecords>
     </dataTable>
     <dataTable>
       <entityName>eims-transect.csv</entityName>
       <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
         <objectName>eims-transect.csv</objectName>
-        <size unit="bytes">2318127</size>
-        <authentication method="MD5">1b38b44220ee1160134d7b7c1fe4b82c</authentication>
+        <size unit="bytes">5866771</size>
+        <authentication method="MD5">bb44ae91a5af7cfc302e31cd46541562</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -594,8 +594,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7702</minimum>
-                  <maximum exclusive="false">41.499</maximum>
+                  <minimum exclusive="false">39.6721</minimum>
+                  <maximum exclusive="false">41.5864</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -613,8 +613,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.4127</minimum>
-                  <maximum exclusive="false">-70.5659</maximum>
+                  <minimum exclusive="false">-71.4212</minimum>
+                  <maximum exclusive="false">-70.448</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -632,8 +632,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.7702</minimum>
-                  <maximum exclusive="false">41.4992</maximum>
+                  <minimum exclusive="false">39.6721</minimum>
+                  <maximum exclusive="false">41.5864</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -651,8 +651,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-71.4128</minimum>
-                  <maximum exclusive="false">-70.5659</maximum>
+                  <minimum exclusive="false">-71.4212</minimum>
+                  <maximum exclusive="false">-70.448</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -689,8 +689,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-5.01</minimum>
-                  <maximum exclusive="false">5.534</maximum>
+                  <minimum exclusive="false">-6.043</minimum>
+                  <maximum exclusive="false">16.83</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -712,8 +712,8 @@ EN655: Diaphragm. </para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">19.2328</minimum>
-                  <maximum exclusive="false">21.7529</maximum>
+                  <minimum exclusive="false">19.1489</minimum>
+                  <maximum exclusive="false">23.7843</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -724,7 +724,7 @@ EN655: Diaphragm. </para>
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>29187</numberOfRecords>
+      <numberOfRecords>74379</numberOfRecords>
     </dataTable>
     <otherEntity>
       <entityName>input_data_csv.zip</entityName>

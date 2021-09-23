@@ -1,3 +1,8 @@
 attributeName	code	definition
 toi_source	toi_niskin	sample bottle was filled from a Niskin bottle on CTD rosette
 toi_source	toi_underway	sample bottle was filled from the ship's underway system
+iode_quality_flag	1	good
+iode_quality_flag	2	quality not evaluated, not available or unknown
+iode_quality_flag	3	questionable/suspect
+iode_quality_flag	4	bad
+iode_quality_flag	9	missing data

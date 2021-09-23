@@ -60,7 +60,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-09-20</pubDate>
+    <pubDate>2021-09-23</pubDate>
     <keywordSet>
       <keyword>primary production</keyword>
       <keyword>inorganic matter</keyword>
@@ -241,8 +241,8 @@
       <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
         <objectName>gop-transect-en608.csv</objectName>
-        <size unit="bytes">10652</size>
-        <authentication method="MD5">a648135b15ace567178159af056300a8</authentication>
+        <size unit="bytes">10852</size>
+        <authentication method="MD5">9c2ad894e70ec01a4d3096cdc031ffa4</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -449,6 +449,20 @@
             <code>NaN</code>
             <codeExplanation>Missing value</codeExplanation>
           </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>iode_quality_flag</attributeName>
+          <attributeDefinition>flag</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>flag</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
         </attribute>
       </attributeList>
       <numberOfRecords>90</numberOfRecords>

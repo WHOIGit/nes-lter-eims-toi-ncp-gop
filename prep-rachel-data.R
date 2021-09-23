@@ -1,3 +1,4 @@
+## Functions for prepping EIMS-TOI data for continuous package
 
 # Read in toi data
 read_toi <- function(toi_filename, cruiseid){
@@ -15,7 +16,7 @@ read_toi <- function(toi_filename, cruiseid){
   }
 
 
-# Format datetime
+# Format toi datetime
 time_toi <- function(date_mat){
   
   # convert datetime format
@@ -49,6 +50,43 @@ set_toi_source <- function(nisk, depth_mat, source) {
   }
 
 
+# Read in eims data
+read_eims <- function(cruiseid){
+  
+  eims_in <- read_csv((paste0(here(), "/eims-toi-transect/Ra", cruiseid, "withbiosat.csv")), col_names = FALSE)
+  colnames(eims_in) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat")
+  eims <- eims_in %>% select(-temp, -sal, -cumulative_dist)
+  # populate cruise column
+  eims$cruise <- cruiseid 
+  eims$depth <- 5
+  
+  return(eims)
+  
+}
+
+
+# Format eims datetime
+time_eims <- function(date_mat){
+  
+  # convert datetime format
+  eims$datetime_utc_matlab <- as.POSIXct(date_mat, format="%d-%b-%Y %H:%M:%OS")
+  # ensure rows are in time order
+  eims <- eims[order(eims$datetime_utc_matlab),]
+  
+  return(eims)
+  
+}
+
+
+
+# read_eims_cruise <- function(cruiseid){
+#   
+#   
+#   # check for samples without timestamp
+#   if (any(is.na(eims$datetime_utc_matlab))) {
+#     missingdate <- eims[which(is.na(eims$datetime_utc_matlab)),]
+#     print(missingdate)
+#   }
 
 #######################################################################################
 # cruiselist <- c("EN608", "EN617", "EN627", "EN644")
