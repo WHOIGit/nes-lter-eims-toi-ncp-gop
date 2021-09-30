@@ -1,1 +1,1 @@
-﻿
+﻿This data package provides two data tables - a high-frequency continuous Equilibration Inlet Mass Spectrometer (EIMS) table and a low-frequency discrete triple oxygen isotope (TOI) table - for winter and summer NES-LTER transect cruises on the R/V Endeavor beginning in 2018. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.
