@@ -10,4 +10,4 @@ toi_source	Bottle sample from niskin or underway	categorical
 gop	Gross oxygen production	numeric	millimoleOxygenPerMeterSquaredPerDay		NaN	Missing value
 ncp	Rate of net community production integrated over the mixed layer	numeric	millimoleOxygenPerMeterSquaredPerDay		NaN	Missing value
 ncp_per_gop	Net community production divided by gross oxygen production	numeric	dimensionless		NaN	Missing value
-iode_quality_flag	flag	categorical				
+iode_quality_flag	IODE Quality Flag primary level	categorical				

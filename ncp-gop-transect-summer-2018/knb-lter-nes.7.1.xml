@@ -11,7 +11,7 @@
     </allow>
   </access>
   <dataset>
-    <title>Net community production and gross oxygen production, based on oxygen-argon ratios and triple oxygen isotopes, from NES-LTER Transect cruise summer 2018</title>
+    <title>Net community production (NCP) and gross oxygen production (GOP), based on oxygen-argon ratios and triple oxygen isotopes (TOI), from NES-LTER Transect cruise summer 2018</title>
     <creator>
       <individualName>
         <givenName>Rachel</givenName>
@@ -60,7 +60,11 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-09-23</pubDate>
+    <pubDate>2021-10-04</pubDate>
+    <abstract>
+      <para>This data package provides the net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) summer Transect cruise EN617 in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. This data package is derived from the EIMS and TOI data for the NES-LTER summer Transect cruise EN617 in a separate EDI data package referenced in the Methods below.&#13;
+</para>
+    </abstract>
     <keywordSet>
       <keyword>primary production</keyword>
       <keyword>inorganic matter</keyword>
@@ -70,8 +74,12 @@
       <keyword>chemistry</keyword>
       <keyword>oceanography</keyword>
       <keyword>seawater</keyword>
-      <keyword>dissolved oxygen</keyword>
+      <keyword>gross primary production</keyword>
       <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>Northeast U.S. Continental Shelf</keyword>
+      <keywordThesaurus>NOAA Large Marine Ecosystems</keywordThesaurus>
     </keywordSet>
     <additionalInfo>
       <para>Acknowledgments to technician Zoe Sandwith, who contributed sea time and lab analyses for cruises in 2018 and 2019. Also to the students who participated in each cruise. </para>
@@ -377,9 +385,16 @@
           <measurementScale>
             <nominal>
               <nonNumericDomain>
-                <textDomain>
-                  <definition>Bottle sample from niskin or underway</definition>
-                </textDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>toi_niskin</code>
+                    <definition>sample bottle was filled from a Niskin bottle on CTD rosette</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>toi_underway</code>
+                    <definition>sample bottle was filled from the ship's underway system</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
               </nonNumericDomain>
             </nominal>
           </measurementScale>
@@ -455,14 +470,33 @@
         </attribute>
         <attribute>
           <attributeName>iode_quality_flag</attributeName>
-          <attributeDefinition>flag</attributeDefinition>
+          <attributeDefinition>IODE Quality Flag primary level</attributeDefinition>
           <storageType>string</storageType>
           <measurementScale>
             <nominal>
               <nonNumericDomain>
-                <textDomain>
-                  <definition>flag</definition>
-                </textDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>1</code>
+                    <definition>good</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>2</code>
+                    <definition>quality not evaluated, not available or unknown</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>3</code>
+                    <definition>questionable/suspect</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>4</code>
+                    <definition>bad</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>9</code>
+                    <definition>missing data</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
               </nonNumericDomain>
             </nominal>
           </measurementScale>
@@ -475,8 +509,8 @@
       <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncp-transect-en617.csv</objectName>
-        <size unit="bytes">1380084</size>
-        <authentication method="MD5">c4c45a48743f14e6a1b964a17df1dad6</authentication>
+        <size unit="bytes">1119924</size>
+        <authentication method="MD5">30131fa3d90dfc04442f75ccb4f50357</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -536,44 +570,6 @@
         <attribute>
           <attributeName>longitude_matlab</attributeName>
           <attributeDefinition>Longitude of sample event provided by PI</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>degree</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">-71.4187</minimum>
-                  <maximum exclusive="false">-70.5386</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>latitude_API</attributeName>
-          <attributeDefinition>Latitude of sample event provided by NES-LTER API</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>degree</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">39.6721</minimum>
-                  <maximum exclusive="false">41.4922</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>longitude_API</attributeName>
-          <attributeDefinition>Longitude of sample event provided by NES-LTER API</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -680,7 +676,7 @@
         </attribute>
         <attribute>
           <attributeName>k</attributeName>
-          <attributeDefinition>Gas transfer velocity that was used when calculating ncp from the O2/Ar ratio</attributeDefinition>
+          <attributeDefinition>Gas transfer velocity used in calculating ncp from O2/Ar ratio</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -705,30 +701,30 @@
       <numberOfRecords>15502</numberOfRecords>
     </dataTable>
     <otherEntity>
-      <entityName>ncplterEn617.mat</entityName>
-      <entityDescription>Package input high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
+      <entityName>input_data_csv.zip</entityName>
+      <entityDescription>Package input data files in csv format</entityDescription>
       <physical>
-        <objectName>ncplterEn617.mat</objectName>
-        <size unit="bytes">983098</size>
-        <authentication method="MD5">6ed62b7ce00753b4aaeeaad324695e2f</authentication>
+        <objectName>input_data_csv.zip</objectName>
+        <size unit="bytes">327426</size>
+        <authentication method="MD5">bf4ccbba27e19a1ae3de1764f1ccd1bc</authentication>
         <dataFormat>
           <externallyDefinedFormat>
-            <formatName>Unknown</formatName>
+            <formatName>application/zip</formatName>
           </externallyDefinedFormat>
         </dataFormat>
       </physical>
       <entityType>unknown</entityType>
     </otherEntity>
     <otherEntity>
-      <entityName>discreteratesEn617.mat</entityName>
-      <entityDescription>Package input discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
+      <entityName>input_data_matlab.zip</entityName>
+      <entityDescription>Package input data files in Matlab format</entityDescription>
       <physical>
-        <objectName>discreteratesEn617.mat</objectName>
-        <size unit="bytes">3410</size>
-        <authentication method="MD5">7ef45da1349f07307f95ee05472d832d</authentication>
+        <objectName>input_data_matlab.zip</objectName>
+        <size unit="bytes">982756</size>
+        <authentication method="MD5">3050c1e37c80ca8ace2f5f1db7f39744</authentication>
         <dataFormat>
           <externallyDefinedFormat>
-            <formatName>Unknown</formatName>
+            <formatName>application/zip</formatName>
           </externallyDefinedFormat>
         </dataFormat>
       </physical>

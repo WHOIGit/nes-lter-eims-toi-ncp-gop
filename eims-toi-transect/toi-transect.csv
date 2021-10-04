@@ -1,4 +1,4 @@
-"cruise","datetime_utc","datetime_utc_matlab","latitude_API","longitude_API","toi_source","cast","niskin","depth","depth_matlab","O2_Ar_delta","O2_Ar_ratio","cap_Delta_17","delta_17","delta_18"
+"cruise","datetime_utc","datetime_utc_matlab","latitude_API","longitude_API","toi_source","cast","niskin","depth","depth_matlab","O2_Ar_delta","O2_Ar_ratio","cap_Delta_17O","d17O","d18O"
 "EN608",2018-01-31 19:37:20,2018-01-31 19:23:00,41.19636,-70.8783,"toi_niskin",1,6,11.852,12,-62.76,21.0197,26.3,0.1292,0.1987
 "EN608",2018-01-31 19:45:36,2018-01-31 19:23:00,41.19644,-70.8777,"toi_niskin",1,18,2.772,2,-62.498,21.0255,23.3,0.123,0.1926
 "EN608",2018-02-01 00:37:55,2018-02-01 00:29:00,41.02868,-70.64938,"toi_niskin",2,3,4.066,5,-96.332,20.2667,12.7,0.4319,0.8097

@@ -61,6 +61,8 @@ Solution:
 
 ```{r}
 
+# TOI data
+
 #for each item in cruiselist, filter cruise_list by cruise_id, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, return dataframe idenfied with cruise id
 
 # include in cruise_list only cruises to assemble. if additional cruises are included without toi_input, loop works but produces error when reaches missing toi_input
@@ -222,6 +224,20 @@ if (any(bottle$depth_matlab == 0)) {
 
 ```
 
+## QA: Map Sampling Locations
+
+Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
+
+```{r}
+
+# Map Check
+
+# bottle dataset does not have coordinates from matlab
+# plot bottle API lat long
+map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
+
+````
+## Read in EIMS data
 
 ```{r}
 
@@ -233,6 +249,7 @@ if (any(bottle$depth_matlab == 0)) {
 # convert datetime format
 # put in order by time
 # produce dataframe for each cruise
+
 for (i in 1:nrow(cruise_list)){
       
   cruisename <- cruise_list$cruise_id[i]
@@ -285,128 +302,23 @@ eims_all <- rbind(eims_EN608, eims_EN617, eims_EN627, eims_EN644)
 
 # plot values to check for outliers
 
-#skip these or plot differently? slow and not super useful this way with multiple cruises
-# ggplot(eims, aes(x= datetime_utc_matlab, y = biosat))+ geom_point()
-# ggplot(eims, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
-# 
-#ggplot(toi, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
-# ggplot(toi, aes(x= datetime_utc_matlab, y = O2_Ar_delta))+ geom_point()
-# ggplot(toi, aes(x= datetime_utc_matlab, y = cap_Delta_17))+ geom_point()
+#plot matlab latitude vs time
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = latitude_matlab))+ geom_point()
+# overlay API latitude 
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = latitude_matlab))+ geom_point()+geom_point(aes(y = latitude_API), color="yellow")
 
-# map check
+#plot matlab longitude vs time
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = longitude_matlab))+ geom_point()
+# overlay API longitude 
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = longitude_matlab))+ geom_point()+geom_point(aes(y = longitude_API), color="yellow")
+
+# plot eims matlab lat long
 map_locs(df = eims_all, xvar = "longitude_matlab", yvar = "latitude_matlab", region = "transect", color = "cruise")
+# plot eims lat long from API 
+map_locs(df = eims_all, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
 
 ```
 
-## Supply lat/lon for underway data from underway api
-
-Using the corrected datetimes, pull geospatial data from the underway log
-
-# toi underway samples
-
-```{r}
-
-# # read in 1-minute position underway data from NES-LTER API 
-# underway <- read_from_api(type = "underway", cruises = cruiselist)
-# underway <- read_from_api(type = "underway", cruises = unique(bottle$cruise))
-# 
-# # match to datetime
-# # figure out which lat/lon to use
-# 
-# # for toi file
-# for (i in 1:nrow(bottle)) {
-#   # store values
-#   nisk <- bottle$niskin[i]
-#   sampletime <- bottle$datetime_utc_matlab[i]
-#   
-#   # skip row if niskin
-#   if (!is.na(nisk)) {
-#     next
-#   }
-#   
-#   # find the index of the nearest datetime
-#   ind <- which.min(abs(sampletime - underway$date))
-#   
-#   # store lat long 
-#   bottle$latitude_API[i] <- underway$gps_furuno_latitude[ind]
-#   bottle$longitude_API[i] <- underway$gps_furuno_longitude[ind]
-# }
-
-# # confirm that this is not overwriting niskin lat long
-# niskin2_check <- bottle %>%
-#     filter(toi_source == "toi_niskin") %>%
-#     select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc, -depth_diff)
-# # visual check, or join to niskin_check and check for differences in lat/long columns
-
-```
-
-# eims
-
-```{r}
-
-# # check for samples without timestamp
-# if (any(is.na(eims$datetime_utc_matlab))) {
-#   missingdate <- eims[which(is.na(eims$datetime_utc_matlab)),]
-#   print(missingdate)
-# }
-# 
-# #two eims records out of the four cruises are missing datetime_utc_matlab. loop below doesn't work with those missing values 
-# missingdate <- eims %>% filter(is.na(datetime_utc_matlab))
-# eimshasdate <- eims %>% filter(!is.na(datetime_utc_matlab))
-# 
-# # initialize eims lat long columns
-# eimshasdate$latitude_API <- NA_integer_
-# eimshasdate$longitude_API <- NA_integer_
-# 
-# # for eims file
-# for (i in 1:nrow(eimshasdate)) {
-#   # store values
-#   sampletime <- eimshasdate$datetime_utc_matlab[i]  
-#   
-#   # find the index of the nearest datetime
-#   ind <- which.min(abs(sampletime - underway$date))
-#   
-#   # store lat long 
-#   eimshasdate$latitude_API[i] <- underway$gps_furuno_latitude[ind]
-#   eimshasdate$longitude_API[i] <- underway$gps_furuno_longitude[ind]
-# }
-# # this is very slow when 4 cruises are involved
-# # use datetime to provide R2R postnav lat lon from the two cruises in R2R
-
-```
-
-## Round columns, if needed. 
-
-```{r}
-
-# use function signif? 
-
-# round numeric columns
-# round datetime_utc_matlab also? 
-# bottle <- bottle %>%
-#   mutate(latitude = round(latitude, 4)) %>% 
-#   mutate(longitude = round(longitude, 4)) %>% 
-#   mutate(depth_matlab = round(depth_matlab, 3))  %>%
-#   mutate(depth_API_bottle_summary = round(depth_API_bottle_summary, 3))  %>%
-#   mutate(O2_Ar_delta = round(O2_Ar_delta, 4)) %>% 
-#   mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4)) %>% 
-#   mutate(cap_Delta_17 = round(cap_Delta_17, 4)) %>% 
-#   mutate(delta_17 = round(delta_17, 4)) %>% 
-#   mutate(delta_18 = round(delta_18, 4))
-
-# 
-# #round colunns
-# # round datetime_utc_matlab also? 
-# eims <- eims %>%
-#   mutate(latitude = round(latitude, 4)) %>% 
-#   mutate(longitude = round(longitude, 4)) %>% 
-#   mutate(temp = round(temp, 3))  %>%
-#   mutate(sal = round(sal, 3))  %>%
-#   mutate(biosat = round(biosat, 3))  %>%
-#   mutate(O2_Ar_ratio = round(O2_Ar_ratio, 4)) 
-
-
-```
 
 
 ## QA: Check location differences
@@ -424,32 +336,14 @@ pos_check <- eims_all %>%
 
 ```
 
-## QA: Map Sampling Locations
-
-Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
-
-```{r}
-
-# Map Check
-
-# bottle dataset does not have coordinates from matlab
-# plot bottle API lat long
-map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
-
-# plot eims matlab lat long
-map_locs(df = eims_all, xvar = "longitude_matlab", yvar = "latitude_matlab", region = "transect", color = "cruise")
-# plot eims lat long from API 
-map_locs(df = eims_all, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
-
-```
 
 ## Column Header Organization
 
 ```{r}
 
 # define headers for columns in desired order
-bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17", "delta_17", "delta_18")
-eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "latitude_API", "longitude_API", "depth", "biosat", "O2_Ar_ratio")
+bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
+eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio")
 
 # reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
@@ -484,7 +378,7 @@ pkg_id <- "knb-lter-nes.6.1"
 # Make EML Templates
 xlsx_to_template(metadata.path = metadata,
                  output.path = project_folder,
-                 edi.filename = NULL, 
+                 edi.filename = "toi-transect", 
                  rights = "CCBY")
 # toi bottle samples
 xlsx_to_template(metadata.path = here(project_folder, bottles_file), 
@@ -509,7 +403,7 @@ coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
 # Make EML
 make_eml(path = project_folder,
-         dataset.title = "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018",
+         dataset.title = "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018",
          data.table = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.name = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.description = file_descriptions,
@@ -540,11 +434,11 @@ project_insert(edi_pkg = pkg_id,
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
 # edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.15.1")
 
 #identify input file names
-ncp_gop_csv <- paste0(this_pkg$folder, "/", this_pkg$ncp_gop_input, ".csv")
-ncp_hifreq_input <- paste0(this_pkg$folder, "/", this_pkg$ncp_hifreq_input, ".csv")
+ncp_gop_csv <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_gop_input, ".csv")
+ncp_hifreq_input <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_hifreq_input, ".csv")
 
 ```
 
@@ -578,7 +472,7 @@ ncp_gop_input <- ncp_gop_input %>%
    mutate(iode_quality_flag = case_when(quality == 1  ~ 4,
                                         quality == 0  ~ 1,))
 
-# check for missing data                                                                               ))
+# check for missing data                                                                               
 sum(is.na(ncp_gop_input$gop))
 
 # replace data with NA if iode quality flag is 4
@@ -707,7 +601,7 @@ ncp_hifreq_wide <- ncp_hifreq_wide %>%
 sum(ncp_hifreq_wide$timecheck)  
 
 #target columns
-ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab","latitude_API", "longitude_API", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
+ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab","depth", "biosat", "O2_Ar_ratio", "ncp", "k")
 ncp_hifreq_edi <- ncp_hifreq_wide[, ncp_hifreq_headers]
 
 ```
@@ -732,9 +626,6 @@ map_locs(df = ncp_gop_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
 map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
          region = "transect", colorvar = NULL)
 
-# # ncp gop discrete rates
- map_locs(df = ncp_hifreq_edi, xvar = "longitude_API", yvar = "latitude_API",
-          region = "transect", colorvar = NULL)
 
 ```
 
@@ -744,15 +635,15 @@ map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab
 
 # define the desired order of columns
 #ncp_gop_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "toi_source", "gop", "ncp", "ncp_per_gop")
-#ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab","latitude_API", "longitude_API", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
+ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
 
 # reorder columns as necessary
 #ncp_gop_edi <- ncp_gop[, ncp_gop_headers]
-#ncp_hifreq_edi <- ncp_hifreq [, ncp_hifreq_headers]
+ncp_hifreq_edi <- ncp_hifreq_edi [, ncp_hifreq_headers]
 
 # write files for upload to EDI
-write.csv(ncp_gop_edi, paste0(here(this_pkg$folder, this_pkg$gop_product), ".csv"), row.names = FALSE)
-write.csv(ncp_hifreq_edi, paste0(here(this_pkg$folder, this_pkg$hifreq_product), ".csv"), row.names = FALSE)
+write.csv(ncp_gop_edi, paste0(here(this_pkg$folder, this_pkg$gop_product), ".csv"), row.names = FALSE) #gop-transect
+write.csv(ncp_hifreq_edi, paste0(here(this_pkg$folder, this_pkg$hifreq_product), ".csv"), row.names = FALSE) #ncp-transect
 
 ```
 
@@ -769,8 +660,8 @@ Step 4: Inserting a custom NES-LTER parent project node
 ```{r}
 
 # define input for EML assembly
-metadata <- this_pkg$metadata_file
-project_folder <- this_pkg$folder
+metadata <- this_pkg$metadata_file  #ncp-gop-transect-info
+project_folder <- this_pkg$folder  
 ncp_gop_file <- this_pkg$gop_product
 ncp_hifreq_file <- this_pkg$hifreq_product
 edi_data <- c(ncp_gop_file, ncp_hifreq_file)
@@ -778,12 +669,12 @@ file_descriptions <- c("Data product discrete rates of NCP and GOP from bottle T
 pkg_id <- this_pkg$package_id
 
 # Make EML Templates 
-if (file.exists(paste0(here(this_pkg$folder),"/", metadata, ".xlsx"))) {
-    print("metadata already exists")
-  } else {
+# if (file.exists(paste0(here(this_pkg$folder),"/", metadata, ".xlsx"))) {
+#     print("metadata already exists")
+#   } else {
 xlsx_to_template(metadata.path = here(project_folder, metadata),
                  output.path = paste0(here(this_pkg$folder),"/"),
-                 edi.filename = NULL, 
+                 edi.filename = "ncp-gop-transect", 
                  rights = "CCBY")
 # Discrete Rates
 xlsx_to_template(metadata.path = here(project_folder, ncp_gop_file), 
@@ -795,7 +686,7 @@ xlsx_to_template(metadata.path = here(project_folder, ncp_hifreq_file),
                  output.path = paste0(here(this_pkg$folder),"/"),
                  edi.filename = ncp_hifreq_file, 
                  rights = "CCBY")
-}
+#}
 
 # Data Coverage
 # combine the dates and lat/lon for both datasets
@@ -812,8 +703,8 @@ make_eml(path = here(project_folder),
          data.table = c(paste0(ncp_gop_file, ".csv"), paste0(ncp_hifreq_file, ".csv")),
          data.table.name = paste0(edi_data, ".csv"),
          data.table.description = file_descriptions,
-         other.entity = c(this_pkg$ncp_matlab, this_pkg$gop_matlab),
-         other.entity.description = c("Package input high frequency NCP derived from EIMS sampling of underway seawater", "Package input discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer"),
+         other.entity = c("input_data_csv.zip", "input_data_matlab.zip"),
+         other.entity.description = c("Package input data files in csv format","Package input data files in Matlab format"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),

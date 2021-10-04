@@ -5,7 +5,7 @@ read_toi <- function(toi_filename, cruiseid){
 
   toi_in <- read_csv((paste0(here(), "/eims-toi-transect/", toi_filename)), col_names = FALSE)
 
-  colnames(toi_in) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17", "delta_17", "delta_18", "niskin")
+  colnames(toi_in) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17O", "d17O", "d18O", "niskin")
   toi <- toi_in
 
   # populate cruise column
