@@ -157,7 +157,7 @@ for (i in 1:nrow(cruise_list)){
     toi$longitude_API[i] <- underway$gps_furuno_longitude[ind]
   }
 
-
+  
   #output data frame for cruise
   assign(paste0("toi_", cruisename), toi) 
 
@@ -185,42 +185,41 @@ bottle <- rbind(toi_EN608, toi_EN617, toi_EN627, toi_EN644)
 ```{r}
 
 # check time differences
+# add time difference column
 bottle$time_diff <- bottle$datetime_utc_matlab - bottle$datetime_utc_API
 bottle$time_diff <- round(bottle$time_diff, 1)
+# summarize time differences by cruise ## this is quick basic check of matching
 toi_time_diffs <- bottle %>%
   group_by(cruise) %>%
   summarise(avg = mean(time_diff, na.rm = TRUE),
             min = min(time_diff, na.rm = TRUE),
             max = max(time_diff, na.rm = TRUE))
 
-# # store niskin lat & long for check after populating underway lat & long
-# niskin_check <- bottle %>%
-#     filter(toi_source == "toi_niskin") %>%
-#     select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc)
 
 # isolate instances of large depth differences
 bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
 toi_depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
+#write.csv(toi_depth_conflicts, "check_toi_depth_conflicts.csv")
 
-# write.csv(depth_conflicts, "bottle-depth-conflicts.csv")
-
-# isolate underway samples
-# -> perform visual inspection of underway TOI bottle samples against event log
-toi_check <- bottle %>%
-  filter(toi_source == "toi_underway") %>%
-  select(-niskin, -cast, -depth_API, -datetime_utc_API, -depth_diff)
-
-# # confirm that this is not overwriting niskin lat long
-# niskin2_check <- bottle %>%
-#     filter(toi_source == "toi_niskin") %>%
-#     select(-niskin, -cast, -depth_API, -datetime_utc_API, -datetime_utc, -depth_diff)
-# # visual check, or join to niskin_check and check for differences in lat/long columns
+# isolate the niskins not found in API. This should be the same as samples printed in loop above
+toi_api_no_niskin <- bottle %>% filter(toi_source == "toi_niskin" & is.na(depth_API))
+#write.csv(toi_api_no_niskin, "check_niskins_not_api.csv")
 
 # check for samples recorded as Niskin with depth of 0
 if (any(bottle$depth_matlab == 0)) {
-  toi_conflicts <- bottle[which(bottle$depth_matlab == 0),]
-  print(toi_conflicts)
+  toi_niskin_0 <- bottle[which(bottle$depth_matlab == 0),]
+  print(toi_niskin_0)
 }
+
+toi_niskin_check <- rbind(toi_depth_conflicts, toi_api_no_niskin, toi_niskin_0)
+write.csv(toi_niskin_check, "toi_niskin_check.csv")
+
+# isolate underway samples
+# -> perform visual inspection of underway TOI bottle samples against event log
+toi_uw_check <- bottle %>%
+  filter(toi_source == "toi_underway") %>%
+  select(-niskin, -cast, -depth_API, -datetime_utc_API, -depth_diff)
+
 
 ```
 
@@ -288,10 +287,18 @@ for (i in 1:nrow(cruise_list)){
   assign(paste0("eims_", cruisename), eims)
   
 }
-  
+```
 
+# Assemble EIMS data from all cruises
+
+```{r}
+
+# put all rows without timestamp into one dataframe
 missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_EN627, missingdate_EN644)
-# then remove per-cruise missingdate dataframes?
+# write csv file for inspection
+write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
+
+# combine loop output from all cruises into one dataframe
 eims_all <- rbind(eims_EN608, eims_EN617, eims_EN627, eims_EN644)
 
 ```
@@ -434,7 +441,7 @@ project_insert(edi_pkg = pkg_id,
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
 # edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.15.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.7.1")
 
 #identify input file names
 ncp_gop_csv <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_gop_input, ".csv")
@@ -635,7 +642,7 @@ map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab
 
 # define the desired order of columns
 #ncp_gop_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "toi_source", "gop", "ncp", "ncp_per_gop")
-ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
+ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "ncp", "k")
 
 # reorder columns as necessary
 #ncp_gop_edi <- ncp_gop[, ncp_gop_headers]

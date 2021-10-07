@@ -60,7 +60,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-10-04</pubDate>
+    <pubDate>2021-10-07</pubDate>
     <abstract>
       <para>This data package provides the net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) winter Transect cruise EN608 in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. This data package is derived from the EIMS and TOI data for the NES-LTER winter Transect cruise EN608 in a separate EDI data package referenced in the Methods below.&#13;
 </para>
@@ -506,8 +506,8 @@
       <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncp-transect-en608.csv</objectName>
-        <size unit="bytes">2064682</size>
-        <authentication method="MD5">d3e82cad43da5cb5d311505bf851ed1b</authentication>
+        <size unit="bytes">1719818</size>
+        <authentication method="MD5">2113783893057fbc3b5ffe0959a6adab</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -557,7 +557,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">39.8</minimum>
+                  <minimum exclusive="false">39.7702</minimum>
                   <maximum exclusive="false">41.499</maximum>
                 </bounds>
               </numericDomain>
@@ -603,52 +603,6 @@
           </measurementScale>
         </attribute>
         <attribute>
-          <attributeName>biosat</attributeName>
-          <attributeDefinition>Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>dimensionless</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">-5.01</minimum>
-                  <maximum exclusive="false">5.534</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
-        </attribute>
-        <attribute>
-          <attributeName>O2_Ar_ratio</attributeName>
-          <attributeDefinition>Oxygen-argon ratio of EIMS sample from underway corrected for air values</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>dimensionless</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">19.2</minimum>
-                  <maximum exclusive="false">21.7529</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
-        </attribute>
-        <attribute>
           <attributeName>ncp</attributeName>
           <attributeDefinition>Rate of net community production integrated over the mixed layer</attributeDefinition>
           <storageType>float</storageType>
@@ -660,7 +614,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">-91</minimum>
+                  <minimum exclusive="false">-90.96</minimum>
                   <maximum exclusive="false">102.4</maximum>
                 </bounds>
               </numericDomain>

@@ -60,7 +60,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-10-04</pubDate>
+    <pubDate>2021-10-07</pubDate>
     <abstract>
       <para>This data package provides the net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) summer Transect cruise EN617 in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. This data package is derived from the EIMS and TOI data for the NES-LTER summer Transect cruise EN617 in a separate EDI data package referenced in the Methods below.&#13;
 </para>
@@ -509,8 +509,8 @@
       <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncp-transect-en617.csv</objectName>
-        <size unit="bytes">1119924</size>
-        <authentication method="MD5">30131fa3d90dfc04442f75ccb4f50357</authentication>
+        <size unit="bytes">907092</size>
+        <authentication method="MD5">6691161019f5bbbdc49680b0b693556b</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -604,52 +604,6 @@
               </numericDomain>
             </ratio>
           </measurementScale>
-        </attribute>
-        <attribute>
-          <attributeName>biosat</attributeName>
-          <attributeDefinition>Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>dimensionless</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">-0.7601</minimum>
-                  <maximum exclusive="false">9.87</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
-        </attribute>
-        <attribute>
-          <attributeName>O2_Ar_ratio</attributeName>
-          <attributeDefinition>Oxygen-argon ratio of EIMS sample from underway corrected for air values</attributeDefinition>
-          <storageType>float</storageType>
-          <measurementScale>
-            <ratio>
-              <unit>
-                <standardUnit>dimensionless</standardUnit>
-              </unit>
-              <numericDomain>
-                <numberType>real</numberType>
-                <bounds>
-                  <minimum exclusive="false">20.2087</minimum>
-                  <maximum exclusive="false">22.3738</maximum>
-                </bounds>
-              </numericDomain>
-            </ratio>
-          </measurementScale>
-          <missingValueCode>
-            <code>NaN</code>
-            <codeExplanation>Missing value</codeExplanation>
-          </missingValueCode>
         </attribute>
         <attribute>
           <attributeName>ncp</attributeName>
