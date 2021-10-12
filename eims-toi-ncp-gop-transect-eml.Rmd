@@ -520,8 +520,6 @@ ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, for
 
 ```{r}
 
-
-
 ## read in toi data product table
 toi_transect <- read_csv("eims-toi-transect/toi-transect.csv")
 
@@ -582,6 +580,17 @@ ncp_gop_edi <- ncp_gop_transect_wide[, gopheaders]
 
 
 ```
+
+# Plot NCP-GOP parameters
+
+```{r}
+
+ggplot(ncp_gop_edi, aes(x= datetime_utc, y = gop))+ geom_point()
+ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp))+ geom_point()
+ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp_per_gop))+ geom_point()
+
+```
+
 ## Add API lat/long for high-frequency data
 
 ```{r} 
@@ -624,6 +633,17 @@ ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "lon
 ncp_hifreq_edi <- ncp_hifreq_wide[, ncp_hifreq_headers]
 
 ```
+# Plot NCP-GOP parameters
+
+```{r}
+
+ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = biosat))+ geom_point()
+ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
+ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = ncp))+ geom_point()
+ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = k))+ geom_point()
+
+```
+
 
 ## QA: Map Sampling Locations
 
