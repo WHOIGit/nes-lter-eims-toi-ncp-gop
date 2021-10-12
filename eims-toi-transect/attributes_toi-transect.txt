@@ -11,6 +11,6 @@ depth	Data product depth of sample below sea surface, for underway samples depth
 depth_matlab	PI-provided depth of sample below sea surface.	numeric	meter			
 O2_Ar_delta	Oxygen-argon ratio divided by the reference ratio (oxygen-argon ratio in air minus 1, multiplied by 100)	numeric	dimensionless			
 O2_Ar_ratio	Oxygen-argon ratio of bottle sample	numeric	dimensionless			
-cap_Delta_17O	Triple isotopic composition of dissolved oxygen versus atmospheric O2, D17O	numeric	permeg			
-d17O	Enrichment of oxygen-17 in dissolved oxygen (delta(17)O) in the water body by mass spectrometry	numeric	permil			
-d18O	Enrichment of oxygen-18 in dissolved oxygen {18O in O2 CAS 14797-71-8} {delta(18)O} in the water body by mass spectrometry	numeric	permil			
+cap_Delta_17O	Triple isotopic composition of dissolved oxygen versus atmospheric O2, D17O	numeric	perMeg			
+d17O	Enrichment of oxygen-17 in dissolved oxygen (delta(17)O) in the water body by mass spectrometry	numeric	perMil			
+d18O	Enrichment of oxygen-18 in dissolved oxygen {18O in O2 CAS 14797-71-8} {delta(18)O} in the water body by mass spectrometry	numeric	perMil			

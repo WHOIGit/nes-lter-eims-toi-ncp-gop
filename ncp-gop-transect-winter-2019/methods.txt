@@ -1,31 +1,15 @@
-# Coverage
+# Source data
 
-These data include winter and summer NES-LTER transect cruises on the R/V Endeavor beginning in 2018. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.
+These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) ratio of oxygen and argon and bottle triple oxygen isotopes (TOI) published in the data package titled "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.1 in the EDI Data Portal. 
 
-# Related packages
-
-Net community production (NCP) and gross oxygen production (GOP) are derived from these data and published separately on a per-cruise basis. Cruise and package IDs are as follows:
-EN617 knb-lter-nes.7.1
-
-# Bottle sample seawater supplied to mass spectrometer
-
-Samples were collected from the water column at multiple depths using Niskin bottles on a CTD rosette system and and from the underway system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isotopes (TOI) following the methods of Stanley et al. (2015).
-
-# Underway science seawater supplied to the EIMS
-
-Continuously during R/V Endeavor cruises, underway science seawater was supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump. Water was supplied to the EIMS typically from the diaphragm pump and from the impeller pump depending on sea state and pump status. The Endeavor underway lines are not bleached and are flushed with freshwater between every cruise. A custom-built Equilibration Inlet Mass Spectrometer (EIMS) system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately.
-
-Cruise-specific pump information:
-EN608: Used diaphragm first, then switched to traditional underway 1 Feb 08:18 UTC. 
-EN617: Diaphragm for first two days, then switched to impeller due to bubbles in diaphragm supply in rougher weather. 
-EN627: Diaphragm first with new debubbler for EIMS, then switched to impeller due to air dissolved in diaphragm supply in rougher weather. 
-EN644: Diaphragm with debubbler
-EN649: Diaphragm pump with inlet newly lower in sea chest to reduce bubbling. 
-EN655: Diaphragm. 
+Additional data sources for these derived data:
+-- Gas transfer velocity (wind data product, weighted over 30 days)
+-- Temperature from NES-LTER ship-provided data
+-- Salinity from NES-LTER ship-provided data
 
 # Calibrations and Derivations
 
-The EIMS data have been calibrated according to the ratio measured in air roughly every 6 hours. This gives the calibrated O2/Ar ratio that was then used to calculate rates of NCP. These data also include the biological saturation – the O2/Ar divided by the equilibrium value of O2/Ar – which gives the expected super (or under) saturation of O2 based on biological factors. The solubility of T and S were used to derive this value. The rates data table includes high-frequency air-corrected O2/Ar ratio and the biological saturation value for the underway data. The bottle data set consists of O2/Ar and triple oxygen isotope (TOI) data for the bottle samples. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table.
+The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Walker (2021). 
 
 # Data Cleaning
 
@@ -37,7 +21,6 @@ We assured that the geographic and temporal coverage of the clean data table wer
 
 # References
 
-Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347. https://doi.org/10.1016/S0304-4203(98)00090-5
+Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856
 
-Stanley, Rachel H.R., Zoe O. Sandwith, William J. Williams. 2015. Rates of summertime biological productivity in the Beaufort Gyre: A comparison between the low and record-low ice conditions of August 2011 and 2012. Journal of Marine Systems 147:29-44. https://doi.org/10.1016/j.jmarsys.2014.04.006
 

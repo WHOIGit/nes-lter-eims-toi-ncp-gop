@@ -16,7 +16,7 @@ read_toi <- function(toi_filename, cruiseid){
   }
 
 
-# Format toi datetime
+# Format toi datetime to ISO 8601
 time_toi <- function(date_mat){
   
   # convert datetime format
@@ -65,7 +65,7 @@ read_eims <- function(cruiseid){
 }
 
 
-# Format eims datetime
+# Format eims datetime to ISO 8601
 time_eims <- function(date_mat){
   
   # convert datetime format
@@ -76,70 +76,5 @@ time_eims <- function(date_mat){
   return(eims)
   
 }
-
-
-
-# read_eims_cruise <- function(cruiseid){
-#   
-#   
-#   # check for samples without timestamp
-#   if (any(is.na(eims$datetime_utc_matlab))) {
-#     missingdate <- eims[which(is.na(eims$datetime_utc_matlab)),]
-#     print(missingdate)
-#   }
-
-#######################################################################################
-# cruiselist <- c("EN608", "EN617", "EN627", "EN644")
-# summary <- read_from_api(type = "summary", cruises = cruiselist)
-# 
-# 
-# api_toi <- function(){
-#   
-# # create columns to populate from API
-# toi$cast <- NA_integer_
-# toi$depth_API <- NA_integer_
-# toi$datetime_utc_API <- as.POSIXct(NA)
-# toi$latitude_API <- NA_integer_
-# toi$longitude_API <- NA_integer_
-# 
-# for (i in 1:nrow(toi)) {
-#   # store values
-#   #cruise <- bottle$cruise[i]
-#   nisk <- toi$niskin[i]
-#   sampletime <- toi$datetime_utc_matlab[i]
-#   
-#   # skip row if underway
-#   if (is.na(nisk)) {
-#     next
-#   }
-#   
-#   # find the index of the nearest datetime
-#   ind <- which.min(abs(sampletime - summary$date))
-#   smry_cast <- summary$cast[ind]
-#   
-#   # populate cast column from summary
-#   toi$cast[i] <- smry_cast
-#   
-#   # store cast to find bottle time
-#   smry <- summary %>% filter(cast == smry_cast &
-#                                niskin == nisk)
-#   
-#   # case: smry subset is empty  
-#   if (nrow(smry) == 0) {
-#     print(paste0(" Niskin ", nisk, " not found in bottle summary for cast ", smry_cast))
-#     next
-#   }
-#   
-#   # add parameters from API to TOI data frame
-#   toi$datetime_utc_API[i] <- smry$date
-#   toi$depth_API[i] <- smry$depth
-#   toi$latitude_API[i] <- smry$latitude
-#   toi$longitude_API[i] <- smry$longitude
-# }
-# 
-# return(toi)
-# 
-# }
-# 
 
 
