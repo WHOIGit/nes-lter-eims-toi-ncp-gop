@@ -235,6 +235,13 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 # plot bottle API lat long
 map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
 
+
+ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_delta))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_matlab, y = cap_Delta_17O))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_matlab, y = d17O))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
+
 ````
 ## Read in EIMS data
 
@@ -323,6 +330,11 @@ ggplot(eims_all, aes(x= datetime_utc_matlab, y = longitude_matlab))+ geom_point(
 map_locs(df = eims_all, xvar = "longitude_matlab", yvar = "latitude_matlab", region = "transect", color = "cruise")
 # plot eims lat long from API 
 map_locs(df = eims_all, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
+
+
+# plot values
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = biosat))+ geom_point()
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
 
 ```
 
