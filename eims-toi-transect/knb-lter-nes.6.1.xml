@@ -59,7 +59,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-10-12</pubDate>
+    <pubDate>2021-10-18</pubDate>
     <abstract>
       <para>This data package provides two data tables - a high-frequency continuous Equilibration Inlet Mass Spectrometer (EIMS) table and a low-frequency discrete triple oxygen isotope (TOI) table - for winter and summer NES-LTER transect cruises on the R/V Endeavor beginning in 2018. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.</para>
     </abstract>
@@ -252,8 +252,8 @@ EN644, knb-lter-nes.15.1</para>
       <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
-        <size unit="bytes">63055</size>
-        <authentication method="MD5">ad890b7b5013cff64bb769104d86ab08</authentication>
+        <size unit="bytes">63048</size>
+        <authentication method="MD5">948f01db115bb19ac4a9c09370b42c42</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -397,7 +397,7 @@ EN644, knb-lter-nes.15.1</para>
                 <numberType>natural</numberType>
                 <bounds>
                   <minimum exclusive="false">1</minimum>
-                  <maximum exclusive="false">99</maximum>
+                  <maximum exclusive="false">24</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -439,7 +439,7 @@ EN644, knb-lter-nes.15.1</para>
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">0</minimum>
-                  <maximum exclusive="false">999</maximum>
+                  <maximum exclusive="false">150</maximum>
                 </bounds>
               </numericDomain>
             </ratio>

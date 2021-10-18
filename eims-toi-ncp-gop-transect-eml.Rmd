@@ -223,26 +223,25 @@ toi_uw_check <- bottle %>%
 
 ```
 
-## QA: Map Sampling Locations
+## QA: Map TOI Bottle Sampling Locations & Plot TOI Parameters
 
 Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
 
 ```{r}
 
 # Map Check
-
 # bottle dataset does not have coordinates from matlab
 # plot bottle API lat long
 map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
 
-
+# Plot measured parameters in bottle TOI dataset
 ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_delta))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = cap_Delta_17O))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = d17O))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
 
-````
+```
 ## Read in EIMS data
 
 ```{r}
@@ -310,7 +309,7 @@ eims_all <- rbind(eims_EN608, eims_EN617, eims_EN627, eims_EN644)
 
 ```
 
-# Initial QA for input csv data. 
+# QA for EIMS data
 
 ```{r}
 
@@ -340,7 +339,7 @@ ggplot(eims_all, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
 
 
 
-## QA: Check location differences
+## QA: Check for location differences
 
 ```{r}
 
@@ -359,6 +358,11 @@ pos_check <- eims_all %>%
 ## Column Header Organization
 
 ```{r}
+
+# convert Niskin of 99 and depth of 999 to NA
+bottle <- bottle %>%
+  mutate(depth_matlab = replace(depth_matlab, depth_matlab=="999", NA)) %>%
+  mutate(niskin = replace(niskin, niskin=="99", NA)) 
 
 # define headers for columns in desired order
 bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
@@ -446,14 +450,15 @@ project_insert(edi_pkg = pkg_id,
 
 ## NCP-GOP-TRANSECT ----------
 
-## Read in identifiers for each cruise
+## To produce per-cruise NCP GOP package, select cruise from cruise list by manually editing package ID 
 
 ```{r}
 
+# read in cruise-specific information
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
-# edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.7.1")
+# manually edit package id to select package to assemble 
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.1")
 
 #identify input file names
 ncp_gop_csv <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_gop_input, ".csv")
@@ -633,7 +638,7 @@ ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "lon
 ncp_hifreq_edi <- ncp_hifreq_wide[, ncp_hifreq_headers]
 
 ```
-# Plot NCP-GOP parameters
+# Plot NCP-GOP parameters in high-frequency data set
 
 ```{r}
 
