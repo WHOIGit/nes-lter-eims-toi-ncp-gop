@@ -11,7 +11,7 @@ EN644: Diaphragm with debubbler.
 
 # Bottle sample seawater supplied post-cruise to mass spectrometer
 
-Discrete samples for TOI were collected from the underway science seawater supplied by diaphragm pump and from the water column at multiple depths using Niskin bottles on a CTD rosette system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isotopes (TOI) following the methods of Stanley et al. (2015).
+Discrete samples for TOI and for additional measurements of O2/Ar ratios were collected from the underway science seawater supplied by diaphragm pump and from the water column at multiple depths using Niskin bottles on a CTD rosette system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isotopes (TOI) following the methods of Stanley et al. (2015).
 
 # Calibrations and derivations
 
@@ -23,7 +23,7 @@ PI Stanley exported a subset of columns from Matlab format into csv format for i
 
 # Quality assurance
 
-We checked each cruise event log to confirm time periods of continuous EIMS and number of discrete TOI underway (and rosette logs to confirm number of discrete TOI Niskin). We assured that the geographic and temporal coverage of the clean data table were within expected ranges.
+We checked each cruise event log to confirm time periods of continuous EIMS and number of discrete TOI underway (and rosette logs to confirm number of discrete TOI Niskin).  We identified when a provided datetime, location, depth, or niskin number was unexpected, excluded EIMS data when datetime was missing, and plotted data for visual inspection. We assured that the geographic and temporal coverage of the clean data table were within expected ranges.
 
 # Related packages
 
