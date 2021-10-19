@@ -68,7 +68,7 @@
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <role>Student</role>
     </associatedParty>
-    <pubDate>2021-10-07</pubDate>
+    <pubDate>2021-10-19</pubDate>
     <abstract>
       <para>This data package provides the net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) summer Transect cruise EN644 in 2019. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. This data package is derived from the EIMS and TOI data for the NES-LTER summer Transect cruise EN644 in a separate EDI data package referenced in the Methods below.&#13;
 </para>
@@ -135,15 +135,15 @@
       <methodStep>
         <description>
           <para># Source data</para>
-          <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) ratio of oxygen and argon and bottle triple oxygen isotopes (TOI) published in the data package titled "Oxygen-argon dissolved gas ratios and triple oxygen isotopes from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.1 in the EDI Data Portal. </para>
+          <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.1 in the EDI Data Portal. </para>
           <para>Additional data sources for these derived data:&#13;
 -- Gas transfer velocity (wind data product, weighted over 30 days)&#13;
 -- Temperature from NES-LTER ship-provided data&#13;
 -- Salinity from NES-LTER ship-provided data</para>
           <para># Calibrations and Derivations</para>
-          <para>The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Walker (2021). </para>
+          <para>The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). </para>
           <para># Data Cleaning</para>
-          <para>For the bottle samples, a field was added to indicate whether the bottle was sampled from underway or niskin. Additionally, cast number was supplied from the REST API bottle summary and the date-time (in UTC) was corrected to reflect the time at which the rosette bottle closed. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
+          <para>For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or niskin, and we provide a column to indicate quality using IODE Primary Level flags 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from niskin, datetime (in UTC) was corrected to reflect the time at which the rosette bottle closed; latitude_API and longitude_API are based on datetime_utc. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
           <para># Quality Assurance</para>
           <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. </para>
           <para># References</para>
