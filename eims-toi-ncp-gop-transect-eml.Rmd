@@ -419,8 +419,8 @@ xlsx_to_template(metadata.path = here(project_folder, ra_file),
 # isolate date and geospatial columns for input
 date_col <- as.Date(c(eims_edi$datetime_utc_matlab,
                       bottle_edi$datetime_utc))
-lat_col <- eims_edi$latitude_API
-lon_col <- eims_edi$longitude_API
+lat_col <- eims_edi$latitude_matlab
+lon_col <- eims_edi$longitude_matlab
 # run function to determine geospatial and temporal coverage
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 

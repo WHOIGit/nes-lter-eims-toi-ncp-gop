@@ -59,7 +59,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadataprovider</role>
     </associatedParty>
-    <pubDate>2021-10-19</pubDate>
+    <pubDate>2021-12-01</pubDate>
     <abstract>
       <para>In order to calculate net community production (NCP) rates on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) transect cruises, gas tracer data were collected with a continuous at-sea mass spectrometer. The ratio of O2/Ar, measured continuously from underway water, yields 8,000-15,000 rates of NCP per cruise. Discrete water samples (N=100 to 150 per cruise) were collected for triple oxygen isotope (TOI) analysis to estimate gross primary&#13;
 production (GPP) rates and ratios of NCP/GPP. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.&#13;
@@ -90,6 +90,15 @@ This data package provides two data tables for winter and summer NES-LTER transe
 </para>
     </intellectualRights>
     <coverage>
+      <geographicCoverage>
+        <geographicDescription>NES-LTER Transect</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-71.4212</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.448</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.5864</northBoundingCoordinate>
+          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
       <temporalCoverage>
         <rangeOfDates>
           <beginDate>
