@@ -263,8 +263,8 @@ EN644, knb-lter-nes.15.1</para>
       <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
-        <size unit="bytes">63048</size>
-        <authentication method="MD5">948f01db115bb19ac4a9c09370b42c42</authentication>
+        <size unit="bytes">62364</size>
+        <authentication method="MD5">c836de39cde2af6a4530a0cfa1ca4908</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -506,7 +506,7 @@ EN644, knb-lter-nes.15.1</para>
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">6.29</minimum>
+                  <minimum exclusive="false">7.61</minimum>
                   <maximum exclusive="false">169</maximum>
                 </bounds>
               </numericDomain>
@@ -552,7 +552,7 @@ EN644, knb-lter-nes.15.1</para>
           </measurementScale>
         </attribute>
       </attributeList>
-      <numberOfRecords>495</numberOfRecords>
+      <numberOfRecords>488</numberOfRecords>
     </dataTable>
     <dataTable>
       <entityName>eims-transect.csv</entityName>

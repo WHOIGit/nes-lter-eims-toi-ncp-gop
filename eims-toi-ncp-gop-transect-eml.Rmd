@@ -66,7 +66,7 @@ Solution:
 #for each item in cruiselist, filter cruise_list by cruise_id, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, return dataframe idenfied with cruise id
 
 # include in cruise_list only cruises to assemble. if additional cruises are included without toi_input, loop works but produces error when reaches missing toi_input
-## currently this makes no modifications to the Niskins of 99, Depth 999
+# this makes no modifications to the Niskins of 99, Depth 999. They are filtered out in next chunk. 
   
  #  for each cruise in cruise_list, read in toi data and edit columns as needed 
 for (i in 1:nrow(cruise_list)){
@@ -169,8 +169,12 @@ for (i in 1:nrow(cruise_list)){
 
 ```{r}
 
-
+# combine all cruises
 bottle <- rbind(toi_EN608, toi_EN617, toi_EN627, toi_EN644)
+
+# remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
+niskin99 <- bottle %>% filter(niskin == "99")
+bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
 
 
 ```
@@ -359,11 +363,6 @@ pos_check <- eims_all %>%
 
 ```{r}
 
-# convert Niskin of 99 and depth of 999 to NA
-bottle <- bottle %>%
-  mutate(depth_matlab = replace(depth_matlab, depth_matlab=="999", NA)) %>%
-  mutate(niskin = replace(niskin, niskin=="99", NA)) 
-
 # define headers for columns in desired order
 bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
 eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio")
@@ -458,7 +457,7 @@ project_insert(edi_pkg = pkg_id,
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.1")
 
 #identify input file names
 ncp_gop_csv <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_gop_input, ".csv")
@@ -531,28 +530,9 @@ toi_transect <- read_csv("eims-toi-transect/toi-transect.csv")
 # expect toi_transect to have rows with bottles deeper than surface
 # filter for rows depth less than Rachel's depthcutoff 6 m
 # check for length discrepancy
-# so far toi_transect only has en617
 toi_transect_surface <- filter(toi_transect, cruise == this_pkg$cruise_id & depth_matlab <= 6)
 nrow(toi_transect_surface)
 nrow(ncp_gop_input)
-
-## Need this hard coding if the rows with provided Niskin 99 and Depth of 999 are converted to values of 0 at outset. Don't need it if converted to NA. 
-## this matching doesn't work for EN608 because 7 values are included in toi but not in discreterates input file
-## 
-# toi_transect_surface <- toi_transect_surface %>%
-#   mutate(extras = case_when(cruise == "EN608" & datetime_utc_matlab == "2018-02-02 21:00:00" ~1,
-#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 19:00:00" ~1,
-#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:08:00" ~1,
-#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 20:12:00" ~1,
-#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-03 21:23:00" ~1,
-#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:09:00" ~1,
-#                             cruise == "EN608" & datetime_utc_matlab == "2018-02-04 20:41:00" ~1,
-#                             TRUE ~ 0))
-# 
-# toi_transect_surface <- filter(toi_transect_surface, extras == 0)
-# 
-# nrow(toi_transect_surface)
-# nrow(ncp_gop_input)
 
 ## column bind if same length
 # make sure using different column names
@@ -655,8 +635,6 @@ ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = k))+ geom_point()
 Call the map_locs function from edi-utility.R to map the sampling locations. Perform a visual check.
 
 ```{r}
-
-# Map Check
 
 # ncp gop discrete rates with matlab coordinates
 map_locs(df = ncp_gop_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
