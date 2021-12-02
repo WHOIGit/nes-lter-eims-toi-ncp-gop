@@ -29,7 +29,7 @@
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
-      <role>Principalinvestigator</role>
+      <role>Principal Investigator</role>
     </associatedParty>
     <associatedParty>
       <individualName>
@@ -48,7 +48,7 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
-      <role>Metadataprovider</role>
+      <role>Metadata Provider</role>
     </associatedParty>
     <associatedParty>
       <individualName>
@@ -58,9 +58,9 @@
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
       <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
-      <role>Metadataprovider</role>
+      <role>Metadata Provider</role>
     </associatedParty>
-    <pubDate>2021-10-19</pubDate>
+    <pubDate>2021-12-02</pubDate>
     <abstract>
       <para>This data package provides the net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) winter Transect cruise EN608 in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. This data package is derived from the EIMS and TOI data for the NES-LTER winter Transect cruise EN608 in a separate EDI data package referenced in the Methods below.&#13;
 </para>
@@ -81,6 +81,9 @@
       <keyword>Northeast U.S. Continental Shelf</keyword>
       <keywordThesaurus>NOAA Large Marine Ecosystems</keywordThesaurus>
     </keywordSet>
+    <additionalInfo>
+      <para>Acknowledgments to Wellesley College student Elizabeth Lambert. </para>
+    </additionalInfo>
     <intellectualRights>
       <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
 </para>
