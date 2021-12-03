@@ -1,4 +1,4 @@
-# Underway science seawater supplied to the EIMS
+# Underway science seawater supplied to the Equilibrator Inlet Mass Spectrometer (EIMS)
 
 A custom-built EIMS system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made every 30 seconds approximately. Continuously during R/V Endeavor cruises, underway science seawater was supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump; when possible we supplied water to the EIMS from the diaphragm pump. The Endeavor underway lines are not bleached but rather are flushed with freshwater before each cruise.
 
@@ -11,11 +11,11 @@ EN644: Diaphragm with debubbler.
 
 # Bottle sample seawater supplied post-cruise to mass spectrometer
 
-Discrete samples for TOI and for additional measurements of O2/Ar ratios were collected from the underway science seawater supplied by diaphragm pump and from the water column at multiple depths using Niskin bottles on a CTD rosette system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for triple oxygen isotopes (TOI) following the methods of Stanley et al. (2015).
+Discrete samples for triple oxygen isotopes (TOI) and for additional measurements of O2/Ar ratios were collected from the underway science seawater supplied by diaphragm pump and from the water column at multiple depths using Niskin bottles on a CTD rosette system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for TOI following the methods of Stanley et al. (2015).
 
 # Calibrations and derivations
 
-The EIMS data have been calibrated according to the ratio measured in air roughly every 6 hours. This gives the calibrated O2/Ar ratio that can be used to calculate rates of NCP (see Related packages, below). These data also include the biological saturation – the O2/Ar divided by the equilibrium value of O2/Ar – which gives the expected super (or under) saturation of O2 based on biological factors. The solubility of T and S were used to derive this value. The EIMS data table includes high-frequency air-corrected O2/Ar ratio and the biological saturation value for the underway data. The TOI bottle data table consists of O2/Ar and TOI data for the bottle samples. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match in time to one row in the underway (high-frequency) table.
+The EIMS data have been calibrated according to the ratio measured in air roughly every 6 hours. This provides the calibrated O2/Ar ratio, which can be used to calculate rates of NCP (see Related packages, below). The calibrated O2/Ar ratio divided by the equilibrium value of O2/Ar (which is based on temperature and salinity) provides biological saturation, the expected super- (or under-) saturation of O2 based on biological factors. The EIMS data table includes high-frequency air-corrected O2/Ar ratio and the biological saturation value for the underway data. The TOI bottle data table consists of O2/Ar and TOI data for the bottle samples. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match in time to one row in the underway (high-frequency) table.
 
 # Data cleaning
 
@@ -23,7 +23,7 @@ PI Stanley exported a subset of columns from Matlab format into csv format for i
 
 # Quality assurance
 
-We checked each cruise event log to confirm time periods of continuous EIMS and number of discrete TOI underway (and rosette logs to confirm number of discrete TOI Niskin).  We identified when a provided datetime, location, depth, or niskin number was unexpected, excluded EIMS data when datetime was missing, and plotted data for visual inspection. We assured that the geographic and temporal coverage of the clean data table were within expected ranges.
+We checked each cruise event log to confirm time periods of continuous EIMS and number of discrete TOI underway (and rosette logs to confirm number of discrete TOI Niskin).  We identified when a provided datetime, location, depth, or niskin number was unexpected, excluded EIMS data when time was missing, and plotted data for visual inspection. We assured that the geographic and temporal coverage of the clean data table were within expected ranges.
 
 # Related packages
 
