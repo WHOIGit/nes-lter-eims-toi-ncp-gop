@@ -4,5 +4,5 @@ datetime_utc_matlab	PI-provided UTC date and time	Date		YYYY-MM-DD hh:mm:ss
 latitude_matlab	Latitude of sample event provided by PI	numeric	degree			
 longitude_matlab	Longitude of sample event provided by PI	numeric	degree			
 depth	Data product depth of sample below sea surface, for underway samples depth of ship's intake. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/	numeric	meter			
-biosat	Percent biological saturation, the oxygen-argon ratio divided by the equilibrium value of that ratio	numeric	dimensionless		NaN	Missing value
+biosat	Percent biological saturation, [ (O2/Ar) meas / (O2/Ar)equilibrium - 1 ]*x100	numeric	dimensionless		NaN	Missing value
 O2_Ar_ratio	Oxygen-argon ratio of EIMS sample from underway corrected for air values	numeric	dimensionless		NaN	Missing value

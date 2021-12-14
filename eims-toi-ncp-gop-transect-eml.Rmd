@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
-date: "July 27, 2021"
+date: "December 13, 2021"
 output: html_document
 ---
 
@@ -19,7 +19,7 @@ here("nes-lter-eims-toi-ncp-gop")
 
 # define source for functions developed for the EDI packaging workflow
 source("edi-utilities.R")
-source("prep-rachel-data.R")
+source("prep-eims-toi-data.R")
 
 # define R packages to require
 libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
@@ -63,7 +63,8 @@ Solution:
 
 # TOI data
 
-#for each item in cruiselist, filter cruise_list by cruise_id, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, return dataframe idenfied with cruise id
+# for each item in cruiselist, filter cruise_list by cruise_id, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, return dataframe idenfied with cruise id
+# uses functions in prep-eims-toi-data.R
 
 # include in cruise_list only cruises to assemble. if additional cruises are included without toi_input, loop works but produces error when reaches missing toi_input
 # this makes no modifications to the Niskins of 99, Depth 999. They are filtered out in next chunk. 
@@ -74,10 +75,13 @@ for (i in 1:nrow(cruise_list)){
   cruisename <- cruise_list$cruise_id[i]
   this <- cruise_list %>% filter(cruise_id == cruisename) 
   
+  # function assigns column names and adds cruise identifier column
   toi <- read_toi(this$toi_input, this$cruise_id)
+  # function formats datetime and puts rows in order
   toi <- time_toi(toi$datetime_utc_matlab)
   
-  # identify toi source based on Niskin value and assign underway samples to depth 5 m 
+  # function identifies toi source based on Niskin value and assigns underway sample depth to 5 m (from 0 m)
+  # in future check for nonzero depths before assigning
   toi <- set_toi_source(toi$niskin, toi$depth_matlab, toi$toi_source)
   
   
@@ -176,15 +180,31 @@ bottle <- rbind(toi_EN608, toi_EN617, toi_EN627, toi_EN644)
 niskin99 <- bottle %>% filter(niskin == "99")
 bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
 
+# exclude for now cruise EN644 samples with incorrect cast start time
+bottle$cast_time <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
+                               bottle$cruise == "EN644" & bottle$cast == 9 | 
+                               bottle$cruise == "EN644" & bottle$cast == 18 | 
+                               bottle$cruise == "EN644" & bottle$cast == 20 |
+                               bottle$cruise == "EN644" & bottle$cast == 26, 
+                          yes = "flag", 
+                          no = NA)
+
+bottlecasttime <- bottle %>% filter(!is.na(cast_time))
+
+bottle <- bottle %>% filter(is.na(cast_time))
+bottle <- bottle %>% select(-cast_time)
+
+bottle <- bottle[order(bottle$datetime_utc),]
 
 ```
 ## QA for TOI data
 
-• compare the given time to api provided
-• compare the given depth to api provided
-• isolate underway samples for visual comparison to event log
+• compare the provided time to API-matched time
+• compare the provided depth to API-matched depth
+• check for Niskins not found in API
 • check for samples recorded as Niskin with depth of 0
-
+• check for underway samples with provided depth not 0
+• isolate underway samples for visual comparison to event log
 
 ```{r}
 
@@ -203,20 +223,28 @@ toi_time_diffs <- bottle %>%
 # isolate instances of large depth differences
 bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
 toi_depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
-#write.csv(toi_depth_conflicts, "check_toi_depth_conflicts.csv")
+toi_depth_conflicts$reason <- "large depth difference"
 
-# isolate the niskins not found in API. This should be the same as samples printed in loop above
+# isolate the niskins not found in API. This should be the same as samples printed in loop above except if removed in rbind chunk
 toi_api_no_niskin <- bottle %>% filter(toi_source == "toi_niskin" & is.na(depth_API))
-#write.csv(toi_api_no_niskin, "check_niskins_not_api.csv")
+toi_api_no_niskin$reason <- "Niskin not found in API"
 
 # check for samples recorded as Niskin with depth of 0
 if (any(bottle$depth_matlab == 0)) {
   toi_niskin_0 <- bottle[which(bottle$depth_matlab == 0),]
   print(toi_niskin_0)
 }
+toi_niskin_0$reason <- "Niskin with provided depth = 0"
 
-toi_niskin_check <- rbind(toi_depth_conflicts, toi_api_no_niskin, toi_niskin_0)
-write.csv(toi_niskin_check, "toi_niskin_check.csv")
+# check for any underway samples with depth not 5 m 
+toi_underway_depth <- bottle %>% filter(toi_source == "toi_underway" & depth_matlab != 5.0)
+toi_underway_depth$reason <- "non-zero depth provided for underway sample"
+
+toi_bottle_check <- rbind(toi_depth_conflicts, 
+                          toi_api_no_niskin, 
+                          toi_niskin_0, 
+                          toi_underway_depth)
+write.csv(toi_bottle_check, "toi_bottle_check.csv")
 
 # isolate underway samples
 # -> perform visual inspection of underway TOI bottle samples against event log
@@ -297,6 +325,7 @@ for (i in 1:nrow(cruise_list)){
   assign(paste0("eims_", cruisename), eims)
   
 }
+
 ```
 
 # Assemble EIMS data from all cruises
@@ -308,7 +337,7 @@ missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_EN627, m
 # write csv file for inspection
 write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
 
-# combine loop output from all cruises into one dataframe
+# combine loop output from all cruises into one dataframe, excluding those with missing timestamp
 eims_all <- rbind(eims_EN608, eims_EN617, eims_EN627, eims_EN644)
 
 ```
@@ -457,7 +486,7 @@ project_insert(edi_pkg = pkg_id,
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.15.1")
 
 #identify input file names
 ncp_gop_csv <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_gop_input, ".csv")
@@ -546,6 +575,7 @@ ncp_gop_input <- ncp_gop_input %>%
   rename(niskin_matlab_ncp = niskin)
 # make sure datetime_utc_matlab and datetime_utc_matlab_toi sorted or use dplyr::arrange
 ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
+toi_transect_surface <- toi_transect_surface[order(toi_transect_surface$datetime_utc_matlab_toi),]
 # bind
 ncp_gop_transect_wide <- cbind(ncp_gop_input, toi_transect_surface)
 

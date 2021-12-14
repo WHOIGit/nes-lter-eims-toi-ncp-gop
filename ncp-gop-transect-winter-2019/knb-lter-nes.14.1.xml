@@ -27,17 +27,8 @@
         <surName>Mehta</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>amehta3@wellesley.edu</electronicMailAddress>
     </creator>
-    <associatedParty>
-      <individualName>
-        <givenName>Rachel</givenName>
-        <surName>Stanley</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
-      <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
-      <role>Principal Investigator</role>
-    </associatedParty>
     <associatedParty>
       <individualName>
         <givenName>Kevin</givenName>
@@ -67,7 +58,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>Metadata Provider</role>
     </associatedParty>
-    <pubDate>2021-12-02</pubDate>
+    <pubDate>2021-12-14</pubDate>
     <abstract>
       <para>This data package provides the net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) winter Transect cruise EN627 in 2019. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. This data package is derived from the EIMS and TOI data for the NES-LTER winter Transect cruise EN627 in a separate EDI data package referenced in the Methods below.&#13;
 </para>
@@ -88,9 +79,10 @@
       <keyword>Northeast U.S. Continental Shelf</keyword>
       <keywordThesaurus>NOAA Large Marine Ecosystems</keywordThesaurus>
     </keywordSet>
-    <additionalInfo>
-      <para>Acknowledgments to Wellesley College student Emily Kopp. </para>
-    </additionalInfo>
+    <keywordSet>
+      <keyword>net ecosystem production</keyword>
+      <keyword>net community production</keyword>
+    </keywordSet>
     <intellectualRights>
       <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
 </para>
@@ -143,11 +135,11 @@
 -- Temperature from NES-LTER ship-provided data&#13;
 -- Salinity from NES-LTER ship-provided data</para>
           <para># Calibrations and Derivations</para>
-          <para>The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). </para>
+          <para>The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.1 and includes the gas transfer velocity (k) and net community production (NCP, micromol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface-only bottle data in package knb-lter-nes.6.1 and includes the discrete NCP (micromol/m2/day), gross oxygen production (GOP, micromol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). Also note that on this cruise GOP includes some slightly negative values, which should be interpreted as measurement uncertainty (below detection) and not a physical reality. </para>
           <para># Data Cleaning</para>
-          <para>For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or niskin, and we provide a column to indicate quality using IODE Primary Level flags 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from niskin, datetime (in UTC) was corrected to reflect the time at which the rosette bottle closed; latitude_API and longitude_API are based on datetime_utc. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
+          <para>For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or niskin, and we provide a column to indicate quality using IODE Primary Level flags 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from Niskins, datetime (in UTC) was corrected to reflect the time at which the rosette bottle closed; latitude_API and longitude_API are based on datetime_utc. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
           <para># Quality Assurance</para>
-          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. </para>
+          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. </para>
           <para># References</para>
           <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
           <para>&#13;
@@ -260,7 +252,7 @@
       <physical>
         <objectName>gop-transect-en627.csv</objectName>
         <size unit="bytes">10401</size>
-        <authentication method="MD5">118705e302d3362946f38595a3c8c54b</authentication>
+        <authentication method="MD5">211c4effa344a8124996a85ab8774587</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
