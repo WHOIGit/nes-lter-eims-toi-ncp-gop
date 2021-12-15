@@ -180,7 +180,7 @@ bottle <- rbind(toi_EN608, toi_EN617, toi_EN627, toi_EN644)
 niskin99 <- bottle %>% filter(niskin == "99")
 bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
 
-# exclude for now cruise EN644 samples with incorrect cast start time
+# exclude for now cruise EN644 casts affected by provided incorrect cast start time
 bottle$cast_time <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
                                bottle$cruise == "EN644" & bottle$cast == 9 | 
                                bottle$cruise == "EN644" & bottle$cast == 18 | 
@@ -486,7 +486,7 @@ project_insert(edi_pkg = pkg_id,
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.15.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.1")
 
 #identify input file names
 ncp_gop_csv <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_gop_input, ".csv")
@@ -516,13 +516,44 @@ if (this_pkg$cruise_id == "EN627"){
   }
 if (this_pkg$cruise_id == "EN644"){
     colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality")
-  }
+}
+
+## ncp-hifreq
+# provide column names
+colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
+ncp_hifreq <- ncp_hifreq_input %>% select(-temp, -sal, -cumulative_dist)
+# add depth column to high freq EIMS data
+ncp_hifreq$depth <- 5
+
+##convert datetime format
+ncp_gop_input$datetime_utc_matlab <- as.POSIXct(ncp_gop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+
+
+```
+
+# For low-frequency data, handle missing data and provide quality flags
+
+```{r}
+
+sum(is.na(ncp_gop_input$gop))
 
 # convert provided quality flag to iode quality flag
 ncp_gop_input$iode_quality_flag <- NA_integer_
 ncp_gop_input <- ncp_gop_input %>%
    mutate(iode_quality_flag = case_when(quality == 1  ~ 4,
                                         quality == 0  ~ 1,))
+
+# convert any NaN to NA
+ncp_gop_input <- ncp_gop_input %>% 
+  mutate(gop=replace(gop, gop=="NaN", NA)) %>%
+  mutate(ncp=replace(ncp, ncp=="NaN", NA)) %>%
+  mutate(ncp_per_gop=replace(ncp_per_gop, ncp_per_gop=="NaN", NA))
+
+# update quality flag to "missing" for the rows that were NaN
+ncp_gop_input <- ncp_gop_input %>% 
+ mutate(iode_quality_flag = case_when(is.na(gop) & iode_quality_flag == 1 ~ 9,
+                                        TRUE  ~ iode_quality_flag))
 
 # check for missing data                                                                               
 sum(is.na(ncp_gop_input$gop))
@@ -536,20 +567,37 @@ ncp_gop_input <- ncp_gop_input %>%
 # check for NAs
 sum(is.na(ncp_gop_input$gop)) 
 
-## ncp-hifreq
-# provide column names
-colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
-ncp_hifreq <- ncp_hifreq_input %>% select(-temp, -sal, -cumulative_dist)
-# add depth column to high freq EIMS data
-ncp_hifreq$depth <- 5
 
-##convert datetime format
-ncp_gop_input$datetime_utc_matlab <- as.POSIXct(ncp_gop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
-ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+```
+# Exclude EN644 low-frequency samples affected by incorrect cast start time
+
+```{r}
+
+# ensure rows are in time order
+ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
+
+# exclude for now cruise EN644 samples affected by incorrect cast start time
+ncp_gop_input$cast_flag <- NA_integer_
+ncp_gop_input <- ncp_gop_input %>%
+   mutate(cast_flag = case_when(datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 1,
+                                datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 1,
+                                datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 1,
+                                datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 1,
+                                datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 1,
+                                datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 1,
+                                datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 1,
+                                        TRUE ~ 0,))
+sum(ncp_gop_input$cast_flag)
+
+ncpcasttime <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 1)
+
+ncp_gop_input <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 0)
+ncp_gop_input <- ncp_gop_input %>% select(-cast_flag)
 
 ```
 
-# Bind with TOI data to identify TOI_source and supply API-provided timestamp, latitude, and longitude
+
+# Bind low-frequency data with TOI data to identify TOI_source and supply API-provided timestamp, latitude, and longitude
 
 ```{r}
 
