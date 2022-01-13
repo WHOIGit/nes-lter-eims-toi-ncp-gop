@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
-date: "December 13, 2021"
+date: "January 13, 2022"
 output: html_document
 ---
 
@@ -334,6 +334,8 @@ for (i in 1:nrow(cruise_list)){
 
 # put all rows without timestamp into one dataframe
 missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_EN627, missingdate_EN644)
+# these are are row 1114 in input file RaEn608withbiosat and row 9845 in input file RaEn627withbiosat 
+
 # write csv file for inspection
 write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
 
@@ -423,7 +425,7 @@ project_folder <- "eims-toi-transect/"
 bottles_file <- "toi-transect"
 ra_file <- "eims-transect"
 edi_data <- c(bottles_file, ra_file)
-file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from surface rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
+file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
 pkg_id <- "knb-lter-nes.6.1"
 
 # Make EML Templates
