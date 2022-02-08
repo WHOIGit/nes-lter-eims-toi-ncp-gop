@@ -5,7 +5,7 @@ This repository displays the workflow used to process NES-LTER Transect cruise d
 **Acronym Descriptions:** *EIMS:* equilibration inlet mass spectrometer. *TOI:* triple oxygen isotope. *NCP:* net community production. *GOP:* gross oxygen production.
 
 This workflow includes the following:
-1) compiles data from provided files and supplies useful fields from the [REST API](https://github.com/WHOIGit/nes-lter-ims/wiki/Using-REST-API) for the end user
+1) compiles data from provided files and supplies useful fields from the [REST API](https://github.com/WHOIGit/nes-lter-ims/wiki/Using-REST-API-to-access-NES-LTER-data) for the end user
 2) cleans the provided data
 3) performs quality assurance on the data
 4) assembles and outputs the final XML file for submission to EDI
