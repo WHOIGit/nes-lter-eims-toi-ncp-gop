@@ -80,6 +80,7 @@ for (i in 1:nrow(cruise_list)){
   # function formats datetime and puts rows in order
   toi <- time_toi(toi$datetime_utc_matlab)
   
+  ## TODO: add Armstrong depth
   # function identifies toi source based on Niskin value and assigns underway sample depth to 5 m (from 0 m)
   # in future check for nonzero depths before assigning
   toi <- set_toi_source(toi$niskin, toi$depth_matlab, toi$toi_source)
@@ -153,12 +154,24 @@ for (i in 1:nrow(cruise_list)){
       next
     }
     
+    # skip row if time is missing
+    if (is.na(sampletime)){
+      next
+    }
+    
     # find the index of the nearest datetime
     ind <- which.min(abs(sampletime - underway$date))
     
     # store lat long 
+    # different columns depending on vessel
+    if(str_detect(cruisename, 'EN') ){
     toi$latitude_API[i] <- underway$gps_furuno_latitude[ind]
     toi$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+    }
+    if(str_detect(cruisename, 'AR') ){
+    toi$latitude_API[i] <- underway$dec_lat[ind]
+    toi$longitude_API[i] <- underway$dec_lon[ind]
+    }
   }
 
   
@@ -174,7 +187,7 @@ for (i in 1:nrow(cruise_list)){
 ```{r}
 
 # combine all cruises
-bottle <- rbind(toi_EN608, toi_EN617, toi_EN627, toi_EN644)
+bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627, toi_EN644)
 
 # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
 niskin99 <- bottle %>% filter(niskin == "99")
