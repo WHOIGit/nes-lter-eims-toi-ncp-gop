@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.6.2" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
+  <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
+    <allow>
+      <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
+      <permission>all</permission>
+    </allow>
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset>
+    <title>Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018</title>
+    <creator>
+      <individualName>
+        <givenName>Rachel</givenName>
+        <givenName>H R</givenName>
+        <surName>Stanley</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+    </creator>
+    <associatedParty>
+      <individualName>
+        <givenName>Kevin</givenName>
+        <surName>Cahill</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <role>technician</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Jaxine</givenName>
+        <givenName>L</givenName>
+        <surName>Wolfe</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9620-5382</userId>
+      <role>metadata Provider</role>
+    </associatedParty>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
+      <role>metadata Provider</role>
+    </associatedParty>
+    <pubDate>2022-08-05</pubDate>
+    <abstract>
+      <para>In order to calculate net community production (NCP) rates on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) transect cruises, gas tracer data were collected with a continuous at-sea mass spectrometer. The ratio of O2/Ar, measured continuously from underway water, yields 8,000-15,000 rates of NCP per cruise. Discrete water samples (N=100 to 150 per cruise) were collected for triple oxygen isotope (TOI) analysis to estimate gross primary&#13;
+production (GPP) rates and ratios of NCP/GPP. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.&#13;
+This data package provides two data tables per year for NES-LTER transect cruises beginning in 2018: a high-frequency continuous Equilibration Inlet Mass Spectrometer (EIMS) table and a low-frequency discrete triple oxygen isotope (TOI) table. Rates calculated from these measurements are provided as separate packages, per year, in the EDI repository.</para>
+    </abstract>
+    <keywordSet>
+      <keyword>primary production</keyword>
+      <keyword>inorganic matter</keyword>
+      <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>chemistry</keyword>
+      <keyword>oceanography</keyword>
+      <keyword>seawater</keyword>
+      <keyword>dissolved oxygen</keyword>
+      <keyword>stable isotopes</keyword>
+      <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>Northeast U.S. Continental Shelf</keyword>
+      <keywordThesaurus>NOAA Large Marine Ecosystems</keywordThesaurus>
+    </keywordSet>
+    <additionalInfo>
+      <para>Acknowledgments to technician Zoe Sandwith, who contributed sea time and lab analyses for cruises in 2018 and 2019, and to the Wellesley College undergraduate students who participated in each cruise: Elizabeth Lambert (EN608 and EN644), Helene Alt (EN617 and AR31A), and Emily Kopp (EN627).&#13;
+</para>
+    </additionalInfo>
+    <intellectualRights>
+      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data (\"Data User\" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available \"as is.\" The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.&#13;
+</para>
+    </intellectualRights>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>NES-LTER Transect</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-71.4212</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.448</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.5864</northBoundingCoordinate>
+          <southBoundingCoordinate>39.6721</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2018-01-31</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2019-08-25</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+    </coverage>
+    <maintenance>
+      <description>ongoing</description>
+    </maintenance>
+    <contact>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <positionName>Nes-Lter Information Manager</positionName>
+      <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
+    </contact>
+    <contact>
+      <individualName>
+        <givenName>Rachel</givenName>
+        <givenName>H R</givenName>
+        <surName>Stanley</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+    </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <para># Underway science seawater supplied to the Equilibrator Inlet Mass Spectrometer (EIMS)</para>
+          <para>A custom-built EIMS system was configured for automated measurement of oxygen and argon concentrations in the uncontaminated seawater flow in the ship’s lab. The system consists of a Hiden Hal 3F quadrupole mass spectrometer, compact pumping station for the mass spectrometer, equilibrator cartridge and various small pumps for air and water. Measurements were made approximately every 30 seconds. On cruise EN608, measurements were made with a Pfeiffer Prismaplus quadrupole mass spectrometer approximately every 12 seconds. Continuously during R/V Endeavor cruises, underway science seawater was supplied from 5-m water depth by two separate pumps: a diaphragm pump and an impeller pump; when possible we supplied water to the EIMS from the diaphragm pump. The Endeavor underway lines are not bleached but rather are flushed with freshwater before each cruise. On R/V Neil Armstrong cruises, underway science seawater was supplied from 2.1336-m water depth by a diaphragm pump. </para>
+          <para>Cruise-specific pump information:&#13;
+EN608: Used diaphragm first, then switched to impleller 1 Feb 08:18 UTC;&#13;
+EN617: Diaphragm for first two days, then switched to impeller due to bubbles in diaphragm supply in rougher weather;&#13;
+EN627: Diaphragm first with new debubbler for EIMS, then switched to impeller due to air dissolved in diaphragm supply in rougher weather;&#13;
+EN644: Diaphragm with debubbler.&#13;
+[Additional cruises, not in this package: EN649: Diaphragm pump with inlet newly lower in sea chest to reduce bubbling; EN655: Diaphragm.]</para>
+          <para># Bottle sample seawater supplied post-cruise to mass spectrometer</para>
+          <para>Discrete samples for triple oxygen isotopes (TOI) and for additional measurements of O2/Ar ratios were collected from the underway science seawater supplied by diaphragm pump and from the water column at multiple depths using Niskin bottles on a CTD rosette system. Niskin bottles were checked for integrity with respect to gases. Samples are collected in custom-made 500-mL evacuated glass sample bottles that have been poisoned previously with 100 μL saturated mercuric chloride solution (Emerson et al. 1999). Samples were processed post-cruise for TOI following the methods of Stanley et al. (2015).</para>
+          <para># Calibrations and derivations</para>
+          <para>The EIMS data have been calibrated according to the ratio measured in air roughly every 6 hours. This provides the calibrated O2/Ar ratio, which can be used to calculate rates of NCP (see Related packages, below). Biological saturation, or biosat, the percent supersaturation or undersaturation of O2 due to biological factors, is calculated as the calibrated O2/Ar ratio divided by the equilibrium value of O2/Ar (which is based on temperature and salinity) and expressed as a percentage. The EIMS data table includes high-frequency air-corrected O2/Ar ratio and the biological saturation value for the underway data. The TOI bottle data table consists of O2/Ar and TOI data for the bottle samples. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match in time to one row in the underway (high-frequency) table.</para>
+          <para># Data cleaning</para>
+          <para>PI Stanley exported a subset of columns from Matlab format into csv format for input to the workflow to assemble this data package; these input data files are provided as zip files. Data cleaning and metadata template assembly were performed in R Markdown. For the TOI bottle samples, a column was added to indicate whether the bottle was sampled from underway or Niskin. The package input data used Niskin = 0 and depth = 0 to signify underway samples; in the data product, this depth of underway samples is converted from 0 m to the depth of the ship's underway intake. For underway samples from R/V Endeavor, depth is 5 meters below the sea surface. For underway samples from R/V Neil Armstrong, depth is 2.13 meters below the sea surface. For bottle samples from Niskins, depth is supplied from the REST API bottle summary (i.e., measured depth) which is more accurate than depth_matlab. Additionally, cast number was supplied from the REST API bottle summary and the date-time (in UTC) was corrected to reflect the time at which the rosette bottle closed. In the EIMS data set, two records measured precisely at midnight have been omitted due to the lack of time code conversion. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. &#13;
+ &#13;
+# Quality assurance</para>
+          <para>We checked each cruise event log to confirm time periods of continuous EIMS and number of discrete TOI underway (and rosette logs to confirm number of discrete TOI Niskin).  We identified when a provided datetime, location, depth, or niskin number was unexpected, excluded EIMS data when time was missing, and plotted data for visual inspection. We assured that the geographic and temporal coverage of the clean data table were within expected ranges.</para>
+          <para># Related packages</para>
+          <para>Net community production (NCP) and gross oxygen production (GOP) are derived from these data and published separately on a per-cruise basis to the EDI repository as follows (year, package ID):</para>
+          <para>2018, knb-lter-nes.13.2&#13;
+2019, knb-lter-nes.14.2</para>
+          <para># References</para>
+          <para>Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347. https://doi.org/10.1016/S0304-4203(98)00090-5</para>
+          <para>Stanley, Rachel H.R., Zoe O. Sandwith, William J. Williams. 2015. Rates of summertime biological productivity in the Beaufort Gyre: A comparison between the low and record-low ice conditions of August 2011 and 2012. Journal of Marine Systems 147:29-44. https://doi.org/10.1016/j.jmarsys.2014.04.006</para>
+          <para/>
+        </description>
+      </methodStep>
+    </methods>
+    <project>
+      <title>Northeast U.S. Shelf LTER</title>
+      <personnel>
+        <individualName>
+          <givenName>Heidi</givenName>
+          <surName>Sosik</surName>
+        </individualName>
+        <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+        <role>Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Stace</givenName>
+          <surName>Beaulieu</surName>
+        </individualName>
+        <electronicMailAddress>sbeaulieu@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-2609-5453</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Changsheng</givenName>
+          <surName>Chen</surName>
+        </individualName>
+        <electronicMailAddress>c1chen@umassd.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8715-6101</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rubao</givenName>
+          <surName>Ji</surName>
+        </individualName>
+        <electronicMailAddress>rji@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8839-5427</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Steven</givenName>
+          <surName>Lentz</surName>
+        </individualName>
+        <electronicMailAddress>slentz@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-7498-0281</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Joel</givenName>
+          <surName>Llopiz</surName>
+        </individualName>
+        <electronicMailAddress>jllopiz@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-7584-7471</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Susanne</givenName>
+          <surName>Menden-Deuer</surName>
+        </individualName>
+        <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Michael</givenName>
+          <surName>Neubert</surName>
+        </individualName>
+        <electronicMailAddress>mneubert@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8820-5008</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Tatiana</givenName>
+          <surName>Rynearson</surName>
+        </individualName>
+        <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rachel</givenName>
+          <surName>Stanley</surName>
+        </individualName>
+        <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <abstract>
+        <para>The Northeast U.S. Shelf (NES) Long-Term Ecological Research (LTER) project integrates observations, experiments, and models to understand and predict how planktonic food webs are changing, and how those changes impact the productivity of higher trophic levels. The NES-LTER is co-located with the Northeast U.S. Continental Shelf Large Marine Ecosystem, spanning the Middle Atlantic Bight and Gulf of Maine. Our focal cross-shelf transect extends about 150 km southward from Martha’s Vineyard, MA, to just beyond the shelf break. Our overarching question is: How is climate change impacting the pelagic NES ecosystem and, in particular, affecting the relationship between compositional (e.g., species diversity and size structure) and aggregate (e.g., rates of primary production, and transfer of energy to important forage fish species) variability?</para>
+      </abstract>
+      <funding>
+        <para>NSF Award OCE-1655686</para>
+      </funding>
+    </project>
+    <dataTable>
+      <entityName>toi-transect.csv</entityName>
+      <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles</entityDescription>
+      <physical>
+        <objectName>toi-transect.csv</objectName>
+        <size unit="bytes">63749</size>
+        <authentication method="MD5">77b6c7ae21a941c9860af401514108a2</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>Data product UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc_matlab</attributeName>
+          <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude_API</attributeName>
+          <attributeDefinition>Latitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.75754</minimum>
+                  <maximum exclusive="false">41.428</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude_API</attributeName>
+          <attributeDefinition>Longitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.1119</minimum>
+                  <maximum exclusive="false">-70.52544</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>toi_source</attributeName>
+          <attributeDefinition>Source of bottle sample whether from Niskin or underway</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>toi_niskin</code>
+                    <definition>sample bottle was filled from a Niskin bottle on CTD rosette</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>toi_underway</code>
+                    <definition>sample bottle was filled from the ship's underway system</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>cast</attributeName>
+          <attributeDefinition>CTD rosette cast number, chronological per cruise</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">1</minimum>
+                  <maximum exclusive="false">45</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Sample from underway</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>niskin</attributeName>
+          <attributeDefinition>Rosette bottle position number</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">1</minimum>
+                  <maximum exclusive="false">24</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Sample from underway</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Data product depth of sample below sea surface, for underway samples depth of ship's intake, for Niskins from CTD summary data in NES-LTER  API. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.584</minimum>
+                  <maximum exclusive="false">151.604</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth_matlab</attributeName>
+          <attributeDefinition>PI-provided depth of sample below sea surface.</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">150</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_delta</attributeName>
+          <attributeDefinition>Oxygen-argon ratio divided by the reference ratio (oxygen-argon ratio in air minus 1, multiplied by 100)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-405.5</minimum>
+                  <maximum exclusive="false">78.584</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_ratio</attributeName>
+          <attributeDefinition>Oxygen-argon ratio of bottle sample</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">13.3329</minimum>
+                  <maximum exclusive="false">24.1896</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>cap_Delta_17O</attributeName>
+          <attributeDefinition>Triple isotopic composition of dissolved oxygen versus atmospheric O2, D17O</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>perMeg</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">7.61</minimum>
+                  <maximum exclusive="false">169</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>d17O</attributeName>
+          <attributeDefinition>Enrichment of oxygen-17 in dissolved oxygen (delta(17)O) in the water body by mass spectrometry</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>perMil</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-0.9018</minimum>
+                  <maximum exclusive="false">2.872</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>d18O</attributeName>
+          <attributeDefinition>Enrichment of oxygen-18 in dissolved oxygen {18O in O2 CAS 14797-71-8} {delta(18)O} in the water body by mass spectrometry URI http://vocab.nerc.ac.uk/collection/P01/current/D18OMXDG/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>perMil</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-2.039</minimum>
+                  <maximum exclusive="false">5.439</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>500</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>eims-transect.csv</entityName>
+      <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
+      <physical>
+        <objectName>eims-transect.csv</objectName>
+        <size unit="bytes">5084309</size>
+        <authentication method="MD5">99bd5477771a41cd63d87481f3b8c7cf</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc_matlab</attributeName>
+          <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude_matlab</attributeName>
+          <attributeDefinition>Latitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.6721</minimum>
+                  <maximum exclusive="false">41.5864</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude_matlab</attributeName>
+          <attributeDefinition>Longitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.4212</minimum>
+                  <maximum exclusive="false">-70.448</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Data product depth of sample below sea surface, for underway samples depth of ship's intake. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">2.1336</minimum>
+                  <maximum exclusive="false">5</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>biosat</attributeName>
+          <attributeDefinition>Percent biological saturation, [ (O2/Ar) meas / (O2/Ar)equilibrium - 1 ]x100</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-8.492</minimum>
+                  <maximum exclusive="false">16.83</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_ratio</attributeName>
+          <attributeDefinition>Oxygen-argon ratio of EIMS sample from underway corrected for air values</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">18.6508</minimum>
+                  <maximum exclusive="false">23.7843</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>81393</numberOfRecords>
+    </dataTable>
+    <otherEntity>
+      <entityName>input_data_csv.zip</entityName>
+      <entityDescription>Package input data files in csv format</entityDescription>
+      <physical>
+        <objectName>input_data_csv.zip</objectName>
+        <size unit="bytes">1360431</size>
+        <authentication method="MD5">dff06de5489c56de4c3ee27e6c2a6e76</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>application/zip</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+    <otherEntity>
+      <entityName>input_data_matlab.zip</entityName>
+      <entityDescription>Package input data files in Matlab format</entityDescription>
+      <physical>
+        <objectName>input_data_matlab.zip</objectName>
+        <size unit="bytes">3595163</size>
+        <authentication method="MD5">913a9d9aee3d42664777fe9df47b7962</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>application/zip</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+  </dataset>
+  <additionalMetadata>
+    <metadata>
+      <unitList>
+        <unit id="perMeg" multiplierToSI="1e-06" name="perMeg" parentSI="molePerMole" unitType="amount">
+          <description>molar ratio</description>
+        </unit>
+        <unit id="perMil" multiplierToSI="0.001" name="perMil" parentSI="molePerMole" unitType="amount">
+          <description>molar ratio</description>
+        </unit>
+      </unitList>
+    </metadata>
+  </additionalMetadata>
+  <additionalMetadata>
+    <metadata>
+      <emlEditor>
+        <app>EMLassemblyline</app>
+        <release>3.5.3</release>
+      </emlEditor>
+    </metadata>
+  </additionalMetadata>
+</eml:eml>

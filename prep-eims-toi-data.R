@@ -40,9 +40,10 @@ set_toi_source <- function(nisk, depth_mat, source) {
   # assign NA to niskin bottle 0
   toi$niskin[toi$niskin == 0] <- NA_integer_
   
-  # for underway samples, assign depth to 5m 
+  # for underway samples, assign depth to 5m if Endeavor cruise and 2.1336 if Armstrong cruise
   toi <- toi %>%
-    mutate(depth_matlab = case_when(depth_matlab == 0 & toi_source =="toi_underway" ~ 5,
+    mutate(depth_matlab = case_when(depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^EN") ~ 5,
+                                    depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^AR") ~ 2.1336,
                                     TRUE ~ depth_matlab))
         
   return(toi)
@@ -51,15 +52,23 @@ set_toi_source <- function(nisk, depth_mat, source) {
 
 
 # Read in eims data
-read_eims <- function(cruiseid){
+read_eims <- function(eims_filename, cruiseid){
   
-  eims_in <- read_csv((paste0(here(), "/eims-toi-transect/Ra", cruiseid, "withbiosat.csv")), col_names = FALSE)
+  eims_in <- read_csv((paste0(here(), "/eims-toi-transect/", eims_filename)), col_names = FALSE)
   colnames(eims_in) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat")
   eims <- eims_in %>% select(-temp, -sal, -cumulative_dist)
+  
   # populate cruise column
   eims$cruise <- cruiseid 
-  eims$depth <- 5
   
+  # set underway depth depending on vessel
+  if(str_detect(cruiseid, '^EN') ){
+    eims$depth <- 5
+  }
+  if(str_detect(cruiseid, '^AR') ){
+    eims$depth <- 2.1336
+  }
+ 
   return(eims)
   
 }

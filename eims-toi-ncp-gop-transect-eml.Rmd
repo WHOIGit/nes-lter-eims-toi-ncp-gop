@@ -305,7 +305,7 @@ for (i in 1:nrow(cruise_list)){
   cruisename <- cruise_list$cruise_id[i]
   this <- cruise_list %>% filter(cruise_id == cruisename) 
   
-  eims <- read_eims(this$cruise_id)
+  eims <- read_eims(this$eims_input, this$cruise_id)
   eims <- time_eims(eims$datetime_utc_matlab)
   
   # check for samples without timestamp
@@ -330,8 +330,15 @@ for (i in 1:nrow(cruise_list)){
     ind <- which.min(abs(sampletime - underway$date))
     
     # store lat long 
+    
+    if(str_detect(cruisename, 'EN') ){
     eims$latitude_API[i] <- underway$gps_furuno_latitude[ind]
     eims$longitude_API[i] <- underway$gps_furuno_longitude[ind]
+    }
+    if(str_detect(cruisename, 'AR') ){
+    eims$latitude_API[i] <- underway$dec_lat[ind]
+    eims$longitude_API[i] <- underway$dec_lon[ind]
+    }
   }
   
   #output data frame for cruise
@@ -346,14 +353,15 @@ for (i in 1:nrow(cruise_list)){
 ```{r}
 
 # put all rows without timestamp into one dataframe
-missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_EN627, missingdate_EN644)
+missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_AR31A, missingdate_EN627, missingdate_EN644)
 # these are are row 1114 in input file RaEn608withbiosat and row 9845 in input file RaEn627withbiosat 
 
+# TODO: separate by year
 # write csv file for inspection
 write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
 
 # combine loop output from all cruises into one dataframe, excluding those with missing timestamp
-eims_all <- rbind(eims_EN608, eims_EN617, eims_EN627, eims_EN644)
+eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644)
 
 ```
 
@@ -415,6 +423,7 @@ eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude
 bottle_edi <- bottle[, bottle_headers]
 eims_edi <- eims_all[, eims_headers]
 
+# TODO: separate by year
 # write files for upload to EDI
 write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect.csv'), row.names = FALSE)
 write.csv(eims_edi, here("eims-toi-transect", 'eims-transect.csv'), row.names = FALSE)
@@ -439,7 +448,7 @@ bottles_file <- "toi-transect"
 ra_file <- "eims-transect"
 edi_data <- c(bottles_file, ra_file)
 file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
-pkg_id <- "knb-lter-nes.6.1"
+pkg_id <- "knb-lter-nes.6.2"
 
 # Make EML Templates
 xlsx_to_template(metadata.path = metadata,
