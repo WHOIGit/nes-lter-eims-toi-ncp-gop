@@ -50,7 +50,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2022-08-05</pubDate>
+    <pubDate>2022-08-12</pubDate>
     <abstract>
       <para>In order to calculate net community production (NCP) rates on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) transect cruises, gas tracer data were collected with a continuous at-sea mass spectrometer. The ratio of O2/Ar, measured continuously from underway water, yields 8,000-15,000 rates of NCP per cruise. Discrete water samples (N=100 to 150 per cruise) were collected for triple oxygen isotope (TOI) analysis to estimate gross primary&#13;
 production (GPP) rates and ratios of NCP/GPP. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.&#13;
@@ -255,8 +255,8 @@ EN644: Diaphragm with debubbler.&#13;
       <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles</entityDescription>
       <physical>
         <objectName>toi-transect.csv</objectName>
-        <size unit="bytes">63749</size>
-        <authentication method="MD5">77b6c7ae21a941c9860af401514108a2</authentication>
+        <size unit="bytes">64809</size>
+        <authentication method="MD5">a2f50e7d55fb142251b2b41032c47071</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -544,15 +544,15 @@ EN644: Diaphragm with debubbler.&#13;
           </measurementScale>
         </attribute>
       </attributeList>
-      <numberOfRecords>500</numberOfRecords>
+      <numberOfRecords>505</numberOfRecords>
     </dataTable>
     <dataTable>
       <entityName>eims-transect.csv</entityName>
       <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements</entityDescription>
       <physical>
         <objectName>eims-transect.csv</objectName>
-        <size unit="bytes">5084309</size>
-        <authentication method="MD5">99bd5477771a41cd63d87481f3b8c7cf</authentication>
+        <size unit="bytes">6645577</size>
+        <authentication method="MD5">f15a2fe92d8a33d505b09e7817dd493c</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -683,7 +683,7 @@ EN644: Diaphragm with debubbler.&#13;
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">18.6508</minimum>
-                  <maximum exclusive="false">23.7843</maximum>
+                  <maximum exclusive="false">23.8403</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -694,7 +694,7 @@ EN644: Diaphragm with debubbler.&#13;
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>81393</numberOfRecords>
+      <numberOfRecords>105116</numberOfRecords>
     </dataTable>
     <otherEntity>
       <entityName>input_data_csv.zip</entityName>

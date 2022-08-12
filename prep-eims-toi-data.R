@@ -29,7 +29,7 @@ time_toi <- function(date_mat){
   }
 
 
-# Identify toi source based on niskin, reassign Niskin bottle zero to NA, reassign underway depth from 0 to 5 m
+# Identify toi source based on niskin, reassign Niskin bottle zero to NA, edit AR31A Niskins, reassign underway depth 
 set_toi_source <- function(nisk, depth_mat, source) {
   
   # define bottle vs underway based on niskin
@@ -40,12 +40,17 @@ set_toi_source <- function(nisk, depth_mat, source) {
   # assign NA to niskin bottle 0
   toi$niskin[toi$niskin == 0] <- NA_integer_
   
+  # for AR31A, adjust Niskin bottle number
+  toi <- toi %>%
+    mutate(niskin = case_when(cruise == "AR31A" ~ niskin/2,
+                              TRUE ~ niskin))
+  
   # for underway samples, assign depth to 5m if Endeavor cruise and 2.1336 if Armstrong cruise
   toi <- toi %>%
-    mutate(depth_matlab = case_when(depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^EN") ~ 5,
+    mutate(depth = case_when(depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^EN") ~ 5,
                                     depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^AR") ~ 2.1336,
                                     TRUE ~ depth_matlab))
-        
+  
   return(toi)
   
   }

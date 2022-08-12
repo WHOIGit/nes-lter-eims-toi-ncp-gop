@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
-date: "January 13, 2022"
+date: "August 12, 2022"
 output: html_document
 ---
 
@@ -37,12 +37,22 @@ lapply(libs, require, character.only = TRUE)
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 # include in cruise_list only cruises to assemble in cruise_list (or find a good way to skip rows in loop below)
 
+years <- unique(cruise_list$year)
+
+# identify cruises in each year
+# for (val in years){
+#     #cruiseyear <- cruise_list$year[i]
+#   this_year <- cruise_list %>% filter(year == val) 
+#   these_cruises <- this_year$cruise_id
+#   assign(paste0(val, "_cruises"), these_cruises)
+#   }
+
 ```
 
 ## Read in Provided CSV Files
 
 Add a toi_source field to the TOI data set to clarify whether a bottle was sampled from Niskin vs. underway water. 
-Assign underway sampling to a depth of 5m.
+Assign underway sampling depth.
 
 ## Supply correct UTC datetime, depth, and lat long for bottle samples
 
@@ -66,7 +76,7 @@ Solution:
 # for each item in cruiselist, filter cruise_list by cruise_id, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, return dataframe idenfied with cruise id
 # uses functions in prep-eims-toi-data.R
 
-# include in cruise_list only cruises to assemble. if additional cruises are included without toi_input, loop works but produces error when reaches missing toi_input
+# include in cruise_list only cruises to assemble. 
 # this makes no modifications to the Niskins of 99, Depth 999. They are filtered out in next chunk. 
   
  #  for each cruise in cruise_list, read in toi data and edit columns as needed 
@@ -80,11 +90,9 @@ for (i in 1:nrow(cruise_list)){
   # function formats datetime and puts rows in order
   toi <- time_toi(toi$datetime_utc_matlab)
   
-  ## TODO: add Armstrong depth
-  # function identifies toi source based on Niskin value and assigns underway sample depth to 5 m (from 0 m)
+  # function identifies toi source based on Niskin value and assigns underway sample depth to ship's intake depth (from 0 m)
   # in future check for nonzero depths before assigning
   toi <- set_toi_source(toi$niskin, toi$depth_matlab, toi$toi_source)
-  
   
   # read in api data for Niskin samples for given cruise
   summary <- read_from_api(type = "summary", cruises = cruisename)
@@ -136,7 +144,7 @@ for (i in 1:nrow(cruise_list)){
   toi <- toi %>%
     mutate(datetime_utc = case_when(toi_source =="toi_underway" ~ datetime_utc_matlab,
                                     toi_source == "toi_niskin" ~ datetime_utc_API)) %>%
-    mutate(depth = case_when(toi_source =="toi_underway" ~ depth_matlab,
+    mutate(depth = case_when(toi_source =="toi_underway" ~ depth,
                              toi_source == "toi_niskin" ~ depth_API)) %>%
     mutate(depth = round(depth, 3)) # round to 1 or 2 decimal places instead of to milimeter? 
   
@@ -187,7 +195,7 @@ for (i in 1:nrow(cruise_list)){
 ```{r}
 
 # combine all cruises
-bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627, toi_EN644)
+bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627, toi_EN644, toi_AR34B)
 
 # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
 niskin99 <- bottle %>% filter(niskin == "99")
@@ -198,7 +206,8 @@ bottle$cast_time <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 |
                                bottle$cruise == "EN644" & bottle$cast == 9 | 
                                bottle$cruise == "EN644" & bottle$cast == 18 | 
                                bottle$cruise == "EN644" & bottle$cast == 20 |
-                               bottle$cruise == "EN644" & bottle$cast == 26, 
+                               bottle$cruise == "EN644" & bottle$cast == 26 |
+                              bottle$cruise == "AR34B" & bottle$cast == 18,
                           yes = "flag", 
                           no = NA)
 
@@ -207,6 +216,7 @@ bottlecasttime <- bottle %>% filter(!is.na(cast_time))
 bottle <- bottle %>% filter(is.na(cast_time))
 bottle <- bottle %>% select(-cast_time)
 
+# ensure rows are in time order
 bottle <- bottle[order(bottle$datetime_utc),]
 
 ```
@@ -243,14 +253,11 @@ toi_api_no_niskin <- bottle %>% filter(toi_source == "toi_niskin" & is.na(depth_
 toi_api_no_niskin$reason <- "Niskin not found in API"
 
 # check for samples recorded as Niskin with depth of 0
-if (any(bottle$depth_matlab == 0)) {
-  toi_niskin_0 <- bottle[which(bottle$depth_matlab == 0),]
-  print(toi_niskin_0)
-}
+toi_niskin_0 <- bottle %>% filter(toi_source == "toi_niskin" & depth_matlab == 0)
 toi_niskin_0$reason <- "Niskin with provided depth = 0"
 
-# check for any underway samples with depth not 5 m 
-toi_underway_depth <- bottle %>% filter(toi_source == "toi_underway" & depth_matlab != 5.0)
+# check for any underway samples with provided depth not 0 m 
+toi_underway_depth <- bottle %>% filter(toi_source == "toi_underway" & depth_matlab != 0)
 toi_underway_depth$reason <- "non-zero depth provided for underway sample"
 
 toi_bottle_check <- rbind(toi_depth_conflicts, 
@@ -265,6 +272,27 @@ toi_uw_check <- bottle %>%
   filter(toi_source == "toi_underway") %>%
   select(-niskin, -cast, -depth_API, -datetime_utc_API, -depth_diff)
 
+# putting this here for now so these samples are included in toi_bottle_check but excluded downstream
+# exclude samples affected by incorrect datetime
+bottle$cast_time <- ifelse(bottle$cruise == "AR31A" & is.na(bottle$datetime_utc_matlab)| # date is provided in input but time is not
+                           bottle$cruise == "AR34B" & bottle$cast == 18|   # datetime provided doesn't match TOI cast log
+                           bottle$cruise == "EN617" & bottle$cast == 29,   # datetime provided doesn't match rosette log (no TOI on cast 29)
+                          yes = "flag", 
+                          no = NA)
+
+bottlecasttime <- bottle %>% filter(!is.na(cast_time))
+bottle <- bottle %>% filter(is.na(cast_time))
+bottle <- bottle %>% select(-cast_time)
+
+# check for any missing datetime
+sum(is.na(bottle$datetime_utc))
+# missing_bottle_time <- bottle %>% filter(is.na(datetime_utc))
+
+# # extract year to facilitate splitting data set by year
+# bottle$year <- format(bottle$datetime_utc, "%Y")
+# #check for any missing year
+# sum(is.na(bottle$year))
+
 
 ```
 
@@ -278,6 +306,9 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 # bottle dataset does not have coordinates from matlab
 # plot bottle API lat long
 map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
+map_locs(df = toi_AR31A, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
+map_locs(df = toi_AR34B, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
+map_locs(df = toi_EN608, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
 
 # Plot measured parameters in bottle TOI dataset
 ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
@@ -285,6 +316,29 @@ ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_delta))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = cap_Delta_17O))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = d17O))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
+
+```
+
+## Write TOI output files 
+
+```{r}
+
+# # separate data by year
+# bottle_2018 <- bottle %>% filter(year == "2018")
+# bottle_2019 <- bottle %>% filter(year == "2019")
+
+# define headers for columns in desired order
+bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
+
+# reorder columns as necessary
+bottle_edi <- bottle[, bottle_headers]
+# bottle_2018 <- bottle[, bottle_headers]
+# bottle_2019 <- bottle[, bottle_headers]
+
+# write files for upload to EDI
+write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect.csv'), row.names = FALSE)
+# write.csv(bottle_2018, here("eims-toi-transect", 'toi-transect-2018.csv'), row.names = FALSE)
+# write.csv(bottle_2019, here("eims-toi-transect", 'toi-transect-2019.csv'), row.names = FALSE)
 
 ```
 ## Read in EIMS data
@@ -295,10 +349,10 @@ ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
 # read in PI-provided csv data
 # provide column names
 # provide cruise id
-# provide depth of 5 m 
+# provide depth of underway intake
 # convert datetime format
-# put in order by time
-# produce dataframe for each cruise
+# order by time
+# produce dataframe for each year
 
 for (i in 1:nrow(cruise_list)){
       
@@ -353,15 +407,14 @@ for (i in 1:nrow(cruise_list)){
 ```{r}
 
 # put all rows without timestamp into one dataframe
-missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_AR31A, missingdate_EN627, missingdate_EN644)
+missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_AR31A, missingdate_EN627, missingdate_EN644, missingdate_AR34B)
 # these are are row 1114 in input file RaEn608withbiosat and row 9845 in input file RaEn627withbiosat 
 
-# TODO: separate by year
 # write csv file for inspection
 write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
 
 # combine loop output from all cruises into one dataframe, excluding those with missing timestamp
-eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644)
+eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644, eims_AR34B)
 
 ```
 
@@ -407,26 +460,32 @@ eims_all$long_diff <- eims_all$longitude_matlab - eims_all$longitude_API
 pos_check <- eims_all %>%
   filter(abs(lat_diff) > 0.002 | abs(long_diff) > 0.002)
 # EN617: identified two instances where values differ, and API output appears to be in error for those two data points. Use PI-provided lat/long. 
+# AR34B supplies 39 of these 53 records! Based on REST API, not R2R
 
 ```
-
 
 ## Column Header Organization
 
 ```{r}
 
+# separate data by year
+eims_all$year <- format(eims_all$datetime_utc_matlab, "%Y")
+eims_2018 <- eims_all %>% filter(year == "2018")
+eims_2019 <- eims_all %>% filter(year == "2019")
+
 # define headers for columns in desired order
-bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
 eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio")
 
 # reorder columns as necessary
-bottle_edi <- bottle[, bottle_headers]
-eims_edi <- eims_all[, eims_headers]
+eims_all <- eims_all[, eims_headers]
+eims_2018 <- eims_2018[, eims_headers]
+eims_2019 <- eims_2019[, eims_headers]
 
-# TODO: separate by year
 # write files for upload to EDI
-write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect.csv'), row.names = FALSE)
-write.csv(eims_edi, here("eims-toi-transect", 'eims-transect.csv'), row.names = FALSE)
+write.csv(eims_all, here("eims-toi-transect", 'eims-transect.csv'), row.names = FALSE)
+write.csv(eims_2018, here("eims-toi-transect", 'eims-transect-2018.csv'), row.names = FALSE)
+write.csv(eims_2019, here("eims-toi-transect", 'eims-transect-2019.csv'), row.names = FALSE)
+# ra_file <- c('eims-transect-2018.csv', 'eims-transect-2019.csv')
 
 ```
 
@@ -447,6 +506,7 @@ project_folder <- "eims-toi-transect/"
 bottles_file <- "toi-transect"
 ra_file <- "eims-transect"
 edi_data <- c(bottles_file, ra_file)
+#file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
 file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
 pkg_id <- "knb-lter-nes.6.2"
 
@@ -460,6 +520,31 @@ xlsx_to_template(metadata.path = here(project_folder, bottles_file),
                  output.path = project_folder,
                  edi.filename = bottles_file, 
                  rights = "CCBY")
+# # Make EML Templates
+# xlsx_to_template(metadata.path = metadata,
+#                  output.path = project_folder,
+#                  edi.filename = 'eims-transect-2018', 
+#                  rights = "CCBY")
+# # Make EML Templates
+# xlsx_to_template(metadata.path = metadata,
+#                  output.path = project_folder,
+#                  edi.filename = 'eims-transect-2019', 
+#                  rights = "CCBY")
+# # underway samples
+# xlsx_to_template(metadata.path = here(project_folder, "eims-transect"), 
+#                  output.path = project_folder,
+#                  edi.filename = 'eims-transect-2018.csv', 
+#                  rights = "CCBY")
+# # underway samples
+# xlsx_to_template(metadata.path = here(project_folder, "eims-transect"), 
+#                  output.path = project_folder,
+#                  edi.filename = 'eims-transect-2019.csv', 
+#                  rights = "CCBY")
+# # Make EML Templates
+# xlsx_to_template(metadata.path = metadata,
+#                  output.path = project_folder,
+#                  edi.filename = "eims-transect", 
+#                  rights = "CCBY")
 # underway samples
 xlsx_to_template(metadata.path = here(project_folder, ra_file), 
                  output.path = project_folder,
@@ -469,10 +554,10 @@ xlsx_to_template(metadata.path = here(project_folder, ra_file),
 # Data Coverage
 # combine the dates for both datasets
 # isolate date and geospatial columns for input
-date_col <- as.Date(c(eims_edi$datetime_utc_matlab,
+date_col <- as.Date(c(eims_all$datetime_utc_matlab,
                       bottle_edi$datetime_utc))
-lat_col <- eims_edi$latitude_matlab
-lon_col <- eims_edi$longitude_matlab
+lat_col <- eims_all$latitude_matlab
+lon_col <- eims_all$longitude_matlab
 # run function to determine geospatial and temporal coverage
 coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
 
@@ -483,8 +568,6 @@ make_eml(path = project_folder,
          data.table.name = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
          data.table.description = file_descriptions,
          other.entity = c("input_data_csv.zip", "input_data_matlab.zip"),
-         #other.entity = "input_data_csv.zip",
-         #other.entity.name = c(paste0("input_data_csv.zip", "input_data_matlab.zip")),
          other.entity.description = c("Package input data files in csv format","Package input data files in Matlab format"),
          temporal.coverage = c(coverage$startdate, coverage$enddate),
          geographic.description = "NES-LTER Transect",
