@@ -13,16 +13,21 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 # set environment timezone to UTC
 Sys.setenv(TZ = "UTC")
 
-#set path to root of project
+# set path to root of project
 library(here)
 here("nes-lter-eims-toi-ncp-gop")
 
+# source from Github
+remotes::install_github("WHOIGit/ediutilities")
+library(ediutilities)
+
 # define source for functions developed for the EDI packaging workflow
-source("edi-utilities.R")
+#source("edi-utilities.R")
+# specific to this workflow
 source("prep-eims-toi-data.R")
 
 # define R packages to require
-libs <- c("tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
+libs <- c("glue", "tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
 # load libraries
 lapply(libs, require, character.only = TRUE)
 
@@ -37,7 +42,7 @@ lapply(libs, require, character.only = TRUE)
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 # include in cruise_list only cruises to assemble in cruise_list (or find a good way to skip rows in loop below)
 
-years <- unique(cruise_list$year)
+#years <- unique(cruise_list$year)
 
 # identify cruises in each year
 # for (val in years){
@@ -172,6 +177,8 @@ for (i in 1:nrow(cruise_list)){
     
     # store lat long 
     # different columns depending on vessel
+    # toi$latitude_API[i] <- underway$latitude[ind]   
+    # toi$longitude_API[i] <- underway$longitude[ind]
     if(str_detect(cruisename, 'EN') ){
     toi$latitude_API[i] <- underway$gps_furuno_latitude[ind]
     toi$longitude_API[i] <- underway$gps_furuno_longitude[ind]
@@ -482,106 +489,95 @@ eims_2018 <- eims_2018[, eims_headers]
 eims_2019 <- eims_2019[, eims_headers]
 
 # write files for upload to EDI
-write.csv(eims_all, here("eims-toi-transect", 'eims-transect.csv'), row.names = FALSE)
+#write.csv(eims_all, here("eims-toi-transect", 'eims-transect.csv'), row.names = FALSE)
 write.csv(eims_2018, here("eims-toi-transect", 'eims-transect-2018.csv'), row.names = FALSE)
 write.csv(eims_2019, here("eims-toi-transect", 'eims-transect-2019.csv'), row.names = FALSE)
-# ra_file <- c('eims-transect-2018.csv', 'eims-transect-2019.csv')
 
 ```
 
-# EML Assembly: EIMS-TOI-transect
+## EML Assembly: EIMS-TOI-transect
 
-This chunk outputs the final xml file for EDI through the following steps:
-
-Step 1: Populating EML Assembly Line templates with metadata
-Step 2: Calculating the geospatial and temporal coverage 
-Step 3: Making the XML file 
-Step 4: Inserting a custom NES-LTER parent project node 
+Assemble EML metadata templates based on the provided Excel template
 
 ```{r}
 
-# define input for EML assembly
-metadata <- "eims-toi-transect/eims-toi-transect-info"
-project_folder <- "eims-toi-transect/"
-bottles_file <- "toi-transect"
-ra_file <- "eims-transect"
-edi_data <- c(bottles_file, ra_file)
-#file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
-file_descriptions <- c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements")
+# define input files
+edi_filename <- "eims-toi-transect"
+metadata <- glue('{edi_filename}/{edi_filename}-info') 
+project_folder <- here('eims-toi-transect')
 pkg_id <- "knb-lter-nes.6.2"
 
-# Make EML Templates
-xlsx_to_template(metadata.path = metadata,
-                 output.path = project_folder,
-                 edi.filename = "toi-transect", 
-                 rights = "CCBY")
-# toi bottle samples
-xlsx_to_template(metadata.path = here(project_folder, bottles_file), 
-                 output.path = project_folder,
-                 edi.filename = bottles_file, 
-                 rights = "CCBY")
-# # Make EML Templates
-# xlsx_to_template(metadata.path = metadata,
-#                  output.path = project_folder,
-#                  edi.filename = 'eims-transect-2018', 
-#                  rights = "CCBY")
-# # Make EML Templates
-# xlsx_to_template(metadata.path = metadata,
-#                  output.path = project_folder,
-#                  edi.filename = 'eims-transect-2019', 
-#                  rights = "CCBY")
-# # underway samples
-# xlsx_to_template(metadata.path = here(project_folder, "eims-transect"), 
-#                  output.path = project_folder,
-#                  edi.filename = 'eims-transect-2018.csv', 
-#                  rights = "CCBY")
-# # underway samples
-# xlsx_to_template(metadata.path = here(project_folder, "eims-transect"), 
-#                  output.path = project_folder,
-#                  edi.filename = 'eims-transect-2019.csv', 
-#                  rights = "CCBY")
-# # Make EML Templates
-# xlsx_to_template(metadata.path = metadata,
-#                  output.path = project_folder,
-#                  edi.filename = "eims-transect", 
-#                  rights = "CCBY")
-# underway samples
-xlsx_to_template(metadata.path = here(project_folder, ra_file), 
-                 output.path = project_folder,
-                 edi.filename = ra_file, 
-                 rights = "CCBY")
+# TODO: handle paths for templates output
+# Make EML Templates 
+excel_to_template(metadata_path = metadata, 
+                  edi_filename = edi_filename, 
+                  rights = "CCBY",
+                  other_info = TRUE)
 
-# Data Coverage
-# combine the dates for both datasets
-# isolate date and geospatial columns for input
-date_col <- as.Date(c(eims_all$datetime_utc_matlab,
-                      bottle_edi$datetime_utc))
-lat_col <- eims_all$latitude_matlab
-lon_col <- eims_all$longitude_matlab
-# run function to determine geospatial and temporal coverage
-coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
+sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'CategoricalVariables',
+             glue::glue('eims-toi-transect/catvars_toi-transect.txt'))
 
-# Make EML
-make_eml(path = project_folder,
-         dataset.title = "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018",
-         data.table = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
-         data.table.name = c(paste0(bottles_file, ".csv"), paste0(ra_file, ".csv")),
-         data.table.description = file_descriptions,
+sheet_to_tsv('eims-toi-transect/eims-transect.xlsx', 'ColumnHeaders',
+             glue::glue('eims-toi-transect/attributes_eims-transect-2018.txt'))
+
+sheet_to_tsv('eims-toi-transect/eims-transect.xlsx', 'ColumnHeaders',
+             glue::glue('eims-toi-transect/attributes_eims-transect-2019.txt'))
+
+sheet_to_tsv('eims-toi-transect/toi-transect.xlsx', 'ColumnHeaders',
+             glue::glue('eims-toi-transect/attributes_toi-transect.txt'))
+
+EMLassemblyline::template_core_metadata(path= project_folder, license='CCBY')
+
+```
+Compute spatiotemporal coverage and generate EML
+
+```{r}
+
+# read data product csvs in order to get temporal and geographic coverage
+toi_edi <- read.csv(here('eims-toi-transect/toi-transect.csv'))
+eims_1 <- read.csv(here('eims-toi-transect/eims-transect-2018.csv'))
+eims_2 <- read.csv(here('eims-toi-transect/eims-transect-2019.csv'))
+
+# identify columns to generate temporal coverage and geographic coverage
+temp_coverage <- temporal_coverage(append(toi_edi$datetime_utc, 
+                                   append(eims_1$datetime_utc_matlab, eims_2$datetime_utc_matlab)))
+lat <- append(toi_edi$latitude_API, append(eims_1$latitude_matlab, eims_2$latitude_matlab))
+long <- append(toi_edi$longitude_API, append(eims_1$longitude_matlab, eims_2$longitude_matlab))
+
+# generate EML
+make_eml(path=project_folder,
+         data.path= here('eims-toi-transect'),
+         dataset.title= 'Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018',
+         data.table=c('toi-transect.csv',
+                      'eims-transect-2018.csv',
+                      'eims-transect-2019.csv'),
+         data.table.description=c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", 
+                                  "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2018", 
+                                  "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2019"),
+         data.table.name = c('toi-transect.csv',
+                      'eims-transect-2018.csv',
+                      'eims-transect-2019.csv'),
          other.entity = c("input_data_csv.zip", "input_data_matlab.zip"),
+         other.entity.name = c("input_data_csv.zip", "input_data_matlab.zip"),
          other.entity.description = c("Package input data files in csv format","Package input data files in Matlab format"),
-         temporal.coverage = c(coverage$startdate, coverage$enddate),
+         temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
-         geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
+         geographic.coordinates = geographic_coordinates(lat, long),
          maintenance.description = "ongoing",
          user.id = "NES",
          user.domain = "LTER",
          package.id = pkg_id)
 
 # Insert Custom Project Node
-project_insert(edi_pkg = pkg_id, 
-               xml.path = project_folder)
-```
+# TODO: fix to handle paths
+# for edi_utilities
+#project_insert(edi_pkg = pkg_id, 
+#               xml.path = project_folder)
 
+# for ediutilities
+project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
+
+```
 
 ## NCP-GOP-TRANSECT ----------
 
