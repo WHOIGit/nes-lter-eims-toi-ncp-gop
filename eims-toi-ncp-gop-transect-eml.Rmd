@@ -504,15 +504,15 @@ Assemble EML metadata templates based on the provided Excel template
 # define input files
 edi_filename <- "eims-toi-transect"
 metadata <- glue('{edi_filename}/{edi_filename}-info') 
-project_folder <- here('eims-toi-transect')
+project_folder <- "eims-toi-transect"
 pkg_id <- "knb-lter-nes.6.2"
 
-# TODO: handle paths for templates output
 # Make EML Templates 
 excel_to_template(metadata_path = metadata, 
                   edi_filename = edi_filename, 
                   rights = "CCBY",
-                  other_info = TRUE)
+                  other_info = TRUE, 
+                  output_path = project_folder)
 
 sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'CategoricalVariables',
              glue::glue('eims-toi-transect/catvars_toi-transect.txt'))
@@ -569,13 +569,16 @@ make_eml(path=project_folder,
          package.id = pkg_id)
 
 # Insert Custom Project Node
-# TODO: fix to handle paths
+
 # for edi_utilities
 #project_insert(edi_pkg = pkg_id, 
 #               xml.path = project_folder)
 
 # for ediutilities
-project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
+#project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
+
+# for prep-eims-toi-data: 
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = project_folder)
 
 ```
 

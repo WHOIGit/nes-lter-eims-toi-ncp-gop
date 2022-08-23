@@ -91,4 +91,39 @@ time_eims <- function(date_mat){
   
 }
 
+# Function inserts project node after the methods node of an xml document
+# requires the existence of a parent_project.txt
+# input path to xml file
+
+add_parent <- function(edi_pkg, parent_name, xml.path) {
+  if (!file.exists(parent_name)) {
+    stop(paste0(parent_name, "does not exist"))
+  }
+  # read in parent project and xml file to be modified
+  newnode <- read_xml(parent_name, from = "xml")
+  xml_file <- read_xml(paste0(xml.path, "/", edi_pkg, ".xml"), from = "xml")
+  
+  # replace existant project node
+  if (is.na(xml_find_first(xml_file, ".//project")) == FALSE) {
+    # find old project node
+    oldnode <- xml_find_first(xml_file, ".//project") # find project node
+    # replace with new project node
+    xml_replace(oldnode, newnode)
+    warning("<project> node already existed but was overwritten")
+  }
+  # insert new project node
+  if (is.na(xml_find_first(xml_file, ".//project")) == TRUE) {
+    # find methods node
+    methodsnode <- xml_find_first(xml_file, ".//methods")
+    # add project node after methods and before dataTable
+    xml_add_sibling(methodsnode, newnode, where = "after")
+  }
+  # validate script
+  if (eml_validate(xml_file) == FALSE) {
+    warning("XML document not valid")
+  }
+  # return(xml_file)
+  write_xml(xml_file, paste0(xml.path, "/", edi_pkg, ".xml"))
+}
+
 

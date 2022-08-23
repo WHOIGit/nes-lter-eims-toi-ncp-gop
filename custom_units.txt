@@ -1,3 +1,0 @@
-id	unitType	parentSI	multiplierToSI	description
-perMeg	amount	molePerMole	1e-06	molar ratio
-perMil	amount	molePerMole	0.001	molar ratio

@@ -1,3 +1,0 @@
-attributeName	code	definition
-toi_source	toi_niskin	sample bottle was filled from a Niskin bottle on CTD rosette
-toi_source	toi_underway	sample bottle was filled from the ship's underway system
