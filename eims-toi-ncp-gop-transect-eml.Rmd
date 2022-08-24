@@ -18,7 +18,7 @@ library(here)
 here("nes-lter-eims-toi-ncp-gop")
 
 # source from Github
-remotes::install_github("WHOIGit/ediutilities")
+#remotes::install_github("WHOIGit/ediutilities")
 library(ediutilities)
 
 # define source for functions developed for the EDI packaging workflow
@@ -592,11 +592,7 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.1")
-
-#identify input file names
-ncp_gop_csv <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_gop_input, ".csv")
-ncp_hifreq_input <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_hifreq_input, ".csv")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
 
 ```
 
@@ -604,44 +600,96 @@ ncp_hifreq_input <- paste0(this_pkg$folder, "/input_data_csv/", this_pkg$ncp_hif
 
 ```{r}
 
-## read in PI-provided csv data
-ncp_gop_input <- read_csv(ncp_gop_csv, col_names = FALSE)
-ncp_hifreq_input <- read_csv(ncp_hifreq_input, col_names = FALSE)
+## NCP-GOP
 
-## ncp-gop
-# provide column names
-if (this_pkg$cruise_id == "EN608" | this_pkg$cruise_id == "EN617"){
-    colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop")
-    ncp_gop_input$depth <- NA
-    ncp_gop_input$niskin <- NA
-    ncp_gop_input$quality <- 0
-  }
-if (this_pkg$cruise_id == "EN627"){
-    colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin")
-    ncp_gop_input$quality <- 0
-  }
-if (this_pkg$cruise_id == "EN644"){
-    colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality")
+# read in PI-provided csv data and provide column names
+for (i in 1:nrow(this_pkg)){
+  
+  cruise <- this_pkg$cruise_id[i]
+  this_cruise <- this_pkg %>% filter(cruise_id == cruise) 
+  
+  # read csv
+  ncp_gop_csv <- paste0(this_cruise$folder, "/input_data_csv/", this_cruise$ncp_gop_input, ".csv")
+  ncp_gop_input <- read_csv(ncp_gop_csv, col_names = FALSE)
+
+  # provide column names
+    if (this_cruise$discreterates_cols == "6"){
+      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop") # 6 columns
+      ncp_gop_input$depth <- NA
+      ncp_gop_input$niskin <- NA
+      ncp_gop_input$quality <- 0
+    } else if 
+    (this_cruise$discreterates_cols == "8"){
+      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin") # 8 columns
+      ncp_gop_input$quality <- 0
+    }
+    else if (this_cruise$discreterates_cols == "9"){
+      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality") # 9 columns
+    }
+
+   #output data frame for cruise
+  assign(paste0("ncp_gop_", cruise), ncp_gop_input) 
+  
 }
 
-## ncp-hifreq
-# provide column names
-colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
-ncp_hifreq <- ncp_hifreq_input %>% select(-temp, -sal, -cumulative_dist)
-# add depth column to high freq EIMS data
-ncp_hifreq$depth <- 5
+# identify names of cruise dataframes
+this_pkg <- this_pkg %>% mutate(ncp_gop_df = paste0("ncp_gop_", cruise_id))
+ncp_gop_names <- this_pkg$ncp_gop_df
 
-##convert datetime format
+# combine cruises for the package into one dataframe
+ncp_gop_input <- map_dfr(mget(ncp_gop_names), list)
+
+## NCP-high-frequency
+
+# read in PI-provided csv data and provide column names and underway depth
+for (i in 1:nrow(this_pkg)){
+  
+  cruise <- this_pkg$cruise_id[i]
+  this_cruise <- this_pkg %>% filter(cruise_id == cruise) 
+  
+  # read csv
+  ncp_hifreq_csv <- paste0(this_cruise$folder, "/input_data_csv/", this_cruise$ncp_hifreq_input, ".csv")
+  ncp_hifreq_input <- read_csv(ncp_hifreq_csv, col_names = FALSE)
+
+  # provide column names
+  colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
+  
+  ncp_hifreq_input$cruiseid <- cruise
+  
+  # set underway depth depending on vessel
+  if(str_detect(cruise, '^EN') ){
+    ncp_hifreq_input$depth <- 5
+  }
+  if(str_detect(cruise, '^AR') ){
+    ncp_hifreq_input$depth <- 2.1336
+  }
+  
+   #output data frame for cruise
+  assign(paste0("ncp_hifreq_", cruise), ncp_hifreq_input) 
+  
+}
+
+# identify names of cruise dataframes
+this_pkg <- this_pkg %>% mutate(ncp_hifreq_df = paste0("ncp_hifreq_", cruise_id))
+ncp_hifreq_names <- this_pkg$ncp_hifreq_df
+
+# combine cruises for the package into one dataframe
+ncp_hifreq <- map_dfr(mget(ncp_hifreq_names), list)
+
+# remove unneeded columns
+ncp_hifreq <- ncp_hifreq %>% 
+  select(-temp, -sal, -cumulative_dist)
+
+# convert datetime format
 ncp_gop_input$datetime_utc_matlab <- as.POSIXct(ncp_gop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
 ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
-
 
 ```
 
 # For low-frequency data, handle missing data and provide quality flags
 
 ```{r}
-
+#TODO: continue here with updating to yearly packages
 sum(is.na(ncp_gop_input$gop))
 
 # convert provided quality flag to iode quality flag
