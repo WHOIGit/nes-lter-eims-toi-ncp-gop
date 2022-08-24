@@ -3,7 +3,7 @@
 # Read in toi data
 read_toi <- function(toi_filename, cruiseid){
 
-  toi_in <- read_csv((paste0(here(), "/eims-toi-transect/", toi_filename)), col_names = FALSE)
+  toi_in <- read_csv((paste0(here(), "/eims-toi-transect/input_data_csv/", toi_filename)), col_names = FALSE)
 
   colnames(toi_in) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17O", "d17O", "d18O", "niskin")
   toi <- toi_in
@@ -59,7 +59,7 @@ set_toi_source <- function(nisk, depth_mat, source) {
 # Read in eims data
 read_eims <- function(eims_filename, cruiseid){
   
-  eims_in <- read_csv((paste0(here(), "/eims-toi-transect/", eims_filename)), col_names = FALSE)
+  eims_in <- read_csv((paste0(here(), "/eims-toi-transect/input_data_csv/", eims_filename)), col_names = FALSE)
   colnames(eims_in) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat")
   eims <- eims_in %>% select(-temp, -sal, -cumulative_dist)
   
