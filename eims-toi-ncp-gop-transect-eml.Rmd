@@ -208,7 +208,7 @@ bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627, toi_EN644, toi_AR34B
 niskin99 <- bottle %>% filter(niskin == "99")
 bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
 
-# exclude for now cruise EN644 casts affected by provided incorrect cast start time
+# exclude for now casts affected by provided incorrect cast start time
 bottle$cast_time <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
                                bottle$cruise == "EN644" & bottle$cast == 9 | 
                                bottle$cruise == "EN644" & bottle$cast == 18 | 
@@ -589,7 +589,7 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 ```{r}
 
 # read in cruise-specific information
-cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
+cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
 
 # manually edit package id to select package to assemble 
 this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
@@ -602,7 +602,7 @@ this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
 
 ## NCP-GOP
 
-# read in PI-provided csv data and provide column names
+# read in PI-provided csv data and provide column names                  
 for (i in 1:nrow(this_pkg)){
   
   cruise <- this_pkg$cruise_id[i]
@@ -610,7 +610,7 @@ for (i in 1:nrow(this_pkg)){
   
   # read csv
   ncp_gop_csv <- paste0(this_cruise$folder, "/input_data_csv/", this_cruise$ncp_gop_input, ".csv")
-  ncp_gop_input <- read_csv(ncp_gop_csv, col_names = FALSE)
+  ncp_gop_input <- read_csv(ncp_gop_csv, col_names = FALSE, show_col_types = FALSE)
 
   # provide column names
     if (this_cruise$discreterates_cols == "6"){
@@ -626,8 +626,12 @@ for (i in 1:nrow(this_pkg)){
     else if (this_cruise$discreterates_cols == "9"){
       colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality") # 9 columns
     }
+  
+  # add cruise ID
+   ncp_gop_input$cruiseid <- cruise
+   ncp_gop_input <- ncp_gop_input %>% relocate(cruiseid, .before = datetime_utc_matlab)
 
-   #output data frame for cruise
+   # output data frame for cruise
   assign(paste0("ncp_gop_", cruise), ncp_gop_input) 
   
 }
@@ -649,12 +653,14 @@ for (i in 1:nrow(this_pkg)){
   
   # read csv
   ncp_hifreq_csv <- paste0(this_cruise$folder, "/input_data_csv/", this_cruise$ncp_hifreq_input, ".csv")
-  ncp_hifreq_input <- read_csv(ncp_hifreq_csv, col_names = FALSE)
+  ncp_hifreq_input <- read_csv(ncp_hifreq_csv, col_names = FALSE, show_col_types = FALSE)
 
   # provide column names
   colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
   
+   # add cruise ID
   ncp_hifreq_input$cruiseid <- cruise
+   ncp_hifreq_input <- ncp_hifreq_input %>% relocate(cruiseid, .before = datetime_utc_matlab)
   
   # set underway depth depending on vessel
   if(str_detect(cruise, '^EN') ){
@@ -689,7 +695,7 @@ ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, for
 # For low-frequency data, handle missing data and provide quality flags
 
 ```{r}
-#TODO: continue here with updating to yearly packages
+
 sum(is.na(ncp_gop_input$gop))
 
 # convert provided quality flag to iode quality flag
@@ -700,6 +706,8 @@ ncp_gop_input <- ncp_gop_input %>%
 
 # convert any NaN to NA
 ncp_gop_input <- ncp_gop_input %>% 
+  mutate(latitude_matlab=replace(latitude_matlab, latitude_matlab=="NaN", NA)) %>%
+  mutate(longitude_matlab=replace(longitude_matlab, longitude_matlab=="NaN", NA)) %>%
   mutate(gop=replace(gop, gop=="NaN", NA)) %>%
   mutate(ncp=replace(ncp, ncp=="NaN", NA)) %>%
   mutate(ncp_per_gop=replace(ncp_per_gop, ncp_per_gop=="NaN", NA))
@@ -730,21 +738,26 @@ sum(is.na(ncp_gop_input$gop))
 # ensure rows are in time order
 ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
 
-# exclude for now cruise EN644 samples affected by incorrect cast start time
+# exclude for now (mostly cruise EN644) samples affected by incorrect cast start time
 ncp_gop_input$cast_flag <- NA_integer_
 ncp_gop_input <- ncp_gop_input %>%
-   mutate(cast_flag = case_when(datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 1,
+   mutate(cast_flag = case_when(datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 1, #EN644
                                 datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 1,
-                                        TRUE ~ 0,))
+                                datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 1, #EN617
+                                is.na(datetime_utc_matlab) ~ 1, #AR31A missing time
+                                                      TRUE ~ 0,))
+# check how many rows
 sum(ncp_gop_input$cast_flag)
 
+# isolate the identified rows
 ncpcasttime <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 1)
 
+# remove the identified rows
 ncp_gop_input <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 0)
 ncp_gop_input <- ncp_gop_input %>% select(-cast_flag)
 
@@ -755,46 +768,55 @@ ncp_gop_input <- ncp_gop_input %>% select(-cast_flag)
 
 ```{r}
 
-## read in toi data product table
-toi_transect <- read_csv("eims-toi-transect/toi-transect.csv")
+# read in toi data product table
+toi_transect <- read_csv("eims-toi-transect/toi-transect.csv", show_col_types = FALSE)
+# filter by year
+toi_transect$year <- format(toi_transect$datetime_utc, "%Y")
+toi_transect <- toi_transect %>% filter(toi_transect$year == this_cruise$year)
 
 # expect toi_transect to have rows with bottles deeper than surface
 # filter for rows depth less than Rachel's depthcutoff 6 m
 # check for length discrepancy
-toi_transect_surface <- filter(toi_transect, cruise == this_pkg$cruise_id & depth_matlab <= 6)
+toi_transect_surface <- filter(toi_transect, depth_matlab <= 6)
 nrow(toi_transect_surface)
 nrow(ncp_gop_input)
 
 ## column bind if same length
 # make sure using different column names
-toi_transect_surface$datetime_utc <- as.POSIXct(toi_transect_surface$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
-toi_transect_surface <- toi_transect_surface %>%
-  rename(datetime_utc_matlab_toi = datetime_utc_matlab) %>%
-  rename(depth_matlab_toi = depth_matlab)
-ncp_gop_input <- ncp_gop_input %>%
-  #rename(datetime_utc_matlab_ncp = datetime_utc_matlab) %>%
-  rename(depth_matlab_ncp = depth) %>%
-  rename(niskin_matlab_ncp = niskin)
-# make sure datetime_utc_matlab and datetime_utc_matlab_toi sorted or use dplyr::arrange
-ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
-toi_transect_surface <- toi_transect_surface[order(toi_transect_surface$datetime_utc_matlab_toi),]
-# bind
-ncp_gop_transect_wide <- cbind(ncp_gop_input, toi_transect_surface)
+if (nrow(toi_transect_surface) == nrow(ncp_gop_input)){
+  
+  #prepare columns
+  toi_transect_surface$datetime_utc <- as.POSIXct(toi_transect_surface$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
+  toi_transect_surface <- toi_transect_surface %>%
+    rename(datetime_utc_matlab_toi = datetime_utc_matlab) %>%
+    rename(depth_matlab_toi = depth_matlab)
+  
+  ncp_gop_input <- ncp_gop_input %>%
+    rename(depth_matlab_ncp = depth) %>%
+    rename(niskin_matlab_ncp = niskin)
+  
+  # ensure datetime_utc_matlab and datetime_utc_matlab_toi are in order
+  ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
+  toi_transect_surface <- toi_transect_surface[order(toi_transect_surface$datetime_utc_matlab_toi),]
+  
+  # bind
+  ncp_gop_transect_wide <- cbind(ncp_gop_input, toi_transect_surface)
+  
+} else 
+{rlog::log_warn(glue::glue('ncp_gop_input rows not equal to toi_transect_surface rows'))}
 
 ## check for correct matching in bind
-# boolean check niskin and/or depth_matlab and manually inspect datetime_utc_matlab equals datetime_utc_matlab_toi 
-# EN617 ncpgop_input does not have niskin or depth 
-# check that matlab timestamps match for combined data sets
+# since EN617 ncpgop_input does not have niskin or depth, check that matlab datetimes match for combined data sets
 ncp_gop_transect_wide <- ncp_gop_transect_wide %>%
   mutate(timecheck = case_when(datetime_utc_matlab == datetime_utc_matlab_toi ~ 0,
                               datetime_utc_matlab != datetime_utc_matlab_toi ~ 1))
 sum(ncp_gop_transect_wide$timecheck)  
+#bad_wide <- ncp_gop_transect_wide %>% filter(timecheck == 1)
 
-#reorder columns and drop toi data
+# reorder columns and drop toi data
 gopheaders <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "latitude_API", "longitude_API","toi_source", "gop", "ncp", "ncp_per_gop", "iode_quality_flag")
 ncp_gop_edi <- ncp_gop_transect_wide[, gopheaders]
 # EN617: keeping both sets of lat/long in output but could exclude API lat/long since matlab lat/long were checked and found to be correct in eims-toi package
-
 
 ```
 
@@ -812,19 +834,20 @@ ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp_per_gop))+ geom_point()
 
 ```{r} 
 
+this_year <- this_cruise$year
+
 #read in eims data product table
-eims_transect <- read_csv("eims-toi-transect/eims-transect.csv")
+eims_transect <- read_csv(paste0("eims-toi-transect/eims-transect-", this_year, ".csv"), show_col_types = FALSE)
 #or use data frame already in environment
 
-eims_transect_cruise <- filter(eims_transect,cruise == this_pkg$cruise_id)
-nrow(eims_transect_cruise)
+nrow(eims_transect)
 
 ncp_hifreq <- ncp_hifreq %>% filter(!is.na(datetime_utc_matlab))
 nrow(ncp_hifreq)
 # column bind if same length
 
 # make sure using different column names
-eims_transect_cruise <- eims_transect_cruise %>%
+eims_transect <- eims_transect %>%
   rename(datetime_utc_matlab_eims = datetime_utc_matlab) %>%
   rename(latitude_matlab_eims = latitude_matlab) %>%
   rename(longitude_matlab_eims = longitude_matlab) %>%
@@ -834,11 +857,9 @@ eims_transect_cruise <- eims_transect_cruise %>%
 # make sure datetime_utc_matlab and datetime_utc_matlab_eims sorted or use dplyr::arrange
 ncp_hifreq <- ncp_hifreq[order(ncp_hifreq$datetime_utc_matlab),]
 #ncp_hifreq_wide <- left_join(ncp_hifreq, eims_transect_cruise)
-ncp_hifreq_wide <- cbind(ncp_hifreq, eims_transect_cruise)
+ncp_hifreq_wide <- cbind(ncp_hifreq, eims_transect)
 
 ## check for correct matching in bind
-# boolean check niskin and/or depth_matlab and manually inspect datetime_utc_matlab equals datetime_utc_matlab_eims
-# EN617 ncpgop_input does not have niskin or depth 
 # check that matlab timestamps match for combined data sets
 ncp_hifreq_wide <- ncp_hifreq_wide %>%
   mutate(timecheck = case_when(datetime_utc_matlab == datetime_utc_matlab_eims ~ 0,
@@ -859,6 +880,8 @@ ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point
 ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = ncp))+ geom_point()
 ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = k))+ geom_point()
 
+# would be helpful to plot these on same x-axis (ie by time elapsed on cruise) and color by season
+
 ```
 
 
@@ -870,7 +893,7 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 
 # ncp gop discrete rates with matlab coordinates
 map_locs(df = ncp_gop_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
-         region = "transect", colorvar = NULL)
+         region = "transect", colorvar = "cruise")
 
 # # ncp gop discrete rates with API coordinates
 # map_locs(df = ncp_gop, xvar = "longitude_API", yvar = "latitude_API",
@@ -878,7 +901,7 @@ map_locs(df = ncp_gop_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
 
 # ncp high frequency
 map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
-         region = "transect", colorvar = NULL)
+         region = "transect", colorvar = "cruise")
 
 
 ```
@@ -895,12 +918,18 @@ ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "lon
 #ncp_gop_edi <- ncp_gop[, ncp_gop_headers]
 ncp_hifreq_edi <- ncp_hifreq_edi [, ncp_hifreq_headers]
 
+where <- this_pkg$folder[1]
+gop <- this_pkg$gop_product[1]
+ncp <- this_pkg$hifreq_product[1]
+
 # write files for upload to EDI
-write.csv(ncp_gop_edi, paste0(here(this_pkg$folder, this_pkg$gop_product), ".csv"), row.names = FALSE) #gop-transect
-write.csv(ncp_hifreq_edi, paste0(here(this_pkg$folder, this_pkg$hifreq_product), ".csv"), row.names = FALSE) #ncp-transect
+write.csv(ncp_gop_edi, paste0(here(where, gop), ".csv"), row.names = FALSE) #gop-transect
+write.csv(ncp_gop_edi, paste0(here(where, ncp), ".csv"), row.names = FALSE) #ncp-transect
+
+#TODO: continue here with updating to yearly packages
+#TODO: run above for 2019
 
 ```
-
 
 # EML Assembly: NCP-GOP-transect (Per Cruise)
 
