@@ -1,0 +1,10 @@
+keyword	keywordThesaurus
+primary production	LTER Core Research Areas
+inorganic matter	LTER Core Research Areas
+chemistry	LTER Controlled Vocabulary
+oceanography	LTER Controlled Vocabulary
+seawater	LTER Controlled Vocabulary
+gross primary production	LTER Controlled Vocabulary
+Northeast U.S. Continental Shelf	NOAA Large Marine Ecosystems
+net ecosystem production	
+net community production	

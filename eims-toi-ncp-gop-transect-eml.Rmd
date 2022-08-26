@@ -422,7 +422,7 @@ write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE)
 
 # combine loop output from all cruises into one dataframe, excluding those with missing timestamp
 eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644, eims_AR34B)
-
+#TODO arrange these in time order and consider binding them with same method used for ncp gop
 ```
 
 # QA for EIMS data
@@ -445,7 +445,6 @@ ggplot(eims_all, aes(x= datetime_utc_matlab, y = longitude_matlab))+ geom_point(
 map_locs(df = eims_all, xvar = "longitude_matlab", yvar = "latitude_matlab", region = "transect", color = "cruise")
 # plot eims lat long from API 
 map_locs(df = eims_all, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
-
 
 # plot values
 ggplot(eims_all, aes(x= datetime_utc_matlab, y = biosat))+ geom_point()
@@ -571,8 +570,7 @@ make_eml(path=project_folder,
 # Insert Custom Project Node
 
 # for edi_utilities
-#project_insert(edi_pkg = pkg_id, 
-#               xml.path = project_folder)
+#project_insert(edi_pkg = pkg_id, xml.path = project_folder)
 
 # for ediutilities
 #project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
@@ -592,7 +590,7 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.2")
 
 ```
 
@@ -729,7 +727,6 @@ ncp_gop_input <- ncp_gop_input %>%
 # check for NAs
 sum(is.na(ncp_gop_input$gop)) 
 
-
 ```
 # Exclude EN644 low-frequency samples affected by incorrect cast start time
 
@@ -749,8 +746,11 @@ ncp_gop_input <- ncp_gop_input %>%
                                 datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 1,
                                 datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 1, #EN617
+                                datetime_utc_matlab == "2019-04-22 04:34:00"  ~ 1, #AR34B
                                 is.na(datetime_utc_matlab) ~ 1, #AR31A missing time
-                                                      TRUE ~ 0,))
+                                                     TRUE ~ 0,))
+
+
 # check how many rows
 sum(ncp_gop_input$cast_flag)
 
@@ -918,87 +918,89 @@ ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "lon
 #ncp_gop_edi <- ncp_gop[, ncp_gop_headers]
 ncp_hifreq_edi <- ncp_hifreq_edi [, ncp_hifreq_headers]
 
-where <- this_pkg$folder[1]
+project_folder <- this_pkg$folder[1]
 gop <- this_pkg$gop_product[1]
 ncp <- this_pkg$hifreq_product[1]
 
 # write files for upload to EDI
-write.csv(ncp_gop_edi, paste0(here(where, gop), ".csv"), row.names = FALSE) #gop-transect
-write.csv(ncp_gop_edi, paste0(here(where, ncp), ".csv"), row.names = FALSE) #ncp-transect
-
-#TODO: continue here with updating to yearly packages
-#TODO: run above for 2019
+write.csv(ncp_gop_edi, paste0(here(project_folder, gop), ".csv"), row.names = FALSE) #gop-transect
+write.csv(ncp_hifreq_edi, paste0(here(project_folder, ncp), ".csv"), row.names = FALSE) #ncp-transect
 
 ```
 
-# EML Assembly: NCP-GOP-transect (Per Cruise)
+## EML Assembly: EIMS-TOI-transect
 
-This chunk outputs the final xml file for EDI through the following steps:
-
-Step 1: Populating EML Assembly Line templates with metadata
-Step 2: Calculating the geospatial and temporal coverage 
-Step 3: Making the XML file 
-Step 4: Inserting a custom NES-LTER parent project node 
+Assemble EML metadata templates based on the provided Excel template
 
 ```{r}
 
-# define input for EML assembly
-metadata <- this_pkg$metadata_file  #ncp-gop-transect-info
-project_folder <- this_pkg$folder  
-ncp_gop_file <- this_pkg$gop_product
-ncp_hifreq_file <- this_pkg$hifreq_product
-edi_data <- c(ncp_gop_file, ncp_hifreq_file)
-file_descriptions <- c("Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer", "Data product high frequency NCP derived from EIMS sampling of underway seawater")
-pkg_id <- this_pkg$package_id
+# define input files
+edi_filename <- "ncp-gop-transect"
+metadata <- '/{edi_filename}-info'
+#project_folder <- paste0("ncp-gop-transect-", this_pkg$year[1], "-pkg", this_pkg$package_no[1])
+pkg_id <- this_pkg$package_id[1]
 
 # Make EML Templates 
-# if (file.exists(paste0(here(this_pkg$folder),"/", metadata, ".xlsx"))) {
-#     print("metadata already exists")
-#   } else {
-xlsx_to_template(metadata.path = here(project_folder, metadata),
-                 output.path = paste0(here(this_pkg$folder),"/"),
-                 edi.filename = "ncp-gop-transect", 
-                 rights = "CCBY")
-# Discrete Rates
-xlsx_to_template(metadata.path = here(project_folder, ncp_gop_file), 
-                 output.path = paste0(here(this_pkg$folder),"/"),
-                 edi.filename = ncp_gop_file, 
-                 rights = "CCBY")
-# Ncplter 
-xlsx_to_template(metadata.path = here(project_folder, ncp_hifreq_file), 
-                 output.path = paste0(here(this_pkg$folder),"/"),
-                 edi.filename = ncp_hifreq_file, 
-                 rights = "CCBY")
-#}
+excel_to_template(metadata_path = glue(project_folder, metadata),
+                  edi_filename = edi_filename, 
+                  rights = "CCBY",
+                  other_info = TRUE, 
+                  output_path = project_folder)
 
-# Data Coverage
-# combine the dates and lat/lon for both datasets
-# isolate date and geospatial columns for input
-date_col <- as.Date(c(ncp_hifreq_edi$datetime_utc_matlab, ncp_gop_edi$datetime_utc_matlab))
-lat_col <- c(ncp_hifreq_edi$latitude_matlab, ncp_gop_edi$latitude_matlab)
-lon_col <- c(ncp_hifreq_edi$longitude_matlab, ncp_gop_edi$longitude_matlab)
-# run function to determine geospatial and temporal coverage
-coverage <- data_coverage(dates = date_col, lat = lat_col, lon = lon_col)
+sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'CategoricalVariables',
+             glue::glue(project_folder, '/catvars_ncp-gop-transect.txt'))
 
-# Make EML
-make_eml(path = here(project_folder),
-         dataset.title = this_pkg$dataset_title,
-         data.table = c(paste0(ncp_gop_file, ".csv"), paste0(ncp_hifreq_file, ".csv")),
-         data.table.name = paste0(edi_data, ".csv"),
-         data.table.description = file_descriptions,
+sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'ColumnHeadersGop',
+             glue::glue(project_folder, '/attributes_gop-transect-',this_year, '.txt'))
+
+sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'ColumnHeadersNcp',
+             glue::glue(project_folder, '/attributes_ncp-transect-',this_year, '.txt'))
+
+EMLassemblyline::template_core_metadata(path= project_folder, license='CCBY')
+
+```
+Compute spatiotemporal coverage and generate EML
+
+```{r}
+
+# read data product csvs in order to get temporal and geographic coverage
+# same dataframes as ncp_gop_edi and ncp_hifreq_edi
+gop_edi <- read.csv(paste0(here(project_folder, gop), ".csv")) #gop-transect
+ncp_edi <- read.csv(paste0(here(project_folder, ncp), ".csv")) #ncp-transect
+
+# identify columns to generate temporal coverage and geographic coverage
+temp_coverage <- temporal_coverage(append(gop_edi$datetime_utc, ncp_edi$datetime_utc_matlab))
+lat <- append(gop_edi$latitude_API, ncp_edi$latitude_matlab)
+long <- append(gop_edi$longitude_API, ncp_edi$longitude_matlab)
+
+# generate EML
+make_eml(path = project_folder,
+         data.path = project_folder,
+         dataset.title= this_pkg$dataset_title[1],
+         data.table = c(paste0(gop, ".csv"), paste0(ncp, ".csv")),
+         data.table.description=c("Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer", "Data product high frequency NCP derived from EIMS sampling of underway seawater"),
+         data.table.name = c(this_pkg$gop_product[1], this_pkg$hifreq_product[1]),
          other.entity = c("input_data_csv.zip", "input_data_matlab.zip"),
+         other.entity.name = c("input_data_csv.zip", "input_data_matlab.zip"),
          other.entity.description = c("Package input data files in csv format","Package input data files in Matlab format"),
-         temporal.coverage = c(coverage$startdate, coverage$enddate),
+         temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
-         geographic.coordinates = c(coverage$North, coverage$East, coverage$South, coverage$West),
-         maintenance.description = "completed",
+         geographic.coordinates = geographic_coordinates(lat, long),
+         maintenance.description = "ongoing",
          user.id = "NES",
          user.domain = "LTER",
          package.id = pkg_id)
 
 # Insert Custom Project Node
-project_insert(edi_pkg = pkg_id, 
-               xml.path = paste0(here(this_pkg$folder),"/"))
+
+# for edi_utilities
+#project_insert(edi_pkg = pkg_id, xml.path = project_folder)
+
+# for ediutilities
+#project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
+
+# for prep-eims-toi-data: 
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = project_folder)
 
 ```
- 
+
