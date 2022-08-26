@@ -517,13 +517,13 @@ excel_to_template(metadata_path = metadata,
 sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'CategoricalVariables',
              glue::glue('eims-toi-transect/catvars_toi-transect.txt'))
 
-sheet_to_tsv('eims-toi-transect/eims-transect.xlsx', 'ColumnHeaders',
+sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'ColumnHeadersEims',
              glue::glue('eims-toi-transect/attributes_eims-transect-2018.txt'))
 
-sheet_to_tsv('eims-toi-transect/eims-transect.xlsx', 'ColumnHeaders',
+sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'ColumnHeadersEims',
              glue::glue('eims-toi-transect/attributes_eims-transect-2019.txt'))
 
-sheet_to_tsv('eims-toi-transect/toi-transect.xlsx', 'ColumnHeaders',
+sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'ColumnHeadersToi',
              glue::glue('eims-toi-transect/attributes_toi-transect.txt'))
 
 EMLassemblyline::template_core_metadata(path= project_folder, license='CCBY')
