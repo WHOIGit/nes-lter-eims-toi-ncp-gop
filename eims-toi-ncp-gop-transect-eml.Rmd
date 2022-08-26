@@ -40,7 +40,7 @@ lapply(libs, require, character.only = TRUE)
 ```{r}
 
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
-# include in cruise_list only cruises to assemble in cruise_list (or find a good way to skip rows in loop below)
+# for now, include in cruise_list only cruises to assemble 
 
 #years <- unique(cruise_list$year)
 
@@ -78,13 +78,11 @@ Solution:
 
 # TOI data
 
-# for each item in cruiselist, filter cruise_list by cruise_id, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, return dataframe idenfied with cruise id
+# for each cruise, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, identify toi bottle source, get bottle metadata from API and match based on time, return dataframe identified with cruise id
 # uses functions in prep-eims-toi-data.R
 
-# include in cruise_list only cruises to assemble. 
 # this makes no modifications to the Niskins of 99, Depth 999. They are filtered out in next chunk. 
   
- #  for each cruise in cruise_list, read in toi data and edit columns as needed 
 for (i in 1:nrow(cruise_list)){
       
   cruisename <- cruise_list$cruise_id[i]
@@ -110,7 +108,7 @@ for (i in 1:nrow(cruise_list)){
   toi$longitude_API <- NA_integer_
   
   # match API data to TOI data based on datetime
-  # get cast, depth, dateime, lat, long from API
+  # get cast, depth, datetime, lat, long from API
   for (i in 1:nrow(toi)) {
     # store values
     nisk <- toi$niskin[i]
@@ -202,7 +200,7 @@ for (i in 1:nrow(cruise_list)){
 ```{r}
 
 # combine all cruises
-bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627, toi_EN644, toi_AR34B)
+bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627,  toi_AR34B, toi_EN644)
 
 # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
 niskin99 <- bottle %>% filter(niskin == "99")
@@ -248,7 +246,6 @@ toi_time_diffs <- bottle %>%
   summarise(avg = mean(time_diff, na.rm = TRUE),
             min = min(time_diff, na.rm = TRUE),
             max = max(time_diff, na.rm = TRUE))
-
 
 # isolate instances of large depth differences
 bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
@@ -300,7 +297,6 @@ sum(is.na(bottle$datetime_utc))
 # #check for any missing year
 # sum(is.na(bottle$year))
 
-
 ```
 
 ## QA: Map TOI Bottle Sampling Locations & Plot TOI Parameters
@@ -310,8 +306,7 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 ```{r}
 
 # Map Check
-# bottle dataset does not have coordinates from matlab
-# plot bottle API lat long
+# bottle dataset does not have coordinates from matlab. Plot bottle API lat long
 map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
 map_locs(df = toi_AR31A, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
 map_locs(df = toi_AR34B, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
@@ -326,26 +321,16 @@ ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
 
 ```
 
-## Write TOI output files 
+## Write TOI output 
 
 ```{r}
 
-# # separate data by year
-# bottle_2018 <- bottle %>% filter(year == "2018")
-# bottle_2019 <- bottle %>% filter(year == "2019")
-
 # define headers for columns in desired order
 bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
-
-# reorder columns as necessary
 bottle_edi <- bottle[, bottle_headers]
-# bottle_2018 <- bottle[, bottle_headers]
-# bottle_2019 <- bottle[, bottle_headers]
 
-# write files for upload to EDI
+# write file for upload to EDI
 write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect.csv'), row.names = FALSE)
-# write.csv(bottle_2018, here("eims-toi-transect", 'toi-transect-2018.csv'), row.names = FALSE)
-# write.csv(bottle_2019, here("eims-toi-transect", 'toi-transect-2019.csv'), row.names = FALSE)
 
 ```
 ## Read in EIMS data
@@ -422,7 +407,11 @@ write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE)
 
 # combine loop output from all cruises into one dataframe, excluding those with missing timestamp
 eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644, eims_AR34B)
-#TODO arrange these in time order and consider binding them with same method used for ncp gop
+# ensure rows are in time order
+eims_all <- eims_all[order(eims_all$datetime_utc_matlab),]
+
+# consider identifying and binding them with same method used for ncp gop
+
 ```
 
 # QA for EIMS data
@@ -482,7 +471,7 @@ eims_2019 <- eims_all %>% filter(year == "2019")
 # define headers for columns in desired order
 eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio")
 
-# reorder columns as necessary
+# order columns
 eims_all <- eims_all[, eims_headers]
 eims_2018 <- eims_2018[, eims_headers]
 eims_2019 <- eims_2019[, eims_headers]
@@ -591,6 +580,7 @@ cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FA
 
 # manually edit package id to select package to assemble 
 this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.2")
+this_year <- this_cruise$year
 
 ```
 
@@ -728,7 +718,7 @@ ncp_gop_input <- ncp_gop_input %>%
 sum(is.na(ncp_gop_input$gop)) 
 
 ```
-# Exclude EN644 low-frequency samples affected by incorrect cast start time
+# Exclude ncp-gop samples affected by incorrect cast start time
 
 ```{r}
 
@@ -834,11 +824,10 @@ ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp_per_gop))+ geom_point()
 
 ```{r} 
 
-this_year <- this_cruise$year
-
 #read in eims data product table
 eims_transect <- read_csv(paste0("eims-toi-transect/eims-transect-", this_year, ".csv"), show_col_types = FALSE)
-#or use data frame already in environment
+#or use eims by-year data frame already in environment
+# eims_transect <- eims_yyyy
 
 nrow(eims_transect)
 
@@ -855,6 +844,7 @@ eims_transect <- eims_transect %>%
   rename(biosat_eims = biosat) %>%
   rename(O2_Ar_ratio_eims = O2_Ar_ratio) 
 # make sure datetime_utc_matlab and datetime_utc_matlab_eims sorted or use dplyr::arrange
+eims_transect <- eims_transect[order(eims_transect$datetime_utc_matlab_eims),]
 ncp_hifreq <- ncp_hifreq[order(ncp_hifreq$datetime_utc_matlab),]
 #ncp_hifreq_wide <- left_join(ncp_hifreq, eims_transect_cruise)
 ncp_hifreq_wide <- cbind(ncp_hifreq, eims_transect)
