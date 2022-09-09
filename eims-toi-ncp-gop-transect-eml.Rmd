@@ -580,7 +580,12 @@ cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FA
 
 # manually edit package id to select package to assemble 
 this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.2")
-this_year <- this_cruise$year
+
+# get identifying info for this package
+this_year <- this_pkg$year[1]
+project_folder <- this_pkg$folder[1]
+gop <- this_pkg$gop_product[1]
+ncp <- this_pkg$hifreq_product[1]
 
 ```
 
@@ -896,21 +901,15 @@ map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab
 
 ```
 
-# Column Header Organization
+# Write csv files
 
 ```{r}
 
 # define the desired order of columns
-#ncp_gop_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "toi_source", "gop", "ncp", "ncp_per_gop")
 ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "ncp", "k")
 
 # reorder columns as necessary
-#ncp_gop_edi <- ncp_gop[, ncp_gop_headers]
 ncp_hifreq_edi <- ncp_hifreq_edi [, ncp_hifreq_headers]
-
-project_folder <- this_pkg$folder[1]
-gop <- this_pkg$gop_product[1]
-ncp <- this_pkg$hifreq_product[1]
 
 # write files for upload to EDI
 write.csv(ncp_gop_edi, paste0(here(project_folder, gop), ".csv"), row.names = FALSE) #gop-transect
@@ -927,7 +926,7 @@ Assemble EML metadata templates based on the provided Excel template
 # define input files
 edi_filename <- "ncp-gop-transect"
 metadata <- '/{edi_filename}-info'
-#project_folder <- paste0("ncp-gop-transect-", this_pkg$year[1], "-pkg", this_pkg$package_no[1])
+#project_folder <- paste0("ncp-gop-transect-", this_year, "-pkg", this_pkg$package_no[1])
 pkg_id <- this_pkg$package_id[1]
 
 # Make EML Templates 

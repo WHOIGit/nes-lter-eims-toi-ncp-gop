@@ -66,7 +66,11 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2022-08-26</pubDate>
+    <pubDate>2022-09-09</pubDate>
+    <abstract>
+      <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.2. &#13;
+</para>
+    </abstract>
     <keywordSet>
       <keyword>primary production</keyword>
       <keyword>inorganic matter</keyword>
@@ -130,6 +134,30 @@
       <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
     </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <para># Source data</para>
+          <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.2 in the EDI Data Portal. </para>
+          <para>Additional data sources for these derived data:&#13;
+-- Gas transfer velocity (wind data product, weighted over 30 days)&#13;
+-- Temperature from NES-LTER ship-provided data&#13;
+-- Salinity from NES-LTER ship-provided data</para>
+          <para># Cruise notes</para>
+          <para>AR31A: Approximately 10 hrs of high-frequncy data are missing (2018-10-22 from 12:41 to 22:20).</para>
+          <para># Calibrations and derivations</para>
+          <para>The NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.2 and includes the gas transfer velocity (k) and net community production (NCP, millimol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface bottle data included in package knb-lter-nes.6.2 and includes discrete NCP (millimol/m2/day), gross oxygen production (GOP, millimol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). </para>
+          <para># Data cleaning and assembly</para>
+          <para>For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or Niskin, and we provide a column to indicate quality using IODE Primary Level flags 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from Niskins, datetime (in UTC) was corrected to reflect the time at which the rosette bottle closed; latitude_API and longitude_API are based on datetime_utc. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
+          <para># Quality assurance</para>
+          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. </para>
+          <para># References</para>
+          <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
+          <para>&#13;
+</para>
+        </description>
+      </methodStep>
+    </methods>
     <project>
       <title>Northeast U.S. Shelf LTER</title>
       <personnel>
