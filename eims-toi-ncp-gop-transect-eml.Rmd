@@ -292,11 +292,6 @@ bottle <- bottle %>% select(-cast_time)
 sum(is.na(bottle$datetime_utc))
 # missing_bottle_time <- bottle %>% filter(is.na(datetime_utc))
 
-# # extract year to facilitate splitting data set by year
-# bottle$year <- format(bottle$datetime_utc, "%Y")
-# #check for any missing year
-# sum(is.na(bottle$year))
-
 ```
 
 ## QA: Map TOI Bottle Sampling Locations & Plot TOI Parameters
@@ -579,7 +574,7 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.2")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -623,6 +618,15 @@ for (i in 1:nrow(this_pkg)){
   # add cruise ID
    ncp_gop_input$cruiseid <- cruise
    ncp_gop_input <- ncp_gop_input %>% relocate(cruiseid, .before = datetime_utc_matlab)
+   
+   # add cruise day for plotting
+   # convert datetime format
+   ncp_gop_input$datetime_utc_matlab <- as.POSIXct(ncp_gop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+   ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
+   ncp_gop_input$cruise_t0 <- ncp_gop_input$datetime_utc_matlab[1]
+   ncp_gop_input$cruise_day<- ncp_gop_input$datetime_utc_matlab - ncp_gop_input$cruise_t0
+   ncp_gop_input$cruise_day <- ncp_gop_input$cruise_day/86400
+   ncp_gop_input$cruise_day <- as.double(ncp_gop_input$cruise_day)
 
    # output data frame for cruise
   assign(paste0("ncp_gop_", cruise), ncp_gop_input) 
@@ -662,6 +666,16 @@ for (i in 1:nrow(this_pkg)){
   if(str_detect(cruise, '^AR') ){
     ncp_hifreq_input$depth <- 2.1336
   }
+   
+   # add cruise day for plotting
+   # convert datetime format
+   ncp_hifreq_input$datetime_utc_matlab <- as.POSIXct(ncp_hifreq_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+   ncp_hifreq_input <- ncp_hifreq_input[order(ncp_hifreq_input$datetime_utc_matlab),]
+   ncp_hifreq_input$cruise_t0 <- ncp_hifreq_input$datetime_utc_matlab[1]
+   ncp_hifreq_input$cruise_day<- ncp_hifreq_input$datetime_utc_matlab - ncp_hifreq_input$cruise_t0
+   ncp_hifreq_input$cruise_day <- ncp_hifreq_input$cruise_day/86400
+   ncp_hifreq_input$cruise_day <- as.double(ncp_hifreq_input$cruise_day)
+
   
    #output data frame for cruise
   assign(paste0("ncp_hifreq_", cruise), ncp_hifreq_input) 
@@ -680,8 +694,8 @@ ncp_hifreq <- ncp_hifreq %>%
   select(-temp, -sal, -cumulative_dist)
 
 # convert datetime format
-ncp_gop_input$datetime_utc_matlab <- as.POSIXct(ncp_gop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
-ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+#ncp_gop_input$datetime_utc_matlab <- as.POSIXct(ncp_gop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+#ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
 
 ```
 
@@ -819,9 +833,14 @@ ncp_gop_edi <- ncp_gop_transect_wide[, gopheaders]
 
 ```{r}
 
-ggplot(ncp_gop_edi, aes(x= datetime_utc, y = gop))+ geom_point()
-ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp))+ geom_point()
-ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp_per_gop))+ geom_point()
+
+ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = gop, color = cruise))+ geom_point()
+ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = ncp, color = cruise))+ geom_point()
+ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = ncp_per_gop, color = cruise))+ geom_point()
+
+
+#ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp))+ geom_point()
+#ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp_per_gop))+ geom_point()
 
 ```
 
@@ -870,10 +889,10 @@ ncp_hifreq_edi <- ncp_hifreq_wide[, ncp_hifreq_headers]
 
 ```{r}
 
-ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = biosat))+ geom_point()
-ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
-ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = ncp))+ geom_point()
-ggplot(ncp_hifreq_edi, aes(x= datetime_utc_matlab, y = k))+ geom_point()
+ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = biosat, color = cruiseid))+ geom_point()
+ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = O2_Ar_ratio, color = cruiseid))+ geom_point()
+ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = ncp, color = cruiseid))+ geom_point()
+ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = k, color = cruiseid))+ geom_point()
 
 # would be helpful to plot these on same x-axis (ie by time elapsed on cruise) and color by season
 
