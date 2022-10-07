@@ -66,7 +66,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2022-09-09</pubDate>
+    <pubDate>2022-10-07</pubDate>
     <abstract>
       <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, and summer Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2019. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.2. &#13;
 </para>
@@ -274,8 +274,8 @@
       <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
         <objectName>gop-transect-2019.csv</objectName>
-        <size unit="bytes">21397</size>
-        <authentication method="MD5">757eb1a401f6298a05fa09f0864df22d</authentication>
+        <size unit="bytes">20937</size>
+        <authentication method="MD5">e5b216d5462dcd80bc1595952f4a4d08</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -498,7 +498,7 @@
           </measurementScale>
         </attribute>
       </attributeList>
-      <numberOfRecords>182</numberOfRecords>
+      <numberOfRecords>178</numberOfRecords>
     </dataTable>
     <dataTable>
       <entityName>ncp-transect-2019</entityName>

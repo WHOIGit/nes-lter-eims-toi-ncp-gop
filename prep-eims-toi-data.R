@@ -40,7 +40,7 @@ set_toi_source <- function(nisk, depth_mat, source) {
   # assign NA to niskin bottle 0
   toi$niskin[toi$niskin == 0] <- NA_integer_
   
-  # for AR31A, adjust Niskin bottle number
+  # for AR31A, adjust Niskin bottle number to let PI-provided data (24 bottle positions) match API (12 bottles)
   toi <- toi %>%
     mutate(niskin = case_when(cruise == "AR31A" ~ niskin/2,
                               TRUE ~ niskin))
@@ -91,6 +91,7 @@ time_eims <- function(date_mat){
   
 }
 
+# This functionality is so far needed only for this set of packages (multiple packages produced from one workflow). If needed for others, consider adding to the ediutilities package. 
 # Function inserts project node after the methods node of an xml document
 # requires the existence of a parent_project.txt
 # input path to xml file

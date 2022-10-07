@@ -40,17 +40,6 @@ lapply(libs, require, character.only = TRUE)
 ```{r}
 
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
-# for now, include in cruise_list only cruises to assemble 
-
-#years <- unique(cruise_list$year)
-
-# identify cruises in each year
-# for (val in years){
-#     #cruiseyear <- cruise_list$year[i]
-#   this_year <- cruise_list %>% filter(year == val) 
-#   these_cruises <- this_year$cruise_id
-#   assign(paste0(val, "_cruises"), these_cruises)
-#   }
 
 ```
 
@@ -81,6 +70,7 @@ Solution:
 # for each cruise, read in toi_input, assign column names, populate cruise id, convert datetime format, ensure rows are in order, identify toi bottle source, get bottle metadata from API and match based on time, return dataframe identified with cruise id
 # uses functions in prep-eims-toi-data.R
 
+# no bucket samples are expected
 # this makes no modifications to the Niskins of 99, Depth 999. They are filtered out in next chunk. 
   
 for (i in 1:nrow(cruise_list)){
@@ -187,6 +177,10 @@ for (i in 1:nrow(cruise_list)){
     }
   }
 
+  toi$cruise_t0 <- toi$datetime_utc[1]
+  toi$cruise_day<- toi$datetime_utc - toi$cruise_t0
+  toi$cruise_day <-toi$cruise_day/86400
+  toi$cruise_day <- as.double(toi$cruise_day)
   
   #output data frame for cruise
   assign(paste0("toi_", cruisename), toi) 
@@ -203,23 +197,24 @@ for (i in 1:nrow(cruise_list)){
 bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627,  toi_AR34B, toi_EN644)
 
 # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
-niskin99 <- bottle %>% filter(niskin == "99")
+excl_niskin99 <- bottle %>% filter(niskin == "99")
+excl_niskin99$reason <- "niskin 99"
 bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
 
 # exclude for now casts affected by provided incorrect cast start time
-bottle$cast_time <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
-                               bottle$cruise == "EN644" & bottle$cast == 9 | 
-                               bottle$cruise == "EN644" & bottle$cast == 18 | 
-                               bottle$cruise == "EN644" & bottle$cast == 20 |
-                               bottle$cruise == "EN644" & bottle$cast == 26 |
-                              bottle$cruise == "AR34B" & bottle$cast == 18,
-                          yes = "flag", 
-                          no = NA)
+bottle$reason <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
+                        bottle$cruise == "EN644" & bottle$cast == 9 | 
+                        bottle$cruise == "EN644" & bottle$cast == 18 | 
+                        bottle$cruise == "EN644" & bottle$cast == 20 |
+                        bottle$cruise == "EN644" & bottle$cast == 26 |
+                        bottle$cruise == "AR34B" & bottle$cast == 18,
+                        yes = "incorrect cast start time", 
+                        no = NA)
 
-bottlecasttime <- bottle %>% filter(!is.na(cast_time))
+excl_bottlecasttime <- bottle %>% filter(!is.na(reason))
 
-bottle <- bottle %>% filter(is.na(cast_time))
-bottle <- bottle %>% select(-cast_time)
+bottle <- bottle %>% filter(is.na(reason))
+bottle <- bottle %>% select(-reason)
 
 # ensure rows are in time order
 bottle <- bottle[order(bottle$datetime_utc),]
@@ -239,36 +234,73 @@ bottle <- bottle[order(bottle$datetime_utc),]
 # check time differences
 # add time difference column
 bottle$time_diff <- bottle$datetime_utc_matlab - bottle$datetime_utc_API
-bottle$time_diff <- round(bottle$time_diff, 1)
+bottle$time_diff_min <- bottle$time_diff/60
+bottle$time_diff_min <- abs(as.numeric(bottle$time_diff_min))
+bottle$time_diff_min <- round(bottle$time_diff_min, 2)
+
 # summarize time differences by cruise ## this is quick basic check of matching
-toi_time_diffs <- bottle %>%
+bottle_time_diffs <- bottle %>%
   group_by(cruise) %>%
-  summarise(avg = mean(time_diff, na.rm = TRUE),
-            min = min(time_diff, na.rm = TRUE),
-            max = max(time_diff, na.rm = TRUE))
+  summarise(avg = mean(time_diff_min, na.rm = TRUE),
+            min = min(time_diff_min, na.rm = TRUE),
+            max = max(time_diff_min, na.rm = TRUE))
+
+# isolate and remove rows with time difference greater than 60 minutes
+excl_time_conflicts <- bottle %>% filter(time_diff_min > 60)
+excl_time_conflicts$reason <- "large time difference"
+bottle <- bottle %>% filter(time_diff_min < 60 | is.na(time_diff_min))
 
 # isolate instances of large depth differences
 bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
-toi_depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
-toi_depth_conflicts$reason <- "large depth difference"
+# remove rows with large depth differences
+excl_depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
+excl_depth_conflicts$reason <- "large depth difference"
+bottle <- bottle %>% filter(abs(depth_diff) < 5 | is.na(depth_diff))
 
-# isolate the niskins not found in API. This should be the same as samples printed in loop above except if removed in rbind chunk
-toi_api_no_niskin <- bottle %>% filter(toi_source == "toi_niskin" & is.na(depth_API))
-toi_api_no_niskin$reason <- "Niskin not found in API"
+# isolate and remove the niskins not found in API. This should be the same as samples printed in loop above except if removed in rbind chunk
+excl_api_no_niskin <- bottle %>% filter(toi_source == "toi_niskin" & is.na(depth_API))
+excl_api_no_niskin$reason <- "Niskin not found in API"
+bottle <- bottle %>% filter((toi_source == "toi_niskin" & !is.na(depth_API)) | toi_source == "toi_underway")
 
-# check for samples recorded as Niskin with depth of 0
-toi_niskin_0 <- bottle %>% filter(toi_source == "toi_niskin" & depth_matlab == 0)
-toi_niskin_0$reason <- "Niskin with provided depth = 0"
+# isolate and remove samples recorded as Niskin with depth of 0
+excl_niskin_0 <- bottle %>% filter(toi_source == "toi_niskin" & depth_matlab == 0)
+excl_niskin_0$reason <- "Niskin with provided depth = 0"
+bottle <- bottle %>% filter((toi_source == "toi_niskin" & depth_matlab != 0) | toi_source == "toi_underway")
 
-# check for any underway samples with provided depth not 0 m 
-toi_underway_depth <- bottle %>% filter(toi_source == "toi_underway" & depth_matlab != 0)
-toi_underway_depth$reason <- "non-zero depth provided for underway sample"
+# isolate and remove any underway samples with provided depth not 0 m 
+excl_underway_depth <- bottle %>% filter(toi_source == "toi_underway" & depth_matlab != 0)
+excl_underway_depth$reason <- "non-zero depth provided for underway sample"
+bottle <- bottle %>% filter((toi_source == "toi_underway" & depth_matlab == 0) | toi_source == "toi_niskin")
 
-toi_bottle_check <- rbind(toi_depth_conflicts, 
-                          toi_api_no_niskin, 
-                          toi_niskin_0, 
-                          toi_underway_depth)
-write.csv(toi_bottle_check, "toi_bottle_check.csv")
+# isolate and remove any missing datetime
+excl_missing_time <- bottle %>% filter(is.na(datetime_utc))
+excl_missing_time$reason <- "missing datetime"
+bottle <- bottle %>% filter(!is.na(datetime_utc))
+
+# make columns match (time difference columns)
+excl_niskin99$time_diff <- NA_integer_
+excl_niskin99$time_diff_min <- NA_integer_
+excl_niskin99$depth_diff <- NA_integer_
+excl_niskin99 <- excl_niskin99 %>% relocate(reason, .after = depth_diff)
+
+excl_bottlecasttime$time_diff <- NA_integer_
+excl_bottlecasttime$time_diff_min <- NA_integer_
+excl_bottlecasttime$depth_diff <- NA_integer_
+excl_bottlecasttime <- excl_bottlecasttime %>% relocate(reason, .after = depth_diff)
+
+excl_time_conflicts$depth_diff <- NA_integer_
+excl_time_conflicts <- excl_time_conflicts %>% relocate(reason, .after = depth_diff)
+
+# add all excluded rows to one data frame and export to csv
+bottle_excluded <- rbind(excl_niskin99,
+                         excl_bottlecasttime,
+                         excl_time_conflicts,
+                         excl_depth_conflicts, 
+                         excl_api_no_niskin, 
+                         excl_niskin_0, 
+                         excl_underway_depth,
+                         excl_missing_time)
+write.csv(bottle_excluded, "toi_bottle_excluded.csv")
 
 # isolate underway samples
 # -> perform visual inspection of underway TOI bottle samples against event log
@@ -276,21 +308,8 @@ toi_uw_check <- bottle %>%
   filter(toi_source == "toi_underway") %>%
   select(-niskin, -cast, -depth_API, -datetime_utc_API, -depth_diff)
 
-# putting this here for now so these samples are included in toi_bottle_check but excluded downstream
-# exclude samples affected by incorrect datetime
-bottle$cast_time <- ifelse(bottle$cruise == "AR31A" & is.na(bottle$datetime_utc_matlab)| # date is provided in input but time is not
-                           bottle$cruise == "AR34B" & bottle$cast == 18|   # datetime provided doesn't match TOI cast log
-                           bottle$cruise == "EN617" & bottle$cast == 29,   # datetime provided doesn't match rosette log (no TOI on cast 29)
-                          yes = "flag", 
-                          no = NA)
-
-bottlecasttime <- bottle %>% filter(!is.na(cast_time))
-bottle <- bottle %>% filter(is.na(cast_time))
-bottle <- bottle %>% select(-cast_time)
-
 # check for any missing datetime
 sum(is.na(bottle$datetime_utc))
-# missing_bottle_time <- bottle %>% filter(is.na(datetime_utc))
 
 ```
 
@@ -313,6 +332,13 @@ ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_delta))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = cap_Delta_17O))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = d17O))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
+
+# Plot measured parameters in bottle TOI dataset
+ggplot(bottle, aes(x= cruise_day, y = O2_Ar_ratio, color = cruise))+ geom_line()
+ggplot(bottle, aes(x= cruise_day, y = O2_Ar_delta, color = cruise))+ geom_line()
+ggplot(bottle, aes(x= cruise_day, y = cap_Delta_17O, color = cruise))+ geom_line()
+ggplot(bottle, aes(x= cruise_day, y = d17O, color = cruise))+ geom_line()
+ggplot(bottle, aes(x= cruise_day, y = d18O, color = cruise))+ geom_line()
 
 ```
 
@@ -452,6 +478,16 @@ pos_check <- eims_all %>%
 # EN617: identified two instances where values differ, and API output appears to be in error for those two data points. Use PI-provided lat/long. 
 # AR34B supplies 39 of these 53 records! Based on REST API, not R2R
 
+eims_loc_diffs <- eims_all %>%
+  group_by(cruise) %>%
+  summarise(avg = mean(lat_diff, na.rm = TRUE),
+            min = min(lat_diff, na.rm = TRUE),
+            max = max(lat_diff, na.rm = TRUE),
+            avg = mean(long_diff, na.rm = TRUE),
+            min = min(long_diff, na.rm = TRUE),
+            max = max(long_diff, na.rm = TRUE))
+# largest average difference is during EN617 and EN644
+
 ```
 
 ## Column Header Organization
@@ -574,7 +610,7 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.2")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -745,20 +781,31 @@ sum(is.na(ncp_gop_input$gop))
 ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
 
 # exclude for now (mostly cruise EN644) samples affected by incorrect cast start time
+# can't do this by cast number because don't have cast number
 ncp_gop_input$cast_flag <- NA_integer_
 ncp_gop_input <- ncp_gop_input %>%
-   mutate(cast_flag = case_when(datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 1, #EN644
+   mutate(cast_flag = case_when(datetime_utc_matlab == "2018-02-02 09:10:00" ~ 1, #EN608 large depth difference
+                                datetime_utc_matlab == "2018-02-01 17:31:00" ~ 1, # EN608
+                                datetime_utc_matlab == "2018-07-22 05:00:00" ~ 1, #EN617
+                                datetime_utc_matlab == "2018-07-22 08:58:00" ~ 1, #EN617
+                                datetime_utc_matlab == "2018-07-23 12:59:00"  ~ 1, #EN617
+                                datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 1, #EN617
+                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 2 ~ 1, # AR31A large depth difference
+                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 10 ~ 1, # AR31A large depth difference
+                                is.na(datetime_utc_matlab) ~ 1, #AR31A missing time
+                                datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 1, #EN644
                                 datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 1,
                                 datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 1,
-                                datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 1, #EN617
+                                datetime_utc_matlab == "2019-08-21 00:48:00" ~ 1, # EN644 underway sample with non-zero provided depth
+                                datetime_utc_matlab == "2019-02-01 21:39:00" & niskin == 2 ~ 1, # EN627 large depth difference
+                                datetime_utc_matlab == "2019-02-02 06:29:00" & niskin == 1 ~ 1, # EN627 large depth difference
+                                datetime_utc_matlab == "2019-02-03 17:42:00" & depth == 0 ~ 1, # EN627 Niskin with provided depth zero
                                 datetime_utc_matlab == "2019-04-22 04:34:00"  ~ 1, #AR34B
-                                is.na(datetime_utc_matlab) ~ 1, #AR31A missing time
-                                                     TRUE ~ 0,))
-
+                                TRUE ~ 0,))
 
 # check how many rows
 sum(ncp_gop_input$cast_flag)
@@ -894,7 +941,7 @@ ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = O2_Ar_ratio, color = cruiseid))+ 
 ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = ncp, color = cruiseid))+ geom_point()
 ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = k, color = cruiseid))+ geom_point()
 
-# would be helpful to plot these on same x-axis (ie by time elapsed on cruise) and color by season
+# would be helpful to color by season
 
 ```
 
