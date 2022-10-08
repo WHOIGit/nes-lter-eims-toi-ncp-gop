@@ -27,15 +27,19 @@ On cruise AR31A, a 24-position Niskin rosette was used with 12-bottle reporting,
 
 We checked each cruise event log to confirm time periods of continuous EIMS and number of discrete TOI underway (and rosette logs to confirm number of discrete TOI Niskin).  We identified and excluded TOI data when a provided datetime, location, depth, or Niskin number was unexpected, excluded EIMS data when time was missing, and plotted data for visual inspection. We assured that the geographic and temporal coverage of the clean data table were within expected ranges.
 
-# Cruise data notes
+# Additional cruise notes
 
-AR31A: Approximately 10 hrs of high-frequncy data are missing (2018-10-22 from 12:41 to 22:20).
+AR31A: Approximately 10 hrs of high-frequency data are missing (2018-10-22 from 12:41 to 22:20).
 
-AR39B: Some high-frequncy data are missing from the first and last days of the cruise. No underway TOI data are available for this cruise due to contamination. Niskin TOI data are included in the package.
+AR34B: Some high-frequency data are missing from the first and last days of the cruise. No underway TOI data are available for this cruise due to contamination. Niskin TOI data are included in the package.
+
+# Differences from previous version
+
+This version adds 2 cruises (AR31A and AR34B), excludes rows in previous version toi-transect csv for reasons described above (see toi_bottle_excluded.csv in GitHub referenced above), and retains 0 when applicable in depth_matlab column.
 
 # Related packages
 
-Net community production (NCP) and gross oxygen production (GOP) are derived from these data and published separately on a per-cruise basis to the EDI repository as follows (year, package ID):
+Net community production (NCP) and gross oxygen production (GOP) are derived from these data and published separately on a per-year basis to the EDI repository as follows (year, package ID):
 
 2018, knb-lter-nes.13.2
 

@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
-author: "Jaxine Wolfe, Kate Morkeski, Stace Beaulieu"
-date: "August 12, 2022"
+author: "Kate Morkeski, Jaxine Wolfe, Stace Beaulieu"
+date: "October 8, 2022"
 output: html_document
 ---
 
@@ -25,6 +25,7 @@ library(ediutilities)
 source("prep-eims-toi-data.R")
 
 # define R packages to require
+# remotes::install_github("EDIorg/EMLassemblyline")
 libs <- c("glue", "tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
 # load libraries
 lapply(libs, require, character.only = TRUE)
@@ -41,12 +42,10 @@ cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
 
 ```
 
-## Read in Provided CSV Files
+## Read in Provided TOI CSV Files and add UTC datetime, depth, and lat long for bottle samples
 
 Add a toi_source field to the TOI data set to clarify whether a bottle was sampled from Niskin vs. underway water. 
 Assign underway sampling depth.
-
-## Supply correct UTC datetime, depth, and lat long for bottle samples
 
 Issues: 
   • The datetime_utc for bottle-sampled data represents the cast start time, NOT the time at which the bottle was fired
@@ -82,7 +81,7 @@ for (i in 1:nrow(cruise_list)){
   toi <- time_toi(toi$datetime_utc_matlab)
   
   # function identifies toi source based on Niskin value and assigns underway sample depth to ship's intake depth (from 0 m)
-  # in future check for nonzero depths before assigning
+  # note to check for discrepancies
   toi <- set_toi_source(toi$niskin, toi$depth_matlab, toi$toi_source)
   
   # read in api data for Niskin samples for given cruise
@@ -597,13 +596,14 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 
 ## NCP-GOP-TRANSECT ----------
 
-## To produce per-cruise NCP GOP package, select cruise from cruise list by manually editing package ID 
+## To produce per-year NCP GOP package, select cruise(s) from cruise list by manually editing package ID 
 
 ```{r}
 
 # read in cruise-specific information
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
 
+# refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
 this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
 
@@ -632,6 +632,7 @@ for (i in 1:nrow(this_pkg)){
   ncp_gop_input <- read_csv(ncp_gop_csv, col_names = FALSE, show_col_types = FALSE)
 
   # provide column names
+  # refer to cruise list csv to relate number of columns in provided discrete rates csv
     if (this_cruise$discreterates_cols == "6"){
       colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop") # 6 columns
       ncp_gop_input$depth <- NA

@@ -7,9 +7,9 @@ Additional data sources for these derived data:
 -- Temperature from NES-LTER ship-provided data
 -- Salinity from NES-LTER ship-provided data
 
-# Cruise notes
+# Additional cruise notes
 
-AR31A: Approximately 10 hrs of high-frequncy data are missing (2018-10-22 from 12:41 to 22:20).
+AR31A: Approximately 10 hrs of high-frequency data are missing (2018-10-22 from 12:41 to 22:20).
 
 # Calibrations and derivations
 
@@ -22,6 +22,10 @@ In the high-frequency data table, one record measured precisely at midnight was 
 # Quality assurance
 
 We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. 
+
+# Differences from previous version
+
+This version is combined with (and deprecates) previous package knb-lter-nes.7, and excludes some rows in previous version gop-transect csv for reasons described above.
 
 # References
 

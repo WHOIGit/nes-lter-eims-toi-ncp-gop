@@ -7,13 +7,13 @@ Additional data sources for these derived data:
 -- Temperature from NES-LTER ship-provided data
 -- Salinity from NES-LTER ship-provided data
 
-# Cruise notes
+# Additional cruise notes
 
-AR34B: Some high-frequncy data are missing from the first and last days of the cruise. No underway TOI data are available for this cruise due to contamination. (Niskin TOI data are included in the package.)
+AR34B: Some high-frequency data are missing from the first and last days of the cruise. No underway TOI data are available for this cruise due to contamination. (Niskin TOI data are included in the package.)
 
 # Calibrations and derivations
 
-The high-freqency NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.2 and includes the gas transfer velocity (k) and net community production (NCP, millimol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface bottle data included in package knb-lter-nes.6.2 and includes discrete NCP (millimol/m2/day), gross oxygen production (GOP, millimol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). 
+The high-frequency NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.2 and includes the gas transfer velocity (k) and net community production (NCP, millimol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface bottle data included in package knb-lter-nes.6.2 and includes discrete NCP (millimol/m2/day), gross oxygen production (GOP, millimol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). 
 
 # Data cleaning and assembly
 
@@ -22,6 +22,10 @@ In the high-frequency data table, one record measured precisely at midnight was 
 # Quality assurance
 
 We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. 
+
+# Differences from previous version
+
+This version is combined with (and deprecates) previous package knb-lter-nes.15, and excludes some rows in previous version gop-transect csv for reasons described above.
 
 # References
 

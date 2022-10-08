@@ -92,7 +92,7 @@
       <keyword>net community production</keyword>
     </keywordSet>
     <intellectualRights>
-      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
+      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.&#13;
 </para>
     </intellectualRights>
     <coverage>
@@ -143,14 +143,16 @@
 -- Gas transfer velocity (wind data product, weighted over 30 days)&#13;
 -- Temperature from NES-LTER ship-provided data&#13;
 -- Salinity from NES-LTER ship-provided data</para>
-          <para># Cruise notes</para>
-          <para>AR31A: Approximately 10 hrs of high-frequncy data are missing (2018-10-22 from 12:41 to 22:20).</para>
+          <para># Additional cruise notes</para>
+          <para>AR31A: Approximately 10 hrs of high-frequency data are missing (2018-10-22 from 12:41 to 22:20).</para>
           <para># Calibrations and derivations</para>
           <para>The high-freqency NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.2 and includes the gas transfer velocity (k) and net community production (NCP, millimol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface bottle data included in package knb-lter-nes.6.2 and includes discrete NCP (millimol/m2/day), gross oxygen production (GOP, millimol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). </para>
           <para># Data cleaning and assembly</para>
           <para>In the high-frequency data table, one record measured precisely at midnight was omitted due to the lack of time code conversion. For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or Niskin, and quality is indicated using IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from Niskins, datetime (in UTC) was corrected to reflect the time at which the rosette bottle closed instead of cast start time; latitude_API and longitude_API are based on datetime_utc. Any records with the following conditions were excluded from the data product: a cast start time or a Niskin not found in API bottle summary, a time difference from API bottle summary record greater than 60 minutes or a depth difference greater than 5 m, a missing time value, a Niskin sample with a provided depth of zero, or an underway sample with a nonzero provided depth. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
           <para># Quality assurance</para>
           <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. </para>
+          <para># Differences from previous version</para>
+          <para>This version is combined with (and deprecates) previous package knb-lter-nes.7, and excludes some rows in previous version gop-transect csv for reasons described above.</para>
           <para># References</para>
           <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
           <para>&#13;
@@ -694,7 +696,7 @@
     <metadata>
       <emlEditor>
         <app>EMLassemblyline</app>
-        <release>3.5.3</release>
+        <release>3.5.4</release>
       </emlEditor>
     </metadata>
   </additionalMetadata>
