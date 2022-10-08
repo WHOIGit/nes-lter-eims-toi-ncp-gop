@@ -21,9 +21,7 @@ here("nes-lter-eims-toi-ncp-gop")
 #remotes::install_github("WHOIGit/ediutilities")
 library(ediutilities)
 
-# define source for functions developed for the EDI packaging workflow
-#source("edi-utilities.R")
-# specific to this workflow
+# define source for functions developed for assembly and EDI packaging specific to this workflow
 source("prep-eims-toi-data.R")
 
 # define R packages to require
@@ -139,7 +137,7 @@ for (i in 1:nrow(cruise_list)){
                                     toi_source == "toi_niskin" ~ datetime_utc_API)) %>%
     mutate(depth = case_when(toi_source =="toi_underway" ~ depth,
                              toi_source == "toi_niskin" ~ depth_API)) %>%
-    mutate(depth = round(depth, 3)) # round to 1 or 2 decimal places instead of to milimeter? 
+    mutate(depth = round(depth, 3)) # round to 1 or 2 decimal places? 
   
   # read in 1-minute position underway data from NES-LTER API 
   underway <- read_from_api(type = "underway", cruises = cruisename)
@@ -589,10 +587,7 @@ make_eml(path=project_folder,
 
 # Insert Custom Project Node
 
-# for edi_utilities
-#project_insert(edi_pkg = pkg_id, xml.path = project_folder)
-
-# for ediutilities
+# for ediutilities package: # need option for xml.path
 #project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
 
 # for prep-eims-toi-data: 
@@ -610,7 +605,7 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
 
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.2")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -983,7 +978,7 @@ write.csv(ncp_hifreq_edi, paste0(here(project_folder, ncp), ".csv"), row.names =
 
 ```
 
-## EML Assembly: EIMS-TOI-transect
+## EML Assembly: NCP-GOP-transect
 
 Assemble EML metadata templates based on the provided Excel template
 
