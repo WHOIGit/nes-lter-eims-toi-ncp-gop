@@ -50,10 +50,9 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2022-10-08</pubDate>
+    <pubDate>2022-10-24</pubDate>
     <abstract>
-      <para>In order to calculate net community production (NCP) rates on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) transect cruises, gas tracer data were collected with a continuous at-sea mass spectrometer. The ratio of O2/Ar, measured continuously from underway water, yields 8,000-15,000 rates of NCP per cruise. Discrete water samples (N=100 to 150 per cruise) were collected for triple oxygen isotope (TOI) analysis to estimate gross primary&#13;
-production (GPP) rates and ratios of NCP/GPP. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.&#13;
+      <para>In order to calculate net community production (NCP) rates on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) transect cruises, gas tracer data were collected with a continuous at-sea mass spectrometer. The ratio of O2/Ar, measured continuously from underway water, yields 8,000-15,000 rates of NCP per cruise. Discrete water samples (50 to 150 per cruise) were collected for triple oxygen isotope (TOI) analysis to estimate gross primary production (GPP) rates and ratios of NCP/GPP. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.&#13;
 This data package provides two types of data tables for NES-LTER transect cruises beginning in 2018: a high-frequency continuous Equilibration Inlet Mass Spectrometer (EIMS) table, provided by year, and a low-frequency discrete triple oxygen isotope (TOI) table with all years combined. Rates calculated from these measurements are provided as separate packages, per year, in the EDI repository.</para>
     </abstract>
     <keywordSet>
@@ -910,7 +909,7 @@ EN644: Diaphragm with debubbler.&#13;
     <metadata>
       <emlEditor>
         <app>EMLassemblyline</app>
-        <release>3.5.4</release>
+        <release>3.5.3</release>
       </emlEditor>
     </metadata>
   </additionalMetadata>
