@@ -1,0 +1,125 @@
+---
+title: "ncp-gop-transect-deprecate-eml"
+author: "Kate Morkeski"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# set path to root of project
+library(here)
+here("nes-lter-eims-toi-ncp-gop")
+
+# source from Github
+#remotes::install_github("WHOIGit/ediutilities")
+library(ediutilities)
+
+# define source for functions developed for assembly and EDI packaging specific to this workflow
+source("prep-eims-toi-data.R")
+
+# define R packages to require
+# remotes::install_github("EDIorg/EMLassemblyline")
+libs <- c("glue", "tidyverse", "readxl", "lubridate", "devtools", "EMLassemblyline", "EML", "maps", "xml2")
+# load libraries
+lapply(libs, require, character.only = TRUE)
+
+```
+
+## To produce per-year NCP GOP package, select cruise(s) from cruise list by manually editing package ID 
+
+```{r}
+
+# read in cruise-specific information
+cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
+
+# refer to package_identifiers.txt that matches to package for manual edit
+# manually edit package id to select package to assemble 
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.15.2")
+
+# get identifying info for this package
+this_cruise <- this_pkg$cruise_id[1]
+project_folder <- this_pkg$folder[1]
+gop <- this_pkg$gop_product[1]
+ncp <- this_pkg$hifreq_product[1]
+
+```
+
+
+## EML Assembly: NCP-GOP-transect
+
+Assemble EML metadata templates based on the provided Excel template
+
+```{r}
+
+# define input files
+edi_filename <- "ncp-gop-transect"
+metadata <- '/{edi_filename}-info'
+pkg_id <- this_pkg$package_id[1]
+
+# Make EML Templates 
+excel_to_template(metadata_path = glue(project_folder, metadata),
+                  edi_filename = edi_filename, 
+                  rights = "CCBY",
+                  other_info = TRUE, 
+                  output_path = project_folder)
+
+sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'CategoricalVariables',
+             glue::glue(project_folder, '/catvars_ncp-gop-transect.txt'))
+
+sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'ColumnHeadersGop',
+             glue::glue(project_folder, '/attributes_gop-transect-',this_cruise, '.txt'))
+
+sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'ColumnHeadersNcp',
+             glue::glue(project_folder, '/attributes_ncp-transect-',this_cruise, '.txt'))
+
+EMLassemblyline::template_core_metadata(path= project_folder, license='CCBY')
+
+```
+Compute spatiotemporal coverage and generate EML
+
+```{r}
+
+# read data product csvs in order to get temporal and geographic coverage
+gop_edi <- read.csv(paste0(here(project_folder, gop), ".csv")) #gop-transect
+ncp_edi <- read.csv(paste0(here(project_folder, ncp), ".csv")) #ncp-transect
+
+# identify columns to generate temporal coverage and geographic coverage
+temp_coverage <- temporal_coverage(append(gop_edi$datetime_utc, ncp_edi$datetime_utc_matlab))
+lat <- append(gop_edi$latitude_API, ncp_edi$latitude_matlab)
+long <- append(gop_edi$longitude_API, ncp_edi$longitude_matlab)
+
+# generate EML
+make_eml(path = project_folder,
+         data.path = project_folder,
+         dataset.title= this_pkg$dataset_title[1],
+         data.table = c(paste0(gop, ".csv"), paste0(ncp, ".csv")),
+         data.table.description=c("Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer", "Data product high frequency NCP derived from EIMS sampling of underway seawater"),
+         data.table.name = c(this_pkg$gop_product[1], this_pkg$hifreq_product[1]),
+         other.entity = c("input_data_csv.zip", "input_data_matlab.zip"),
+         other.entity.name = c("input_data_csv.zip", "input_data_matlab.zip"),
+         other.entity.description = c("Package input data files in csv format","Package input data files in Matlab format"),
+         temporal.coverage = temp_coverage,
+         geographic.description = "NES-LTER Transect",
+         geographic.coordinates = geographic_coordinates(lat, long),
+         maintenance.description = "ongoing",
+         user.id = "NES",
+         user.domain = "LTER",
+         package.id = pkg_id)
+
+# Insert Custom Project Node
+
+# for edi_utilities
+#project_insert(edi_pkg = pkg_id, xml.path = project_folder)
+
+# for ediutilities
+#project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
+
+# for prep-eims-toi-data: 
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project.txt", xml.path = project_folder)
+
+```
+
+
+
