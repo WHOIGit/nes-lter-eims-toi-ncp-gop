@@ -1,3 +1,0 @@
-﻿This dataset has been combined into a package containing multiple cruises per year. See the new version:
-
-Stanley, R.H., A. Mehta, and D. Aldrett. 2022. Net community production (NCP) and gross oxygen production (GOP), based on oxygen-argon ratios and triple oxygen isotopes, from seasonal NES-LTER Transect cruises in 2019 ver 2. Environmental Data Initiative. https://doi.org/10.6073/pasta/2a5eb6dfbb56e338c14fad88decdb776 (Accessed 2022-11-16).

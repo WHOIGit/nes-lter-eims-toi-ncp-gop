@@ -1,8 +1,0 @@
-attributeName	attributeDefinition	class	unit	dateTimeFormatString	missingValueCode	missingValueCodeExplanation
-cruise	Identifier for research cruise generally including abbreviation for research vessel and voyage number	character				
-datetime_utc_matlab	PI-provided UTC date and time	Date		YYYY-MM-DD hh:mm:ss		
-latitude_matlab	Latitude of sample event provided by PI	numeric	degree			
-longitude_matlab	Longitude of sample event provided by PI	numeric	degree			
-depth	Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/	numeric	meter			
-ncp	Rate of net community production integrated over the mixed layer	numeric	millimoleOxygenPerMeterSquaredPerDay		NaN	Missing value
-k	Gas transfer velocity used in calculating ncp from O2/Ar ratio	numeric	metersPerDay		NaN	Missing value

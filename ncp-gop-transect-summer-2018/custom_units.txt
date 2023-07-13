@@ -1,2 +1,0 @@
-id	unitType	parentSI	multiplierToSI	description
-millimoleOxygenPerMeterSquaredPerDay	amount	molePerMeterSquaredPerDay	0.001	millimoles oxygen per meter squared per day

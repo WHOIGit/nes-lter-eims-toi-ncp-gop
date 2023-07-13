@@ -1,6 +1,0 @@
-Hi
-
-Here are all the files for En644. Once again I don't have cast numbers yet since that is something I will be doing going forward but I did include niskin and depth in the bottle file. Also, some of the bottle data in this cruise had weird values and I flagged those as "bad data" in the calculated ncpa nd gop discrete rates -- so in the discrete rate file, there is an extra column with a "1" if the data is suspect. If you want, I can just get rid of all the suspect data and delete it but I didn't know if that was good data practice (since I don't understand why the values are so weird -- thye are just super low and don't agree with the EIMS so I think it was a problem with how the data was collected). 
-
-Cheers, Rachel
-
