@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Kate Morkeski, Jaxine Wolfe, Stace Beaulieu"
-date: "October 8, 2022"
+date: "August 19, 2023"
 output: html_document
 ---
 
@@ -38,7 +38,11 @@ lapply(libs, require, character.only = TRUE)
 
 ```{r}
 
-cruise_list <- read_csv("cruise_list.csv", col_names = TRUE)
+prior_list <- read_csv("cruise_list.csv", col_names = TRUE)
+cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE)
+#cruise_list$cruise_id <- tolower(cruise_list$cruise_id)
+prior_years <- c(unique(prior_list$year))
+new_cruises <- c(cruise_list$cruise_id)
 
 ```
 
@@ -86,6 +90,7 @@ for (i in 1:nrow(cruise_list)){
   
   # read in api data for Niskin samples for given cruise
   summary <- read_from_api(type = "summary", cruises = cruisename)
+  summary$cruise <- tolower(summary$cruise)
   
   # create columns to populate from API 
   toi$cast <- NA_integer_
@@ -178,11 +183,12 @@ for (i in 1:nrow(cruise_list)){
   toi$cruise_day<- toi$datetime_utc - toi$cruise_t0
   toi$cruise_day <-toi$cruise_day/86400
   toi$cruise_day <- as.double(toi$cruise_day)
+  toi$cruise <- toupper(toi$cruise)
   
   #output data frame for cruise
   assign(paste0("toi_", cruisename), toi) 
-
-}  
+  
+  }  
   
 ```
 
@@ -191,27 +197,30 @@ for (i in 1:nrow(cruise_list)){
 ```{r}
 
 # combine all cruises
-bottle <- rbind(toi_EN608, toi_EN617, toi_AR31A, toi_EN627,  toi_AR34B, toi_EN644)
+bottle_list <- paste0("toi_", new_cruises)
+bottle <- list_rbind(mget(bottle_list))
+bottle <- filter(bottle, cruise != "EN617")
 
-# remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
-excl_niskin99 <- bottle %>% filter(niskin == "99")
-excl_niskin99$reason <- "niskin 99"
-bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
-
-# exclude for now casts affected by provided incorrect cast start time
-bottle$reason <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
-                        bottle$cruise == "EN644" & bottle$cast == 9 | 
-                        bottle$cruise == "EN644" & bottle$cast == 18 | 
-                        bottle$cruise == "EN644" & bottle$cast == 20 |
-                        bottle$cruise == "EN644" & bottle$cast == 26 |
-                        bottle$cruise == "AR34B" & bottle$cast == 18,
-                        yes = "incorrect cast start time", 
-                        no = NA)
-
-excl_bottlecasttime <- bottle %>% filter(!is.na(reason))
-
-bottle <- bottle %>% filter(is.na(reason))
-bottle <- bottle %>% select(-reason)
+# (special cases for version 2)
+# # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
+# excl_niskin99 <- bottle %>% filter(niskin == "99")
+# excl_niskin99$reason <- "niskin 99"
+# bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
+# 
+# # exclude for now casts affected by provided incorrect cast start time
+# bottle$reason <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
+#                         bottle$cruise == "EN644" & bottle$cast == 9 | 
+#                         bottle$cruise == "EN644" & bottle$cast == 18 | 
+#                         bottle$cruise == "EN644" & bottle$cast == 20 |
+#                         bottle$cruise == "EN644" & bottle$cast == 26 |
+#                         bottle$cruise == "AR34B" & bottle$cast == 18,
+#                         yes = "incorrect cast start time", 
+#                         no = NA)
+#
+#excl_bottlecasttime <- bottle %>% filter(!is.na(reason))
+#
+#bottle <- bottle %>% filter(is.na(reason))
+#bottle <- bottle %>% select(-reason)
 
 # ensure rows are in time order
 bottle <- bottle[order(bottle$datetime_utc),]
@@ -228,6 +237,9 @@ bottle <- bottle[order(bottle$datetime_utc),]
 
 ```{r}
 
+# add quality flag
+bottle$iode_quality_flag <- as.character("1")
+
 # check time differences
 # add time difference column
 bottle$time_diff <- bottle$datetime_utc_matlab - bottle$datetime_utc_API
@@ -242,62 +254,77 @@ bottle_time_diffs <- bottle %>%
             min = min(time_diff_min, na.rm = TRUE),
             max = max(time_diff_min, na.rm = TRUE))
 
-# isolate and remove rows with time difference greater than 60 minutes
+# isolate and flag rows with time difference greater than 60 minutes
+bottle <- bottle %>% mutate(iode_quality_flag = case_when(time_diff_min > 60 ~ "3",
+                                                          is.na(time_diff_min) ~ "1", 
+                                                          time_diff_min < 60 ~ iode_quality_flag))
+sum(bottle$iode_quality_flag == "3")
 excl_time_conflicts <- bottle %>% filter(time_diff_min > 60)
 excl_time_conflicts$reason <- "large time difference"
-bottle <- bottle %>% filter(time_diff_min < 60 | is.na(time_diff_min))
 
-# isolate instances of large depth differences
+# isolate and flag instances of large depth differences
 bottle$depth_diff <- bottle$depth_matlab - bottle$depth_API
-# remove rows with large depth differences
+bottle <- bottle %>% mutate(iode_quality_flag = case_when(abs(depth_diff) > 5 ~ "3",
+                                                          is.na(depth_diff) ~ "1", 
+                                                          abs(depth_diff) < 5 ~ iode_quality_flag))
+sum(bottle$iode_quality_flag == "3")
 excl_depth_conflicts <- bottle %>% filter(depth_diff > 5 | depth_diff < -5)
 excl_depth_conflicts$reason <- "large depth difference"
-bottle <- bottle %>% filter(abs(depth_diff) < 5 | is.na(depth_diff))
 
-# isolate and remove the niskins not found in API. This should be the same as samples printed in loop above except if removed in rbind chunk
+# isolate and flag any niskins not found in API. This should be the same as samples printed in loop above except if removed in rbind chunk
+bottle <- bottle %>% mutate(iode_quality_flag = case_when(toi_source == "toi_niskin" & is.na(depth_API) ~ "4",
+                            TRUE ~ iode_quality_flag))
+sum(bottle$iode_quality_flag == "4") 
 excl_api_no_niskin <- bottle %>% filter(toi_source == "toi_niskin" & is.na(depth_API))
 excl_api_no_niskin$reason <- "Niskin not found in API"
-bottle <- bottle %>% filter((toi_source == "toi_niskin" & !is.na(depth_API)) | toi_source == "toi_underway")
 
-# isolate and remove samples recorded as Niskin with depth of 0
+# isolate and flag samples recorded as Niskin with depth of 0
+bottle <- bottle %>% mutate(iode_quality_flag = case_when(toi_source == "toi_niskin" & depth_matlab == 0 ~ "4",
+                            TRUE ~ iode_quality_flag))
+sum(bottle$iode_quality_flag == "4") 
 excl_niskin_0 <- bottle %>% filter(toi_source == "toi_niskin" & depth_matlab == 0)
 excl_niskin_0$reason <- "Niskin with provided depth = 0"
-bottle <- bottle %>% filter((toi_source == "toi_niskin" & depth_matlab != 0) | toi_source == "toi_underway")
 
-# isolate and remove any underway samples with provided depth not 0 m 
+# isolate and flag any underway samples with provided depth not 0 m 
+bottle <- bottle %>% mutate(iode_quality_flag = case_when(toi_source == "toi_underway" & depth_matlab != 0 ~ "4",
+                            TRUE ~ iode_quality_flag))
+sum(bottle$iode_quality_flag == "4") 
 excl_underway_depth <- bottle %>% filter(toi_source == "toi_underway" & depth_matlab != 0)
 excl_underway_depth$reason <- "non-zero depth provided for underway sample"
-bottle <- bottle %>% filter((toi_source == "toi_underway" & depth_matlab == 0) | toi_source == "toi_niskin")
 
 # isolate and remove any missing datetime
+bottle <- bottle %>% mutate(iode_quality_flag = case_when(is.na(datetime_utc) ~ "4",
+                            TRUE ~ iode_quality_flag))
+sum(bottle$iode_quality_flag == "4") 
 excl_missing_time <- bottle %>% filter(is.na(datetime_utc))
 excl_missing_time$reason <- "missing datetime"
-bottle <- bottle %>% filter(!is.na(datetime_utc))
 
-# make columns match (time difference columns)
-excl_niskin99$time_diff <- NA_integer_
-excl_niskin99$time_diff_min <- NA_integer_
-excl_niskin99$depth_diff <- NA_integer_
-excl_niskin99 <- excl_niskin99 %>% relocate(reason, .after = depth_diff)
+#special cases for version 2
+# # make columns match (time difference columns)
+# excl_niskin99$time_diff <- NA_integer_
+# excl_niskin99$time_diff_min <- NA_integer_
+# excl_niskin99$depth_diff <- NA_integer_
+# excl_niskin99 <- excl_niskin99 %>% relocate(reason, .after = depth_diff)
 
-excl_bottlecasttime$time_diff <- NA_integer_
-excl_bottlecasttime$time_diff_min <- NA_integer_
-excl_bottlecasttime$depth_diff <- NA_integer_
-excl_bottlecasttime <- excl_bottlecasttime %>% relocate(reason, .after = depth_diff)
+# excl_bottlecasttime$time_diff <- NA_integer_
+# excl_bottlecasttime$time_diff_min <- NA_integer_
+# excl_bottlecasttime$depth_diff <- NA_integer_
+# excl_bottlecasttime <- excl_bottlecasttime %>% relocate(reason, .after = depth_diff)
 
 excl_time_conflicts$depth_diff <- NA_integer_
 excl_time_conflicts <- excl_time_conflicts %>% relocate(reason, .after = depth_diff)
 
 # add all excluded rows to one data frame and export to csv
-bottle_excluded <- rbind(excl_niskin99,
-                         excl_bottlecasttime,
+bottle_flagged <- rbind(
+                         #excl_niskin99,
+                         #excl_bottlecasttime,
                          excl_time_conflicts,
                          excl_depth_conflicts, 
                          excl_api_no_niskin, 
                          excl_niskin_0, 
                          excl_underway_depth,
                          excl_missing_time)
-write.csv(bottle_excluded, "toi_bottle_excluded.csv")
+write.csv(bottle_flagged, "toi_bottle_flagged_v3.csv")
 
 # isolate underway samples
 # -> perform visual inspection of underway TOI bottle samples against event log
@@ -319,9 +346,9 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 # Map Check
 # bottle dataset does not have coordinates from matlab. Plot bottle API lat long
 map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
-map_locs(df = toi_AR31A, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
-map_locs(df = toi_AR34B, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
-map_locs(df = toi_EN608, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
+#map_locs(df = toi_AR31A, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
+#map_locs(df = toi_AR34B, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
+#map_locs(df = toi_EN608, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
 
 # Plot measured parameters in bottle TOI dataset
 ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
@@ -344,11 +371,28 @@ ggplot(bottle, aes(x= cruise_day, y = d18O, color = cruise))+ geom_line()
 ```{r}
 
 # define headers for columns in desired order
-bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab",  "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
-bottle_edi <- bottle[, bottle_headers]
+bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O", "iode_quality_flag")
+bottle_clean <- bottle[, bottle_headers]
+# write file for inspection
+write.csv(bottle_clean, here("eims-toi-transect", 'toi-transect-new-v3.csv'), row.names = FALSE)
+
+# if previous version should have same QC procedures as v3, this should happen after combining new cruises (line 201) instead of here:
+# read in previous version
+bottle_prior <- read_csv(here("eims-toi-transect", "toi-transect.csv"))
+
+# add quality flag
+bottle_prior$iode_quality_flag <- as.character("2")
+
+# combine previous version and new data
+bottle_edi <- rbind(bottle_clean, bottle_prior)
+# put rows are in time order
+bottle_edi <- bottle_edi[order(bottle_edi$datetime_utc),]
+
+bottle_cruise_check <- bottle_edi %>% group_by(cruise) %>% summarize(package_toi_samples = n())
+write.csv(bottle_cruise_check, here("eims-toi-transect", 'cruise_toi_count.csv'), row.names = FALSE)
 
 # write file for upload to EDI
-write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect.csv'), row.names = FALSE)
+write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect-v3.csv'), row.names = FALSE)
 
 ```
 ## Read in EIMS data
@@ -645,6 +689,10 @@ for (i in 1:nrow(this_pkg)){
     }
     else if (this_cruise$discreterates_cols == "9"){
       colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality") # 9 columns
+    }
+  else if (this_cruise$discreterates_cols == "11"){
+      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "blank", "toi_bottle", "quality") 
+      #need to remove blank column and add toi_bottle to other dfs # 11 columns
     }
   
   # add cruise ID

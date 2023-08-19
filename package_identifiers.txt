@@ -1,9 +1,0 @@
-6: nes-lter-eims-toi-ncp-gop/eims-toi-transect (continuous)
-7: nes-lter-eims-toi-ncp-gop/ncp-gop-transect-summer-2018/ (en617) deprecate
-...
-13: nes-lter-eims-toi-ncp-gop/ncp-gop-transect-winter-2018/ (en608)
-    transition to /ncp-gop-transect-2018/ (en608)(en617)(ar31a)
-14: nes-lter-eims-toi-ncp-gop/ncp-gop-transect-winter-2019/ (en627)
-    transition to /ncp-gop-transect-2019/ (en627)(ar34b)(en644)
-15: nes-lter-eims-toi-ncp-gop/ncp-gop-transect-summer-2019/ (en644) deprecate
-...

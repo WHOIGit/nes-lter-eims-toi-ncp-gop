@@ -5,7 +5,15 @@ read_toi <- function(toi_filename, cruiseid){
 
   toi_in <- read_csv((paste0(here(), "/eims-toi-transect/input_data_csv/", toi_filename)), col_names = FALSE)
 
-  colnames(toi_in) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17O", "d17O", "d18O", "niskin")
+  #colnames(toi_in) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17O", "d17O", "d18O", "niskin")
+  
+  if (ncol(toi_in) == 8){
+    colnames(toi_in) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17O", "d17O", "d18O", "niskin")
+    toi_in$toi_bottle_id <- NA
+    } else if (ncol(toi_in) == 9){
+    colnames(toi_in) <- c("datetime_utc_matlab", "O2_Ar_delta", "O2_Ar_ratio", "depth_matlab", "cap_Delta_17O", "d17O", "d18O", "niskin", "toi_bottle_id")
+    }
+  
   toi <- toi_in
 
   # populate cruise column
