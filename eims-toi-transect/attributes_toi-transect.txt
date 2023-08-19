@@ -14,3 +14,4 @@ O2_Ar_ratio	Oxygen-argon ratio of bottle sample	numeric	dimensionless
 cap_Delta_17O	Triple isotopic composition of dissolved oxygen versus atmospheric O2, D17O	numeric	perMeg			
 d17O	Enrichment of oxygen-17 in dissolved oxygen (delta(17)O) in the water body by mass spectrometry	numeric	perMil			
 d18O	Enrichment of oxygen-18 in dissolved oxygen {18O in O2 CAS 14797-71-8} {delta(18)O} in the water body by mass spectrometry URI http://vocab.nerc.ac.uk/collection/P01/current/D18OMXDG/	numeric	perMil			
+iode_quality_flag	IODE Quality Flag primary level	categorical				

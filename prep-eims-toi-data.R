@@ -81,6 +81,18 @@ read_eims <- function(eims_filename, cruiseid){
   if(str_detect(cruiseid, '^AR') ){
     eims$depth <- 2.1336
   }
+  if(str_detect(cruiseid, '^AT') ){
+    eims$depth <- 4 #PLACEHOLDER
+  }
+  if(str_detect(cruiseid, '^en') ){
+    eims$depth <- 5
+  }
+  if(str_detect(cruiseid, '^ar') ){
+    eims$depth <- 2.1336
+  }
+  if(str_detect(cruiseid, '^at') ){
+    eims$depth <- 4 #PLACEHOLDER
+  }
  
   return(eims)
   
@@ -91,7 +103,18 @@ read_eims <- function(eims_filename, cruiseid){
 time_eims <- function(date_mat){
   
   # convert datetime format
-  eims$datetime_utc_matlab <- as.POSIXct(date_mat, format="%d-%b-%Y %H:%M:%OS")
+  # replace date and time for samples exactly at midnight
+  eims$date_utc_matlab <- as.POSIXct(eims$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+  eims$date_utc_matlab <- as_date(eims$date_utc_matlab)
+  eims$date_string <- str_trunc(eims$datetime_utc_matlab, 14, side = "right")
+  eims$date_string <- str_remove(eims$date_string, "\\.")
+  eims$date_string <- str_remove(eims$date_string, "\\.")
+  eims$date_string <- str_remove(eims$date_string, "\\.")
+  eims$time_utc_matlab <- as.POSIXct(eims$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+  eims$time_utc_matlab <- strftime(eims$time_utc_matlab, format="%H:%M:%OS")
+  eims$time_utc_matlab <- replace(eims$time_utc_matlab, is.na(eims$time_utc_matlab), "00:00:01")
+  eims$datetime_utc_midnights <- paste(eims$date_string, eims$time_utc_matlab)
+  eims$datetime_utc_matlab <- as.POSIXct(eims$datetime_utc_midnights,format="%d-%b-%Y %H:%M:%OS")
   # ensure rows are in time order
   eims <- eims[order(eims$datetime_utc_matlab),]
   

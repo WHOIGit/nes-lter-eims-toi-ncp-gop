@@ -460,15 +460,20 @@ for (i in 1:nrow(cruise_list)){
 
 ```{r}
 
+eims_list <- paste0("eims_", new_cruises)
+eims_all <- list_rbind(mget(eims_list))
+
+missingdates <- filter(eims_all, is.na(datetime_utc_matlab))
+
 # put all rows without timestamp into one dataframe
-missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_AR31A, missingdate_EN627, missingdate_EN644, missingdate_AR34B)
+#missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_AR31A, missingdate_EN627, missingdate_EN644, missingdate_AR34B)
 # these are are row 1114 in input file RaEn608withbiosat and row 9845 in input file RaEn627withbiosat 
 
 # write csv file for inspection
-write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
+#write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
 
 # combine loop output from all cruises into one dataframe, excluding those with missing timestamp
-eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644, eims_AR34B)
+#eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644, eims_AR34B)
 # ensure rows are in time order
 eims_all <- eims_all[order(eims_all$datetime_utc_matlab),]
 
@@ -531,27 +536,42 @@ eims_loc_diffs <- eims_all %>%
 
 ```
 
-## Column Header Organization
+
+```{r}
+# if previous version should have same midnight procedures as v3, this chunk should happen when reading in data instead of here.
+# read in previous version
+eims_prior <- read_csv(here("eims-toi-transect", c("eims-transect-2018.csv", "eims-transect-2019.csv")))
+
+eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio")
+eims_all <- eims_all[, eims_headers]
+
+# combine previous version and new data
+eims_all <- rbind(eims_all, eims_prior)
+# put rows are in time order
+eims_all <- eims_all[order(eims_all$datetime_utc_matlab),]
+
+```
+
+## Write product data files
 
 ```{r}
 
 # separate data by year
 eims_all$year <- format(eims_all$datetime_utc_matlab, "%Y")
-eims_2018 <- eims_all %>% filter(year == "2018")
-eims_2019 <- eims_all %>% filter(year == "2019")
 
-# define headers for columns in desired order
-eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio")
-
-# order columns
-eims_all <- eims_all[, eims_headers]
-eims_2018 <- eims_2018[, eims_headers]
-eims_2019 <- eims_2019[, eims_headers]
-
-# write files for upload to EDI
-#write.csv(eims_all, here("eims-toi-transect", 'eims-transect.csv'), row.names = FALSE)
-write.csv(eims_2018, here("eims-toi-transect", 'eims-transect-2018.csv'), row.names = FALSE)
-write.csv(eims_2019, here("eims-toi-transect", 'eims-transect-2019.csv'), row.names = FALSE)
+# create data frame and output data annually
+for (i in 1:nrow(cruise_list)) {
+  
+  cruiseyear <- cruise_list$year[i]
+     
+  eims_year <- eims_all %>% filter(year == cruiseyear)
+  
+  eims_year <- eims_year %>% select(-year)
+  
+  assign(paste0("eims_", cruiseyear), eims_year) 
+  write.csv(eims_year, here("eims-toi-transect", paste0('eims-transect-', cruiseyear, '.csv')), row.names = FALSE)
+            
+}
 
 ```
 
@@ -565,23 +585,26 @@ Assemble EML metadata templates based on the provided Excel template
 edi_filename <- "eims-toi-transect"
 metadata <- glue('{edi_filename}/{edi_filename}-info') 
 project_folder <- "eims-toi-transect"
-pkg_id <- "knb-lter-nes.6.2"
+pkg_id <- "knb-lter-nes.6.3"
 
 # Make EML Templates 
 excel_to_template(metadata_path = metadata, 
                   edi_filename = edi_filename, 
                   rights = "CCBY",
-                  other_info = TRUE, 
+                  #other_info = TRUE, 
                   output_path = project_folder)
 
 sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'CategoricalVariables',
              glue::glue('eims-toi-transect/catvars_toi-transect.txt'))
 
-sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'ColumnHeadersEims',
-             glue::glue('eims-toi-transect/attributes_eims-transect-2018.txt'))
+for (i in 1:nrow(cruise_list)) {
+  
+  cruiseyear <- cruise_list$year[i]
+  
+  sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'ColumnHeadersEims',
+             glue::glue('eims-toi-transect/attributes_eims-transect-', cruiseyear, '.txt'))
 
-sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'ColumnHeadersEims',
-             glue::glue('eims-toi-transect/attributes_eims-transect-2019.txt'))
+}
 
 sheet_to_tsv('eims-toi-transect/eims-toi-transect-info.xlsx', 'ColumnHeadersToi',
              glue::glue('eims-toi-transect/attributes_toi-transect.txt'))
@@ -593,16 +616,13 @@ Compute spatiotemporal coverage and generate EML
 
 ```{r}
 
-# read data product csvs in order to get temporal and geographic coverage
-toi_edi <- read.csv(here('eims-toi-transect/toi-transect.csv'))
-eims_1 <- read.csv(here('eims-toi-transect/eims-transect-2018.csv'))
-eims_2 <- read.csv(here('eims-toi-transect/eims-transect-2019.csv'))
+# if needed, read data product csvs in order to get temporal and geographic coverage
+#bottle_edi <- read.csv(here('eims-toi-transect/toi-transect-v3.csv'))
 
 # identify columns to generate temporal coverage and geographic coverage
-temp_coverage <- temporal_coverage(append(toi_edi$datetime_utc, 
-                                   append(eims_1$datetime_utc_matlab, eims_2$datetime_utc_matlab)))
-lat <- append(toi_edi$latitude_API, append(eims_1$latitude_matlab, eims_2$latitude_matlab))
-long <- append(toi_edi$longitude_API, append(eims_1$longitude_matlab, eims_2$longitude_matlab))
+temp_coverage <- temporal_coverage(bottle_edi$datetime_utc)
+lat <- (bottle_edi$latitude_API)
+long <- (bottle_edi$longitude_API)
 
 # generate EML
 make_eml(path=project_folder,
@@ -610,13 +630,16 @@ make_eml(path=project_folder,
          dataset.title= 'Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018',
          data.table=c('toi-transect.csv',
                       'eims-transect-2018.csv',
-                      'eims-transect-2019.csv'),
+                      'eims-transect-2019.csv', 'eims-transect-2021.csv', 'eims-transect-2020.csv', 'eims-transect-2022.csv'),
          data.table.description=c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", 
                                   "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2018", 
-                                  "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2019"),
-         data.table.name = c('toi-transect.csv',
-                      'eims-transect-2018.csv',
-                      'eims-transect-2019.csv'),
+                                  "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2019",
+                                  "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2020",
+                                  "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2021",
+                                  "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2022"),
+         #data.table.name = c('toi-transect.csv',
+          #            'eims-transect-2018.csv',
+           #           'eims-transect-2019.csv'),
          other.entity = c("input_data_csv.zip", "input_data_matlab.zip"),
          other.entity.name = c("input_data_csv.zip", "input_data_matlab.zip"),
          other.entity.description = c("Package input data files in csv format","Package input data files in Matlab format"),
