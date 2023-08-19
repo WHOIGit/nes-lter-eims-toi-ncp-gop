@@ -381,7 +381,7 @@ write.csv(bottle_clean, here("eims-toi-transect", 'toi-transect-new-v3.csv'), ro
 bottle_prior <- read_csv(here("eims-toi-transect", "toi-transect.csv"))
 
 # add quality flag
-bottle_prior$iode_quality_flag <- as.character("2")
+bottle_prior$iode_quality_flag <- as.character("1")
 
 # combine previous version and new data
 bottle_edi <- rbind(bottle_clean, bottle_prior)
