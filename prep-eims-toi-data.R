@@ -68,8 +68,8 @@ set_toi_source <- function(nisk, depth_mat, source) {
 read_eims <- function(eims_filename, cruiseid){
   
   eims_in <- read_csv((paste0(here(), "/eims-toi-transect/input_data_csv/", eims_filename)), col_names = FALSE)
-  colnames(eims_in) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat")
-  eims <- eims_in %>% select(-temp, -sal, -cumulative_dist)
+  colnames(eims_in) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temperature", "salinity", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat")
+  eims <- eims_in %>% select(-cumulative_dist)
   
   # populate cruise column
   eims$cruise <- cruiseid 

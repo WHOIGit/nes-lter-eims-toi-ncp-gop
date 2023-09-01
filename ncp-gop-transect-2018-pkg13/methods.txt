@@ -1,6 +1,6 @@
 ﻿# Source data
 
-These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.2 in the EDI Data Portal. 
+These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.3 in the EDI Data Portal. 
 
 Additional data sources for these derived data:
 -- Gas transfer velocity (wind data product, weighted over 30 days)
@@ -25,7 +25,9 @@ We assured that the geographic and temporal coverage of the clean data table wer
 
 # Differences from previous version
 
-This version is combined with (and deprecates) previous package knb-lter-nes.7, and excludes some rows in previous version gop-transect csv for reasons described above.
+Version 3 is released to include a correction to the EN617 high-frequency data that aligns EIMS data with bottle sample values. 
+
+Version 2 is combined with (and deprecates) previous package knb-lter-nes.7, and excludes some rows in previous version gop-transect csv for reasons described above.
 
 # References
 

@@ -199,13 +199,13 @@ for (i in 1:nrow(cruise_list)){
 # combine all cruises
 bottle_list <- paste0("toi_", new_cruises)
 bottle <- list_rbind(mget(bottle_list))
-bottle <- filter(bottle, cruise != "EN617")
+#bottle <- filter(bottle, cruise != "EN617")
 
 # (special cases for version 2)
 # # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
-# excl_niskin99 <- bottle %>% filter(niskin == "99")
-# excl_niskin99$reason <- "niskin 99"
-# bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
+ excl_niskin99 <- bottle %>% filter(niskin == "99")
+ excl_niskin99$reason <- "niskin 99"
+ bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
 # 
 # # exclude for now casts affected by provided incorrect cast start time
 # bottle$reason <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
@@ -358,11 +358,11 @@ ggplot(bottle, aes(x= datetime_utc_matlab, y = d17O))+ geom_point()
 ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
 
 # Plot measured parameters in bottle TOI dataset
-ggplot(bottle, aes(x= cruise_day, y = O2_Ar_ratio, color = cruise))+ geom_line()
-ggplot(bottle, aes(x= cruise_day, y = O2_Ar_delta, color = cruise))+ geom_line()
-ggplot(bottle, aes(x= cruise_day, y = cap_Delta_17O, color = cruise))+ geom_line()
-ggplot(bottle, aes(x= cruise_day, y = d17O, color = cruise))+ geom_line()
-ggplot(bottle, aes(x= cruise_day, y = d18O, color = cruise))+ geom_line()
+ggplot(bottle, aes(x= cruise_day, y = O2_Ar_ratio, color = cruise))+ geom_point()
+ggplot(bottle, aes(x= cruise_day, y = O2_Ar_delta, color = cruise))+ geom_point()
+ggplot(bottle, aes(x= cruise_day, y = cap_Delta_17O, color = cruise))+ geom_point()
+ggplot(bottle, aes(x= cruise_day, y = d17O, color = cruise))+ geom_point()
+ggplot(bottle, aes(x= cruise_day, y = d18O, color = cruise))+ geom_point()
 
 ```
 
@@ -370,21 +370,29 @@ ggplot(bottle, aes(x= cruise_day, y = d18O, color = cruise))+ geom_line()
 
 ```{r}
 
+# rename some columns
+bottle <- bottle %>% 
+  rename(datetime_utc_input = datetime_utc_matlab) %>%
+  rename(depth_input = depth_matlab)
+
 # define headers for columns in desired order
-bottle_headers <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_matlab", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O", "iode_quality_flag")
+bottle_headers <- c("cruise", "datetime_utc","datetime_utc_input", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_input", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O", "iode_quality_flag")
 bottle_clean <- bottle[, bottle_headers]
 # write file for inspection
-write.csv(bottle_clean, here("eims-toi-transect", 'toi-transect-new-v3.csv'), row.names = FALSE)
+#write.csv(bottle_clean, here("eims-toi-transect", 'toi-transect-new-v3.csv'), row.names = FALSE)
 
 # if previous version should have same QC procedures as v3, this should happen after combining new cruises (line 201) instead of here:
 # read in previous version
-bottle_prior <- read_csv(here("eims-toi-transect", "toi-transect.csv"))
+#bottle_prior <- read_csv(here("eims-toi-transect", "toi-transect.csv"))
 
 # add quality flag
-bottle_prior$iode_quality_flag <- as.character("1")
+#bottle_prior$iode_quality_flag <- as.character("1")
 
 # combine previous version and new data
-bottle_edi <- rbind(bottle_clean, bottle_prior)
+#bottle_edi <- rbind(bottle_clean, bottle_prior)
+
+bottle_edi <- bottle[, bottle_headers]
+
 # put rows are in time order
 bottle_edi <- bottle_edi[order(bottle_edi$datetime_utc),]
 
@@ -392,7 +400,7 @@ bottle_cruise_check <- bottle_edi %>% group_by(cruise) %>% summarize(package_toi
 write.csv(bottle_cruise_check, here("eims-toi-transect", 'cruise_toi_count.csv'), row.names = FALSE)
 
 # write file for upload to EDI
-write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect-v3.csv'), row.names = FALSE)
+write.csv(bottle_edi, here("eims-toi-transect", 'toi-transect.csv'), row.names = FALSE)
 
 ```
 ## Read in EIMS data
@@ -417,10 +425,10 @@ for (i in 1:nrow(cruise_list)){
   eims <- time_eims(eims$datetime_utc_matlab)
   
   # check for samples without timestamp
-  missingdate <- eims %>% filter(is.na(eims$datetime_utc_matlab))
-  eims <- eims %>% filter(!is.na(eims$datetime_utc_matlab))
+  #missingdate <- eims %>% filter(is.na(eims$datetime_utc_matlab))
+  #eims <- eims %>% filter(!is.na(eims$datetime_utc_matlab))
   
-  assign(paste0("missingdate_", cruisename), missingdate)
+  #assign(paste0("missingdate_", cruisename), missingdate)
  
   # initialize eims lat long columns
   eims$latitude_API <- NA_integer_
@@ -439,16 +447,22 @@ for (i in 1:nrow(cruise_list)){
     
     # store lat long 
     
-    if(str_detect(cruisename, 'EN') ){
+    if(str_detect(cruisename, "en") ){
     eims$latitude_API[i] <- underway$gps_furuno_latitude[ind]
     eims$longitude_API[i] <- underway$gps_furuno_longitude[ind]
     }
-    if(str_detect(cruisename, 'AR') ){
+    if(str_detect(cruisename, "ar") ){
     eims$latitude_API[i] <- underway$dec_lat[ind]
     eims$longitude_API[i] <- underway$dec_lon[ind]
     }
+    if(str_detect(cruisename, "at") ){
+    eims$latitude_API[i] <- underway$dec_lat[ind]
+    eims$longitude_API[i] <- underway$dec_lon[ind]
+    }
+    
+    
   }
-  
+  #eims$cruise <- toupper(eims$cruise)
   #output data frame for cruise
   assign(paste0("eims_", cruisename), eims)
   
@@ -503,10 +517,39 @@ map_locs(df = eims_all, xvar = "longitude_matlab", yvar = "latitude_matlab", reg
 map_locs(df = eims_all, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "cruise")
 
 # plot values
-ggplot(eims_all, aes(x= datetime_utc_matlab, y = biosat))+ geom_point()
-ggplot(eims_all, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = biosat, color = cruise))+ geom_point()
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = O2_Ar_ratio, color = cruise))+ geom_point()
+
+ggplot(eims_all, aes(x= salinity, y = biosat, color = cruise))+ geom_point()
+ggsave("all-salinity-biosat.png")
+ggplot(eims_all, aes(x= salinity, y = O2_Ar_ratio, color = cruise))+ geom_point()
+ggsave("all-salinity-O2AR.png")
+ggplot(eims_all, aes(x= temperature, y = biosat, color = cruise))+ geom_point()
+ggsave("all-temperature-biosat.png")
+ggplot(eims_all, aes(x= temperature, y = O2_Ar_ratio, color = cruise))+ geom_point()
+ggsave("all-temperature-O2AR.png")
 
 ```
+```{r}
+
+sal_check <- eims_all %>% filter(salinity < 30 | salinity > 37)
+
+print(unique(sal_check$cruise))
+
+ggplot(eims_en608, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN608")
+ggsave("en608-salinity-biosat.png")
+ggplot(eims_en627, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN627")
+ggsave("en627-salinity-biosat.png")
+ggplot(eims_en649, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN649")
+ggsave("en649-salinity-biosat.png")
+
+ggplot(eims_en661, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN661")
+ggsave("en661-salinity-biosat.png")
+ggplot(eims_at46, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "AT461")
+ggsave("at46-salinity-biosat.png")
+
+```
+
 
 
 
@@ -521,8 +564,15 @@ eims_all$long_diff <- eims_all$longitude_matlab - eims_all$longitude_API
 # isolating differences of 0.002 decimal degrees = approximately 200 m 
 pos_check <- eims_all %>%
   filter(abs(lat_diff) > 0.002 | abs(long_diff) > 0.002)
-# EN617: identified two instances where values differ, and API output appears to be in error for those two data points. Use PI-provided lat/long. 
-# AR34B supplies 39 of these 53 records! Based on REST API, not R2R
+
+# version 2: 
+    # EN617: identified two instances where values differ, and API output appears to be in error for those two data points. Use PI-provided lat/long. 
+    # AR34B supplies 39 of these 53 records! Based on REST API, not R2R
+# version 3: 112 observations of 215,741 are outside 200m 
+  # increasing distance to 300 m reduces errant observations to 10
+
+pos_check_300 <- eims_all %>%
+  filter(abs(lat_diff) > 0.003 | abs(long_diff) > 0.003)
 
 eims_loc_diffs <- eims_all %>%
   group_by(cruise) %>%
@@ -538,17 +588,24 @@ eims_loc_diffs <- eims_all %>%
 
 
 ```{r}
+
+# rename some columns
+eims_all <- eims_all %>% 
+  rename(datetime_utc = datetime_utc_matlab) %>%
+  rename(latitude = latitude_matlab) %>%
+  rename(longitude = longitude_matlab) 
+
 # if previous version should have same midnight procedures as v3, this chunk should happen when reading in data instead of here.
 # read in previous version
-eims_prior <- read_csv(here("eims-toi-transect", c("eims-transect-2018.csv", "eims-transect-2019.csv")))
+#eims_prior <- read_csv(here("eims-toi-transect", c("eims-transect-2018.csv", "eims-transect-2019.csv")))
 
-eims_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "biosat", "O2_Ar_ratio")
+eims_headers <- c("cruise", "datetime_utc", "latitude", "longitude", "depth", "temperature", "salinity", "biosat", "O2_Ar_ratio")
 eims_all <- eims_all[, eims_headers]
 
 # combine previous version and new data
-eims_all <- rbind(eims_all, eims_prior)
+#eims_all <- rbind(eims_all, eims_prior)
 # put rows are in time order
-eims_all <- eims_all[order(eims_all$datetime_utc_matlab),]
+eims_all <- eims_all[order(eims_all$datetime_utc),]
 
 ```
 
@@ -617,7 +674,7 @@ Compute spatiotemporal coverage and generate EML
 ```{r}
 
 # if needed, read data product csvs in order to get temporal and geographic coverage
-#bottle_edi <- read.csv(here('eims-toi-transect/toi-transect-v3.csv'))
+#bottle_edi <- read.csv(here('eims-toi-transect/toi-transect.csv'))
 
 # identify columns to generate temporal coverage and geographic coverage
 temp_coverage <- temporal_coverage(bottle_edi$datetime_utc)
@@ -630,7 +687,7 @@ make_eml(path=project_folder,
          dataset.title= 'Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018',
          data.table=c('toi-transect.csv',
                       'eims-transect-2018.csv',
-                      'eims-transect-2019.csv', 'eims-transect-2021.csv', 'eims-transect-2020.csv', 'eims-transect-2022.csv'),
+                      'eims-transect-2019.csv', 'eims-transect-2020.csv', 'eims-transect-2021.csv', 'eims-transect-2022.csv'),
          data.table.description=c("Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles", 
                                   "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2018", 
                                   "Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2019",
@@ -668,11 +725,11 @@ add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = 
 ```{r}
 
 # read in cruise-specific information
-cruise_list <- read_csv("cruise_list.csv", col_names = TRUE, show_col_types = FALSE)
+cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE, show_col_types = FALSE)
 
 # refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.2")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.3")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -840,7 +897,7 @@ ncp_gop_input <- ncp_gop_input %>%
 sum(is.na(ncp_gop_input$gop)) 
 
 ```
-# Exclude ncp-gop samples affected by incorrect cast start time
+# Flag ncp-gop samples affected by incorrect cast start time
 
 ```{r}
 
@@ -851,38 +908,38 @@ ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
 # can't do this by cast number because don't have cast number
 ncp_gop_input$cast_flag <- NA_integer_
 ncp_gop_input <- ncp_gop_input %>%
-   mutate(cast_flag = case_when(datetime_utc_matlab == "2018-02-02 09:10:00" ~ 1, #EN608 large depth difference
-                                datetime_utc_matlab == "2018-02-01 17:31:00" ~ 1, # EN608
-                                datetime_utc_matlab == "2018-07-22 05:00:00" ~ 1, #EN617
-                                datetime_utc_matlab == "2018-07-22 08:58:00" ~ 1, #EN617
-                                datetime_utc_matlab == "2018-07-23 12:59:00"  ~ 1, #EN617
-                                datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 1, #EN617
-                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 2 ~ 1, # AR31A large depth difference
-                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 10 ~ 1, # AR31A large depth difference
-                                is.na(datetime_utc_matlab) ~ 1, #AR31A missing time
-                                datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 1, #EN644
-                                datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 1,
-                                datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 1,
-                                datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 1,
-                                datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 1,
-                                datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 1,
-                                datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 1,
-                                datetime_utc_matlab == "2019-08-21 00:48:00" ~ 1, # EN644 underway sample with non-zero provided depth
-                                datetime_utc_matlab == "2019-02-01 21:39:00" & niskin == 2 ~ 1, # EN627 large depth difference
-                                datetime_utc_matlab == "2019-02-02 06:29:00" & niskin == 1 ~ 1, # EN627 large depth difference
-                                datetime_utc_matlab == "2019-02-03 17:42:00" & depth == 0 ~ 1, # EN627 Niskin with provided depth zero
-                                datetime_utc_matlab == "2019-04-22 04:34:00"  ~ 1, #AR34B
+   mutate(cast_flag = case_when(datetime_utc_matlab == "2018-02-02 09:10:00" ~ 3, #EN608 large depth difference
+                                datetime_utc_matlab == "2018-02-01 17:31:00" ~ 3, # EN608
+                                datetime_utc_matlab == "2018-07-22 05:00:00" ~ 3, #EN617
+                                datetime_utc_matlab == "2018-07-22 08:58:00" ~ 3, #EN617
+                                datetime_utc_matlab == "2018-07-23 12:59:00"  ~ 3, #EN617
+                                datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 3, #EN617
+                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 2 ~ 3, # AR31A large depth difference
+                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 10 ~ 3, # AR31A large depth difference
+                                is.na(datetime_utc_matlab) ~ 3, #AR31A missing time
+                                datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 3, #EN644
+                                datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 3,
+                                datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 3,
+                                datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 3,
+                                datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 3,
+                                datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 3,
+                                datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 3,
+                                datetime_utc_matlab == "2019-08-21 00:48:00" ~ 3, # EN644 underway sample with non-zero provided depth
+                                datetime_utc_matlab == "2019-02-01 21:39:00" & niskin == 2 ~ 3, # EN627 large depth difference
+                                datetime_utc_matlab == "2019-02-02 06:29:00" & niskin == 1 ~ 3, # EN627 large depth difference
+                                datetime_utc_matlab == "2019-02-03 17:42:00" & depth == 0 ~ 3, # EN627 Niskin with provided depth zero
+                                datetime_utc_matlab == "2019-04-22 04:34:00"  ~ 3, #AR34B
                                 TRUE ~ 0,))
 
 # check how many rows
 sum(ncp_gop_input$cast_flag)
 
 # isolate the identified rows
-ncpcasttime <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 1)
+ncpcasttime <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 3)
 
 # remove the identified rows
-ncp_gop_input <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 0)
-ncp_gop_input <- ncp_gop_input %>% select(-cast_flag)
+#ncp_gop_input <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 0)
+#ncp_gop_input <- ncp_gop_input %>% select(-cast_flag)
 
 ```
 
@@ -890,7 +947,6 @@ ncp_gop_input <- ncp_gop_input %>% select(-cast_flag)
 # Bind low-frequency data with TOI data to identify TOI_source and supply API-provided timestamp, latitude, and longitude
 
 ```{r}
-
 # read in toi data product table
 toi_transect <- read_csv("eims-toi-transect/toi-transect.csv", show_col_types = FALSE)
 # filter by year
@@ -900,10 +956,24 @@ toi_transect <- toi_transect %>% filter(toi_transect$year == this_cruise$year)
 # expect toi_transect to have rows with bottles deeper than surface
 # filter for rows depth less than Rachel's depthcutoff 6 m
 # check for length discrepancy
-toi_transect_surface <- filter(toi_transect, depth_matlab <= 6)
+toi_transect_surface <- filter(toi_transect, depth_input <= 6)
+#toi_transect_surface <- filter(toi_transect, depth <= 6)
 nrow(toi_transect_surface)
 nrow(ncp_gop_input)
+```
+# Identify mismatching rows
 
+```{r}
+
+cruise_check_surf <- toi_transect_surface %>% group_by(cruise) %>% summarize(toi_transect_surf = n())
+cruise_check_ncp <- ncp_gop_input %>% group_by(cruiseid) %>% summarize(toi_transect_surf = n())
+ncp_gop_input$datetime_utc_input <- ncp_gop_input$datetime_utc_matlab
+diffrows <- anti_join(ncp_gop_input, toi_transect_surface, by = "datetime_utc_input")
+
+```
+
+
+```{r}
 ## column bind if same length
 # make sure using different column names
 if (nrow(toi_transect_surface) == nrow(ncp_gop_input)){
@@ -912,7 +982,8 @@ if (nrow(toi_transect_surface) == nrow(ncp_gop_input)){
   toi_transect_surface$datetime_utc <- as.POSIXct(toi_transect_surface$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
   toi_transect_surface <- toi_transect_surface %>%
     rename(datetime_utc_matlab_toi = datetime_utc_matlab) %>%
-    rename(depth_matlab_toi = depth_matlab)
+    rename(depth_matlab_toi = depth_matlab) %>%
+    rename(iode_quality_flag_toi = iode_quality_flag)
   
   ncp_gop_input <- ncp_gop_input %>%
     rename(depth_matlab_ncp = depth) %>%
