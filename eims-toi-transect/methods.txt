@@ -35,15 +35,19 @@ AR34B: Some high-frequency data are missing from the first and last days of the 
 
 # Differences from previous version
 
-This version adds 2 cruises (AR31A and AR34B), excludes rows in previous version toi-transect csv for reasons described above (see toi_bottle_excluded.csv in GitHub referenced above), and retains 0 when applicable in depth_matlab column.
+Version 3 adds several cruises.  Discrete sample rows identified in the quality assurance steps are retained while flagging them as 3 (questionable) or 4 (bad). A correction was made to EN617 high-frequency data to align them with discrete bottle values, and one EN617 discrete sample (2018-07-24 15:33) previously labeled as sourced from Niskin was corrected to underway. Column headers for date/time, latitude, longitude, and depth are edited to remove references to Matlab, instead using the word "input" where needed to distinguish from NES-LTER API-derived metadata. 
+
+Verson 2 adds 2 cruises (AR31A and AR34B), excludes rows in previous version toi-transect csv for reasons described above (see toi_bottle_excluded.csv in GitHub referenced above), and retains 0 when applicable in depth_matlab column.
 
 # Related packages
 
 Net community production (NCP) and gross oxygen production (GOP) are derived from these data and published separately on a per-year basis to the EDI repository as follows (year, package ID):
 
-2018, knb-lter-nes.13.2
-
-2019, knb-lter-nes.14.2
+2018, knb-lter-nes.13.3
+2019, knb-lter-nes.14.3
+2020, knb-lter-nes.30.1
+2021, knb-lter-nes.31.1
+2022, knb-lter-nes.32.1
 
 # References
 

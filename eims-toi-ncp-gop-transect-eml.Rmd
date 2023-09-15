@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Kate Morkeski, Jaxine Wolfe, Stace Beaulieu"
-date: "August 19, 2023"
+date: "September 13, 2023"
 output: html_document
 ---
 
@@ -38,10 +38,10 @@ lapply(libs, require, character.only = TRUE)
 
 ```{r}
 
-prior_list <- read_csv("cruise_list.csv", col_names = TRUE)
+#prior_list <- read_csv("cruise_list.csv", col_names = TRUE)
 cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE)
 #cruise_list$cruise_id <- tolower(cruise_list$cruise_id)
-prior_years <- c(unique(prior_list$year))
+#prior_years <- c(unique(prior_list$year))
 new_cruises <- c(cruise_list$cruise_id)
 
 ```
@@ -65,6 +65,8 @@ Solution:
   Using the corrected datetimes, pull geospatial data from the underway log
 
 ```{r}
+
+# if don't need to regenerate bottle file, start two chunks down with bottle <- read_csv("toi_bottle_before_qc.csv")
 
 # TOI data
 
@@ -201,6 +203,17 @@ bottle_list <- paste0("toi_", new_cruises)
 bottle <- list_rbind(mget(bottle_list))
 #bottle <- filter(bottle, cruise != "EN617")
 
+# ensure rows are in time order
+bottle <- bottle[order(bottle$datetime_utc),]
+
+write.csv(bottle, "toi_bottle_before_qc.csv", row.names = FALSE)
+
+```
+
+```{r}
+
+bottle <- read_csv("toi_bottle_before_qc.csv")
+
 # (special cases for version 2)
 # # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
  excl_niskin99 <- bottle %>% filter(niskin == "99")
@@ -221,9 +234,6 @@ bottle <- list_rbind(mget(bottle_list))
 #
 #bottle <- bottle %>% filter(is.na(reason))
 #bottle <- bottle %>% select(-reason)
-
-# ensure rows are in time order
-bottle <- bottle[order(bottle$datetime_utc),]
 
 ```
 ## QA for TOI data
@@ -550,9 +560,6 @@ ggsave("at46-salinity-biosat.png")
 
 ```
 
-
-
-
 ## QA: Check for location differences
 
 ```{r}
@@ -613,8 +620,10 @@ eims_all <- eims_all[order(eims_all$datetime_utc),]
 
 ```{r}
 
+#eims_all <- read_csv(paste0(here(), "/eims-toi-transect/eims-transect.csv"))
+
 # separate data by year
-eims_all$year <- format(eims_all$datetime_utc_matlab, "%Y")
+eims_all$year <- format(eims_all$datetime_utc, "%Y")
 
 # create data frame and output data annually
 for (i in 1:nrow(cruise_list)) {
@@ -623,7 +632,9 @@ for (i in 1:nrow(cruise_list)) {
      
   eims_year <- eims_all %>% filter(year == cruiseyear)
   
-  eims_year <- eims_year %>% select(-year)
+  eims_year <- eims_year %>% select(-year) 
+  
+  eims_year$cruise <- toupper(eims_year$cruise)
   
   assign(paste0("eims_", cruiseyear), eims_year) 
   write.csv(eims_year, here("eims-toi-transect", paste0('eims-transect-', cruiseyear, '.csv')), row.names = FALSE)
@@ -674,7 +685,7 @@ Compute spatiotemporal coverage and generate EML
 ```{r}
 
 # if needed, read data product csvs in order to get temporal and geographic coverage
-#bottle_edi <- read.csv(here('eims-toi-transect/toi-transect.csv'))
+bottle_edi <- read.csv(here('eims-toi-transect/toi-transect.csv'))
 
 # identify columns to generate temporal coverage and geographic coverage
 temp_coverage <- temporal_coverage(bottle_edi$datetime_utc)
@@ -800,8 +811,11 @@ ncp_gop_names <- this_pkg$ncp_gop_df
 # combine cruises for the package into one dataframe
 ncp_gop_input <- map_dfr(mget(ncp_gop_names), list)
 
+```
+
 ## NCP-high-frequency
 
+```{r}
 # read in PI-provided csv data and provide column names and underway depth
 for (i in 1:nrow(this_pkg)){
   
@@ -813,33 +827,36 @@ for (i in 1:nrow(this_pkg)){
   ncp_hifreq_input <- read_csv(ncp_hifreq_csv, col_names = FALSE, show_col_types = FALSE)
 
   # provide column names
-  colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temp", "sal", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
+  colnames(ncp_hifreq_input) <- c("datetime_utc_matlab", "O2_Ar_ratio", "temperature", "salinity", "latitude_matlab", "longitude_matlab", "cumulative_dist", "biosat", "ncp", "k")
+  
+    # replace date and time for samples exactly at midnight
+    ncp_hifreq_input$date_utc_matlab <- as.POSIXct(ncp_hifreq_input$datetime_utc_matlab, format="%d-%b-%Y")
+    ncp_hifreq_input$date_utc_matlab <- as_date(ncp_hifreq_input$date_utc_matlab)
+    ncp_hifreq_input$date_utc_matlab <- as.character(ncp_hifreq_input$date_utc_matlab)
+    
+    ncp_hifreq_input$time_utc_matlab <- as.POSIXct(ncp_hifreq_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+    ncp_hifreq_input$time_utc_matlab <- strftime(ncp_hifreq_input$time_utc_matlab, format="%H:%M:%OS")
+    ncp_hifreq_input$time_utc_matlab <- replace(ncp_hifreq_input$time_utc_matlab, is.na(ncp_hifreq_input$time_utc_matlab), "00:00:01")
+    
+    ncp_hifreq_input$datetime_utc_midnights <- paste(ncp_hifreq_input$date_utc_matlab, ncp_hifreq_input$time_utc_matlab)
+    
+    # set date time format
+    ncp_hifreq_input$datetime_utc_matlab <- as.POSIXct(ncp_hifreq_input$datetime_utc_midnights,format="%Y-%m-%d %H:%M:%OS")
+   
+    
+    # remove unneeded columns
+    #ncp_hifreq_input <- ncp_hifreq_input %>% select(-date_utc_matlab, -date_string, -time_utc_matlab, - datetime_utc_midnights)
+  
+    # ensure rows are in time order
+    ncp_hifreq_input <- ncp_hifreq_input[order(ncp_hifreq_input$datetime_utc_matlab),]
   
    # add cruise ID
-  ncp_hifreq_input$cruiseid <- cruise
-   ncp_hifreq_input <- ncp_hifreq_input %>% relocate(cruiseid, .before = datetime_utc_matlab)
-  
-  # set underway depth depending on vessel
-  if(str_detect(cruise, '^EN') ){
-    ncp_hifreq_input$depth <- 5
-  }
-  if(str_detect(cruise, '^AR') ){
-    ncp_hifreq_input$depth <- 2.1336
-  }
+    ncp_hifreq_input$cruiseid <- cruise
+    ncp_hifreq_input <- ncp_hifreq_input %>% relocate(cruiseid, .before = datetime_utc_matlab)
    
-   # add cruise day for plotting
-   # convert datetime format
-   ncp_hifreq_input$datetime_utc_matlab <- as.POSIXct(ncp_hifreq_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
-   ncp_hifreq_input <- ncp_hifreq_input[order(ncp_hifreq_input$datetime_utc_matlab),]
-   ncp_hifreq_input$cruise_t0 <- ncp_hifreq_input$datetime_utc_matlab[1]
-   ncp_hifreq_input$cruise_day<- ncp_hifreq_input$datetime_utc_matlab - ncp_hifreq_input$cruise_t0
-   ncp_hifreq_input$cruise_day <- ncp_hifreq_input$cruise_day/86400
-   ncp_hifreq_input$cruise_day <- as.double(ncp_hifreq_input$cruise_day)
-
-  
-   #output data frame for cruise
+    #output data frame for cruise
   assign(paste0("ncp_hifreq_", cruise), ncp_hifreq_input) 
-  
+
 }
 
 # identify names of cruise dataframes
@@ -849,13 +866,7 @@ ncp_hifreq_names <- this_pkg$ncp_hifreq_df
 # combine cruises for the package into one dataframe
 ncp_hifreq <- map_dfr(mget(ncp_hifreq_names), list)
 
-# remove unneeded columns
-ncp_hifreq <- ncp_hifreq %>% 
-  select(-temp, -sal, -cumulative_dist)
-
-# convert datetime format
-#ncp_gop_input$datetime_utc_matlab <- as.POSIXct(ncp_gop_input$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
-#ncp_hifreq$datetime_utc_matlab <- as.POSIXct(ncp_hifreq$datetime_utc_matlab, format="%d-%b-%Y %H:%M:%OS")
+sum(is.na(ncp_hifreq$datetime_utc_matlab))
 
 ```
 
@@ -884,7 +895,7 @@ ncp_gop_input <- ncp_gop_input %>%
  mutate(iode_quality_flag = case_when(is.na(gop) & iode_quality_flag == 1 ~ 9,
                                         TRUE  ~ iode_quality_flag))
 
-# check for missing data                                                                               
+# check for missing data                                                                    
 sum(is.na(ncp_gop_input$gop))
 
 # replace data with NA if iode quality flag is 4
@@ -896,6 +907,11 @@ ncp_gop_input <- ncp_gop_input %>%
 # check for NAs
 sum(is.na(ncp_gop_input$gop)) 
 
+# check for NAs
+sum(is.na(ncp_gop_input$datetime_utc_matlab)) 
+
+ncp_gop_input <- ncp_gop_input %>% filter(!is.na(datetime_utc_matlab))
+
 ```
 # Flag ncp-gop samples affected by incorrect cast start time
 
@@ -904,7 +920,7 @@ sum(is.na(ncp_gop_input$gop))
 # ensure rows are in time order
 ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
 
-# exclude for now (mostly cruise EN644) samples affected by incorrect cast start time
+# flag for now (mostly cruise EN644) samples affected by incorrect cast start time
 # can't do this by cast number because don't have cast number
 ncp_gop_input$cast_flag <- NA_integer_
 ncp_gop_input <- ncp_gop_input %>%
@@ -913,10 +929,10 @@ ncp_gop_input <- ncp_gop_input %>%
                                 datetime_utc_matlab == "2018-07-22 05:00:00" ~ 3, #EN617
                                 datetime_utc_matlab == "2018-07-22 08:58:00" ~ 3, #EN617
                                 datetime_utc_matlab == "2018-07-23 12:59:00"  ~ 3, #EN617
-                                datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 3, #EN617
-                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 2 ~ 3, # AR31A large depth difference
-                                datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 10 ~ 3, # AR31A large depth difference
-                                is.na(datetime_utc_matlab) ~ 3, #AR31A missing time
+                                #datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 3, #EN617
+                                #datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 2 ~ 3, # AR31A large depth difference
+                                #datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 10 ~ 3, # AR31A large depth difference
+                                #is.na(datetime_utc_matlab) ~ 3, #AR31A missing time
                                 datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 3, #EN644
                                 datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 3,
                                 datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 3,
@@ -958,8 +974,10 @@ toi_transect <- toi_transect %>% filter(toi_transect$year == this_cruise$year)
 # check for length discrepancy
 toi_transect_surface <- filter(toi_transect, depth_input <= 6)
 #toi_transect_surface <- filter(toi_transect, depth <= 6)
-nrow(toi_transect_surface)
+nrow(toi_transect_surface)  
 nrow(ncp_gop_input)
+
+write.csv(toi_transect_surface, "toi_transect_surface.csv")
 ```
 # Identify mismatching rows
 
@@ -968,10 +986,12 @@ nrow(ncp_gop_input)
 cruise_check_surf <- toi_transect_surface %>% group_by(cruise) %>% summarize(toi_transect_surf = n())
 cruise_check_ncp <- ncp_gop_input %>% group_by(cruiseid) %>% summarize(toi_transect_surf = n())
 ncp_gop_input$datetime_utc_input <- ncp_gop_input$datetime_utc_matlab
+#cruise_check_ncp <- ncp_gop_input %>% rename(datetime_utc_input = datetime_utc_matlab)
 diffrows <- anti_join(ncp_gop_input, toi_transect_surface, by = "datetime_utc_input")
 
 ```
 
+# complete bind of ncp_gop and TOI transect surface metadata
 
 ```{r}
 ## column bind if same length
@@ -981,17 +1001,17 @@ if (nrow(toi_transect_surface) == nrow(ncp_gop_input)){
   #prepare columns
   toi_transect_surface$datetime_utc <- as.POSIXct(toi_transect_surface$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
   toi_transect_surface <- toi_transect_surface %>%
-    rename(datetime_utc_matlab_toi = datetime_utc_matlab) %>%
-    rename(depth_matlab_toi = depth_matlab) %>%
+    rename(datetime_utc_input_toi = datetime_utc_input) %>%
+    rename(depth_input_toi = depth_input) %>%
     rename(iode_quality_flag_toi = iode_quality_flag)
   
-  ncp_gop_input <- ncp_gop_input %>%
-    rename(depth_matlab_ncp = depth) %>%
-    rename(niskin_matlab_ncp = niskin)
+   ncp_gop_input <- ncp_gop_input %>%
+     rename(depth_input_ncp = depth) %>%
+     rename(niskin_input_ncp = niskin)
   
   # ensure datetime_utc_matlab and datetime_utc_matlab_toi are in order
   ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
-  toi_transect_surface <- toi_transect_surface[order(toi_transect_surface$datetime_utc_matlab_toi),]
+  toi_transect_surface <- toi_transect_surface[order(toi_transect_surface$datetime_utc_input_toi),]
   
   # bind
   ncp_gop_transect_wide <- cbind(ncp_gop_input, toi_transect_surface)
@@ -1002,13 +1022,17 @@ if (nrow(toi_transect_surface) == nrow(ncp_gop_input)){
 ## check for correct matching in bind
 # since EN617 ncpgop_input does not have niskin or depth, check that matlab datetimes match for combined data sets
 ncp_gop_transect_wide <- ncp_gop_transect_wide %>%
-  mutate(timecheck = case_when(datetime_utc_matlab == datetime_utc_matlab_toi ~ 0,
-                              datetime_utc_matlab != datetime_utc_matlab_toi ~ 1))
+  mutate(timecheck = case_when(datetime_utc_matlab == datetime_utc_input_toi ~ 0,
+                              datetime_utc_matlab != datetime_utc_input_toi ~ 1))
 sum(ncp_gop_transect_wide$timecheck)  
 #bad_wide <- ncp_gop_transect_wide %>% filter(timecheck == 1)
 
+ncp_gop_transect_wide <- ncp_gop_transect_wide %>%
+    rename(latitude_input = latitude_matlab) %>%
+    rename(longitude_input = longitude_matlab)
+
 # reorder columns and drop toi data
-gopheaders <- c("cruise", "datetime_utc","datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "latitude_API", "longitude_API","toi_source", "gop", "ncp", "ncp_per_gop", "iode_quality_flag")
+gopheaders <- c("cruise", "datetime_utc","datetime_utc_input", "latitude_input", "longitude_input", "latitude_API", "longitude_API","toi_source", "gop", "ncp", "ncp_per_gop", "iode_quality_flag")
 ncp_gop_edi <- ncp_gop_transect_wide[, gopheaders]
 # EN617: keeping both sets of lat/long in output but could exclude API lat/long since matlab lat/long were checked and found to be correct in eims-toi package
 
@@ -1020,9 +1044,18 @@ ncp_gop_edi <- ncp_gop_transect_wide[, gopheaders]
 
 
 ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = gop, color = cruise))+ geom_point()
+ggsave(paste0(project_folder, "/gop-point-", this_year, ".png"))
 ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = ncp, color = cruise))+ geom_point()
+ggsave(paste0(project_folder, "/ncp-point-", this_year, ".png"))
 ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = ncp_per_gop, color = cruise))+ geom_point()
+ggsave(paste0(project_folder, "/ncp-per-gop-point-", this_year, ".png"))
 
+ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = gop, color = cruise))+ geom_line()
+ggsave(paste0(project_folder, "/gop-line-", this_year, ".png"))
+ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = ncp, color = cruise))+ geom_line()
+ggsave(paste0(project_folder, "/ncp-line-", this_year, ".png"))
+ggplot(ncp_gop_transect_wide, aes(x= cruise_day, y = ncp_per_gop, color = cruise))+ geom_line()
+ggsave(paste0(project_folder, "/ncp-per-gop-line-", this_year, ".png"))
 
 #ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp))+ geom_point()
 #ggplot(ncp_gop_edi, aes(x= datetime_utc, y = ncp_per_gop))+ geom_point()
@@ -1039,34 +1072,40 @@ eims_transect <- read_csv(paste0("eims-toi-transect/eims-transect-", this_year, 
 # eims_transect <- eims_yyyy
 
 nrow(eims_transect)
-
-ncp_hifreq <- ncp_hifreq %>% filter(!is.na(datetime_utc_matlab))
 nrow(ncp_hifreq)
 # column bind if same length
 
 # make sure using different column names
 eims_transect <- eims_transect %>%
-  rename(datetime_utc_matlab_eims = datetime_utc_matlab) %>%
-  rename(latitude_matlab_eims = latitude_matlab) %>%
-  rename(longitude_matlab_eims = longitude_matlab) %>%
+  rename(datetime_utc_eims = datetime_utc) %>%
+  rename(latitude_eims = latitude) %>%
+  rename(longitude_eims = longitude) %>%
   rename(depth_eims = depth) %>%
   rename(biosat_eims = biosat) %>%
-  rename(O2_Ar_ratio_eims = O2_Ar_ratio) 
+  rename(O2_Ar_ratio_eims = O2_Ar_ratio) %>%
+  select(-temperature, -salinity)
+
 # make sure datetime_utc_matlab and datetime_utc_matlab_eims sorted or use dplyr::arrange
-eims_transect <- eims_transect[order(eims_transect$datetime_utc_matlab_eims),]
+eims_transect <- eims_transect[order(eims_transect$datetime_utc_eims),]
 ncp_hifreq <- ncp_hifreq[order(ncp_hifreq$datetime_utc_matlab),]
-#ncp_hifreq_wide <- left_join(ncp_hifreq, eims_transect_cruise)
+
 ncp_hifreq_wide <- cbind(ncp_hifreq, eims_transect)
 
 ## check for correct matching in bind
 # check that matlab timestamps match for combined data sets
 ncp_hifreq_wide <- ncp_hifreq_wide %>%
-  mutate(timecheck = case_when(datetime_utc_matlab == datetime_utc_matlab_eims ~ 0,
-                              datetime_utc_matlab != datetime_utc_matlab_eims ~ 1))
+  mutate(timecheck = case_when(datetime_utc_matlab == datetime_utc_eims ~ 0,
+                              datetime_utc_matlab != datetime_utc_eims ~ 1))
 sum(ncp_hifreq_wide$timecheck)  
 
+ncp_hifreq_wide <- ncp_hifreq_wide %>%
+  rename(datetime_utc = datetime_utc_matlab) %>%
+  rename(latitude = latitude_matlab) %>%
+  rename(longitude = longitude_matlab) %>%
+  rename(depth = depth_eims)
+
 #target columns
-ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab","depth", "biosat", "O2_Ar_ratio", "ncp", "k")
+ncp_hifreq_headers <- c("cruise", "datetime_utc", "latitude", "longitude", "cumulative_dist", "temperature", "salinity", "depth", "biosat", "O2_Ar_ratio", "ncp", "k")
 ncp_hifreq_edi <- ncp_hifreq_wide[, ncp_hifreq_headers]
 
 ```
@@ -1074,10 +1113,14 @@ ncp_hifreq_edi <- ncp_hifreq_wide[, ncp_hifreq_headers]
 
 ```{r}
 
-ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = biosat, color = cruiseid))+ geom_point()
-ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = O2_Ar_ratio, color = cruiseid))+ geom_point()
-ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = ncp, color = cruiseid))+ geom_point()
-ggplot(ncp_hifreq_wide, aes(x= cruise_day, y = k, color = cruiseid))+ geom_point()
+ggplot(ncp_hifreq_wide, aes(x= cumulative_dist, y = biosat, color = cruiseid))+ geom_point()
+ggsave(paste0(project_folder, "/biosat-", this_year, ".png"))
+ggplot(ncp_hifreq_wide, aes(x= cumulative_dist, y = O2_Ar_ratio, color = cruiseid))+ geom_point()
+ggsave(paste0(project_folder, "/O2_Ar_ratio-", this_year, ".png"))
+ggplot(ncp_hifreq_wide, aes(x= cumulative_dist, y = ncp, color = cruiseid))+ geom_point()
+ggsave(paste0(project_folder, "/ncp_hifreq-", this_year, ".png"))
+ggplot(ncp_hifreq_wide, aes(x= cumulative_dist, y = k, color = cruiseid))+ geom_point()
+ggsave(paste0(project_folder, "/k-", this_year, ".png"))
 
 # would be helpful to color by season
 
@@ -1091,17 +1134,12 @@ Call the map_locs function from edi-utility.R to map the sampling locations. Per
 ```{r}
 
 # ncp gop discrete rates with matlab coordinates
-map_locs(df = ncp_gop_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
+map_locs(df = ncp_gop_edi, xvar = "longitude_input", yvar = "latitude_input",
          region = "transect", colorvar = "cruise")
-
-# # ncp gop discrete rates with API coordinates
-# map_locs(df = ncp_gop, xvar = "longitude_API", yvar = "latitude_API",
-#          region = "transect", colorvar = NULL)
 
 # ncp high frequency
-map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab",
+map_locs(df = ncp_hifreq_edi, xvar = "longitude", yvar = "latitude",
          region = "transect", colorvar = "cruise")
-
 
 ```
 
@@ -1109,11 +1147,11 @@ map_locs(df = ncp_hifreq_edi, xvar = "longitude_matlab", yvar = "latitude_matlab
 
 ```{r}
 
-# define the desired order of columns
-ncp_hifreq_headers <- c("cruise", "datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "depth", "ncp", "k")
-
+# # define the desired order of columns
+ncp_hifreq_headers <- c("cruise", "datetime_utc", "latitude", "longitude", "depth","temperature", "salinity", "ncp", "k")
+ 
 # reorder columns as necessary
-ncp_hifreq_edi <- ncp_hifreq_edi [, ncp_hifreq_headers]
+ncp_hifreq_edi <- ncp_hifreq_edi[, ncp_hifreq_headers]
 
 # write files for upload to EDI
 write.csv(ncp_gop_edi, paste0(here(project_folder, gop), ".csv"), row.names = FALSE) #gop-transect
@@ -1137,11 +1175,10 @@ pkg_id <- this_pkg$package_id[1]
 excel_to_template(metadata_path = glue(project_folder, metadata),
                   edi_filename = edi_filename, 
                   rights = "CCBY",
-                  other_info = TRUE, 
                   output_path = project_folder)
 
 sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'CategoricalVariables',
-             glue::glue(project_folder, '/catvars_ncp-gop-transect.txt'))
+             glue::glue(project_folder, '/catvars_gop-transect-',this_year, '.txt'))
 
 sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'ColumnHeadersGop',
              glue::glue(project_folder, '/attributes_gop-transect-',this_year, '.txt'))
@@ -1158,8 +1195,8 @@ Compute spatiotemporal coverage and generate EML
 
 # read data product csvs in order to get temporal and geographic coverage
 # same dataframes as ncp_gop_edi and ncp_hifreq_edi
-gop_edi <- read.csv(paste0(here(project_folder, gop), ".csv")) #gop-transect
-ncp_edi <- read.csv(paste0(here(project_folder, ncp), ".csv")) #ncp-transect
+gop_edi <- read_csv(paste0(here(project_folder, gop), ".csv")) #gop-transect
+ncp_edi <- read_csv(paste0(here(project_folder, ncp), ".csv")) #ncp-transect
 
 # identify columns to generate temporal coverage and geographic coverage
 temp_coverage <- temporal_coverage(append(gop_edi$datetime_utc, ncp_edi$datetime_utc_matlab))

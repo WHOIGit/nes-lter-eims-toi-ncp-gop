@@ -51,6 +51,7 @@ set_toi_source <- function(nisk, depth_mat, source) {
   # for AR31A, adjust Niskin bottle number to let PI-provided data (24 bottle positions) match API (12 bottles)
   toi <- toi %>%
     mutate(niskin = case_when(cruise == "AR31A" ~ niskin/2,
+                              cruise == "ar31a" ~ niskin/2,
                               TRUE ~ niskin))
   
   # for underway samples, assign depth to 5m if Endeavor cruise and 2.1336 if Armstrong cruise
@@ -82,7 +83,7 @@ read_eims <- function(eims_filename, cruiseid){
     eims$depth <- 2.1336
   }
   if(str_detect(cruiseid, '^AT') ){
-    eims$depth <- 4 #PLACEHOLDER
+    eims$depth <- 5 
   }
   if(str_detect(cruiseid, '^en') ){
     eims$depth <- 5
@@ -91,7 +92,7 @@ read_eims <- function(eims_filename, cruiseid){
     eims$depth <- 2.1336
   }
   if(str_detect(cruiseid, '^at') ){
-    eims$depth <- 4 #PLACEHOLDER
+    eims$depth <- 5 
   }
  
   return(eims)

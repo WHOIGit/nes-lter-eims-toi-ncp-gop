@@ -1,4 +1,4 @@
-﻿# Source data
+# Source data
 
 These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.3 in the EDI Data Portal. 
 
@@ -25,7 +25,7 @@ We assured that the geographic and temporal coverage of the clean data table wer
 
 # Differences from previous version
 
-Version 3 is released to include a correction to the EN617 high-frequency data that aligns EIMS data with bottle sample values. 
+In version 3, temperature and salinity are included in the high-frequency data set. Column headers for date/time, latitude, longitude, and depth are edited to remove references to Matlab, instead using the word "input" where needed to distinguish from NES-LTER API-derived metadata. The units of NCP were updated to exclude the element name (oxygen) from the unit and instead include it in the attribute definition; the multiplier to SI units was also corrected. The EN617 high-frequency data (and resultant NCP values) now include a correction that aligns EIMS data with bottle sample values. One additional row (EN608 2018-02-01 00:00:01) is added to the high-frequency data set. One discrete sample (EN617 2018-07-24 15:33) previously labeled as sourced from Niskin is corrected to underway, and several samples that were excluded in previous versions are now included and flagged 3 (questionable). 
 
 Version 2 is combined with (and deprecates) previous package knb-lter-nes.7, and excludes some rows in previous version gop-transect csv for reasons described above.
 
