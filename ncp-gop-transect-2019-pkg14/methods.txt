@@ -9,7 +9,7 @@ Additional data sources for these derived data:
 
 # Additional cruise notes
 
-AR34B: Some high-frequency data are missing from the first and last days of the cruise. No underway TOI data are available for this cruise due to contamination. (Niskin TOI data are included in the package.)
+AR34B: Some high-frequency data are missing from the first and last days of the cruise. AR34B and AR39B: No underway TOI data are available due to contamination. (Niskin TOI data are included in the package.)
 
 # Calibrations and derivations
 

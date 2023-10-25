@@ -212,7 +212,7 @@ write.csv(bottle, "toi_bottle_before_qc.csv", row.names = FALSE)
 
 ```{r}
 
-bottle <- read_csv("toi_bottle_before_qc.csv")
+#bottle <- read_csv("toi_bottle_before_qc.csv")
 
 # (special cases for version 2)
 # # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
@@ -555,7 +555,7 @@ ggsave("en649-salinity-biosat.png")
 
 ggplot(eims_en661, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN661")
 ggsave("en661-salinity-biosat.png")
-ggplot(eims_at46, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "AT461")
+ggplot(eims_at46, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "AT46")
 ggsave("at46-salinity-biosat.png")
 
 ```
@@ -740,7 +740,7 @@ cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE, show_col_types =
 
 # refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.3")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.3")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -933,17 +933,17 @@ ncp_gop_input <- ncp_gop_input %>%
                                 #datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 2 ~ 3, # AR31A large depth difference
                                 #datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 10 ~ 3, # AR31A large depth difference
                                 #is.na(datetime_utc_matlab) ~ 3, #AR31A missing time
-                                datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 3, #EN644
-                                datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 3,
-                                datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 3,
-                                datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 3,
-                                datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 3,
-                                datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 3,
-                                datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 3,
-                                datetime_utc_matlab == "2019-08-21 00:48:00" ~ 3, # EN644 underway sample with non-zero provided depth
-                                datetime_utc_matlab == "2019-02-01 21:39:00" & niskin == 2 ~ 3, # EN627 large depth difference
-                                datetime_utc_matlab == "2019-02-02 06:29:00" & niskin == 1 ~ 3, # EN627 large depth difference
-                                datetime_utc_matlab == "2019-02-03 17:42:00" & depth == 0 ~ 3, # EN627 Niskin with provided depth zero
+                                #datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 3, #EN644
+                                #datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 3,
+                                #datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 3,
+                                #datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 3,
+                                #datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 3,
+                                #datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 3,
+                                #datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 3,
+                                #datetime_utc_matlab == "2019-08-21 00:48:00" ~ 3, # EN644 underway sample with non-zero provided depth
+                                #datetime_utc_matlab == "2019-02-01 21:39:00" & niskin == 2 ~ 3, # EN627 large depth difference
+                                #datetime_utc_matlab == "2019-02-02 06:29:00" & niskin == 1 ~ 3, # EN627 large depth difference
+                                #datetime_utc_matlab == "2019-02-03 17:42:00" & depth == 0 ~ 3, # EN627 Niskin with provided depth zero
                                 datetime_utc_matlab == "2019-04-22 04:34:00"  ~ 3, #AR34B
                                 TRUE ~ 0,))
 
@@ -1166,7 +1166,8 @@ Assemble EML metadata templates based on the provided Excel template
 ```{r}
 
 # define input files
-edi_filename <- "ncp-gop-transect"
+edi_filename <- paste0('ncp-gop-transect-', this_year)
+meta <- paste0(project_folder, '/', edi_filename, '-info.xlsx')
 metadata <- '/{edi_filename}-info'
 #project_folder <- paste0("ncp-gop-transect-", this_year, "-pkg", this_pkg$package_no[1])
 pkg_id <- this_pkg$package_id[1]
@@ -1177,13 +1178,13 @@ excel_to_template(metadata_path = glue(project_folder, metadata),
                   rights = "CCBY",
                   output_path = project_folder)
 
-sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'CategoricalVariables',
+sheet_to_tsv(meta, 'CategoricalVariables',
              glue::glue(project_folder, '/catvars_gop-transect-',this_year, '.txt'))
 
-sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'ColumnHeadersGop',
+sheet_to_tsv(meta, 'ColumnHeadersGop',
              glue::glue(project_folder, '/attributes_gop-transect-',this_year, '.txt'))
 
-sheet_to_tsv(paste0(project_folder, '/ncp-gop-transect-info.xlsx'), 'ColumnHeadersNcp',
+sheet_to_tsv(meta, 'ColumnHeadersNcp',
              glue::glue(project_folder, '/attributes_ncp-transect-',this_year, '.txt'))
 
 EMLassemblyline::template_core_metadata(path= project_folder, license='CCBY')
@@ -1230,7 +1231,7 @@ make_eml(path = project_folder,
 #project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
 
 # for prep-eims-toi-data: 
-add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = project_folder)
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESII_OOI.txt", xml.path = project_folder)
 
 ```
 

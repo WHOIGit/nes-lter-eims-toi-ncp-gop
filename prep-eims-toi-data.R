@@ -57,7 +57,11 @@ set_toi_source <- function(nisk, depth_mat, source) {
   # for underway samples, assign depth to 5m if Endeavor cruise and 2.1336 if Armstrong cruise
   toi <- toi %>%
     mutate(depth = case_when(depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^EN") ~ 5,
-                                    depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^AR") ~ 2.1336,
+                             depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^en") ~ 5,
+                             depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^AR") ~ 2.1336,
+                             depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^ar") ~ 2.1336,
+                             depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^AT") ~ 5,
+                             depth_matlab == 0 & toi_source =="toi_underway" & str_detect(cruise, "^at") ~ 5,
                                     TRUE ~ depth_matlab))
   
   return(toi)
