@@ -37,3 +37,25 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# text files generated in workflow
+attributes*.txt
+personnel.txt
+custom_units.txt
+catvars*.txt
+*/intellectual_rights.txt
+*/keywords.txt
+
+# plots
+*.png
+
+# matlab input files
+*.mat
+
+# file for internal matching troubleshooting
+toi_transect_surface.csv
+
+#v2 folders
+*/v2/
+
+
