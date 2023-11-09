@@ -1,6 +1,6 @@
 ﻿# Source data
 
-These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.2 in the EDI Data Portal. 
+These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.3 in the EDI Data Portal. 
 
 Additional data sources for these derived data:
 -- Gas transfer velocity (wind data product, weighted over 30 days)
@@ -17,7 +17,7 @@ The high-frequency NCP data table is derived from the underway EIMS measurements
 
 # Data cleaning and assembly
 
-In the high-frequency data table, one record measured precisely at midnight was omitted due to the lack of time code conversion. For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or Niskin, and quality is indicated using IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from Niskins, datetime (in UTC) was corrected to reflect the time at which the rosette bottle closed instead of cast start time; latitude_API and longitude_API are based on datetime_utc. Any records with the following conditions were flagged: a cast start time or a Niskin not found in API bottle summary, a time difference from API bottle summary record greater than 60 minutes or a depth difference greater than 5 m, a missing time value, a Niskin sample with a provided depth of zero, or an underway sample with a nonzero provided depth. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. 
+For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or Niskin, and quality is indicated using IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from Niskins, the provided Niskin number and cast start time (column datetime_input) were used to find the corresponding CTD bottle summary record; cast, time stamp (time of rosette bottle closure, datetime_utc), and coordinates (latitude_API and longitude_API) were thus provided from the CTD bottle summary. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. 
 
 # Quality assurance
 
@@ -25,7 +25,9 @@ We assured that the geographic and temporal coverage of the clean data table wer
 
 # Differences from previous version
 
-In version 3, temperature and salinity are included in the high-frequency data set. Column headers for date/time, latitude, longitude, and depth are edited to remove references to Matlab, instead using the word "input" where needed to distinguish from NES-LTER API-derived metadata. The units of NCP were updated to exclude the element name (oxygen) from the unit and instead include it in the attribute definition; the multiplier to SI units was also corrected. 
+In version 3, data from fall cruise AR39B have been added, completing the set of NES-LTER cruises in 2019. Metadata corrections have been made to several rows of the discrete rates data previously provided, and these resulted in a net addition of 10 observations compared to those included from the same three cruises in v2. In the high-frequency data table, the one record measured precisely at midnight that was previously omitted is now included with a time stamp of 00:00:01. 
+
+Also in version 3, temperature and salinity are included in the high-frequency data set. Column headers for date/time, latitude, longitude, and depth are edited to remove references to Matlab, instead using the word "input" where needed to distinguish from NES-LTER API-derived metadata. The units of NCP were updated to exclude the element name (oxygen) from the unit and instead include it in the attribute definition; the multiplier to SI units was also corrected. 
 
 Version 2 is combined with (and deprecates) previous package knb-lter-nes.15, and excludes some rows in previous version gop-transect csv for reasons described above.
 

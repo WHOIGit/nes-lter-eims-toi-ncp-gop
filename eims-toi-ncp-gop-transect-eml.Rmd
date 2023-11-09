@@ -171,11 +171,15 @@ for (i in 1:nrow(cruise_list)){
     # different columns depending on vessel
     # toi$latitude_API[i] <- underway$latitude[ind]   
     # toi$longitude_API[i] <- underway$longitude[ind]
-    if(str_detect(cruisename, 'EN') ){
+    if(str_detect(cruisename, 'en') ){
     toi$latitude_API[i] <- underway$gps_furuno_latitude[ind]
     toi$longitude_API[i] <- underway$gps_furuno_longitude[ind]
     }
-    if(str_detect(cruisename, 'AR') ){
+    if(str_detect(cruisename, 'ar') ){
+    toi$latitude_API[i] <- underway$dec_lat[ind]
+    toi$longitude_API[i] <- underway$dec_lon[ind]
+    }
+    if(str_detect(cruisename, 'at') ){
     toi$latitude_API[i] <- underway$dec_lat[ind]
     toi$longitude_API[i] <- underway$dec_lon[ind]
     }
@@ -361,18 +365,23 @@ map_locs(df = bottle, xvar = "longitude_API", yvar = "latitude_API", region = "t
 #map_locs(df = toi_EN608, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "toi_source")
 
 # Plot measured parameters in bottle TOI dataset
-ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_ratio))+ geom_point()
-ggplot(bottle, aes(x= datetime_utc_matlab, y = O2_Ar_delta))+ geom_point()
-ggplot(bottle, aes(x= datetime_utc_matlab, y = cap_Delta_17O))+ geom_point()
-ggplot(bottle, aes(x= datetime_utc_matlab, y = d17O))+ geom_point()
-ggplot(bottle, aes(x= datetime_utc_matlab, y = d18O))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_API, y = O2_Ar_ratio))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_API, y = O2_Ar_delta))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_API, y = cap_Delta_17O))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_API, y = d17O))+ geom_point()
+ggplot(bottle, aes(x= datetime_utc_API, y = d18O))+ geom_point()
 
 # Plot measured parameters in bottle TOI dataset
 ggplot(bottle, aes(x= cruise_day, y = O2_Ar_ratio, color = cruise))+ geom_point()
+ggsave("toi-O2_Ar_ratio.png")
 ggplot(bottle, aes(x= cruise_day, y = O2_Ar_delta, color = cruise))+ geom_point()
+ggsave("toi-O2_Ar_delta.png")
 ggplot(bottle, aes(x= cruise_day, y = cap_Delta_17O, color = cruise))+ geom_point()
+ggsave("toi-cap_Delta_17O.png")
 ggplot(bottle, aes(x= cruise_day, y = d17O, color = cruise))+ geom_point()
+ggsave("toi-d17O.png")
 ggplot(bottle, aes(x= cruise_day, y = d18O, color = cruise))+ geom_point()
+ggsave("toi-d18O.png")
 
 ```
 
@@ -725,7 +734,7 @@ make_eml(path=project_folder,
 #project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
 
 # for prep-eims-toi-data: 
-add_parent(edi_pkg = pkg_id, parent_name = "parent_project_OOI.txt", xml.path = project_folder)
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESI-II_OOI.txt", xml.path = project_folder)
 
 ```
 
@@ -1217,7 +1226,7 @@ make_eml(path = project_folder,
          temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = geographic_coordinates(lat, long),
-         maintenance.description = "ongoing",
+         maintenance.description = "ongoing", #TODO: add column in cruise list to designate completed pkgs
          user.id = "NES",
          user.domain = "LTER",
          package.id = pkg_id)
@@ -1231,7 +1240,7 @@ make_eml(path = project_folder,
 #project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
 
 # for prep-eims-toi-data: 
-add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESII_OOI.txt", xml.path = project_folder)
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESI-II_OOI.txt", xml.path = project_folder)
 
 ```
 
