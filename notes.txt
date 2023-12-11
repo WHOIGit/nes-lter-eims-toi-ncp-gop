@@ -1,23 +1,40 @@
+2018:
+
 EN617 was in version 2 and has new files in version 3 for the high-frequency files for the two packages (RaEn617withbiosat and ncplterEn617).
 
-At46 credits:
-Lindsey Baldwin (Wellesley) and Anne Cruz (WHOI) collected the data.
-Alejandra Castillo Cieza processed it.
-
-
-Here is the data from En668. Alejandra Castillo Cieza and Ellen Roosen collected the data. Alejandra processed it.
+2019:
 
 Here are the files for Ar39b. Like many of the Armstrong cruises, there are many fewer TOI data points b/c the underway gave strange values for TOI so we only have the CTD samples.
 Rachel Shrives processed the data for this cruise. Zoe Sandwith collected the data.
 
-
-Here is data for En657. I got the TOI bottle numbers and have that as the last column of bottledata (9th column) and the next to last column (9th column) of discrete rates. Also in discrete rates, i have a "bad data flag" as the 10th column. This isn't data that is truly bad but just questionable -- there is a larger than typical difference between NCP calculated from the TOI bottle and NCP from teh EIMS, making the data a little suspicious. I'm not sure if you want to include that flag or not - I think you add flags yourself so this could just be part of that. Otherwise i'm not sure if i'ts worth including.
-
-EN657. Justin Ossolinski collected the data at sea. Rachel Shrives processed it at Wellesley. 
+2020:
 
 This email is for En649. 
 Danielle Aldrett and Justin Ossolinski collected the data at sea.
 Danielle Aldrett processed it.
 
+Here is data for En657. I got the TOI bottle numbers and have that as the last column of bottledata (9th column) and the next to last column (9th column) of discrete rates. Also in discrete rates, i have a "bad data flag" as the 10th column. This isn't data that is truly bad but just questionable -- there is a larger than typical difference between NCP calculated from the TOI bottle and NCP from teh EIMS, making the data a little suspicious. I'm not sure if you want to include that flag or not - I think you add flags yourself so this could just be part of that. Otherwise i'm not sure if i'ts worth including.
+
+EN657. Justin Ossolinski collected the data at sea. Rachel Shrives processed it at Wellesley. 
+
+
+2021:
+
 En661 was processed by Arshia Mehta, Rachel Stanley (me!) collected the samples (just one person for sample collection b/c of covid)
+
+Here is the data from En668. Alejandra Castillo Cieza and Ellen Roosen collected the data. Alejandra processed it.
+
+
+2022:
+
+At46 credits:
+Lindsey Baldwin (Wellesley) and Anne Cruz (WHOI) collected the data.
+Alejandra Castillo Cieza processed it.
+
+En687:
+Zoe Kroneberg and Rachel Stanley collected data for this cruise. Alejandra Castillo Cieza processed it.
+
+
+
+
 

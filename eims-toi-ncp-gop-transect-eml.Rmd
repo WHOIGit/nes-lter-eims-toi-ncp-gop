@@ -749,7 +749,7 @@ cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE, show_col_types =
 
 # refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.3")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.30.1")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -783,16 +783,23 @@ for (i in 1:nrow(this_pkg)){
       ncp_gop_input$niskin <- NA
       ncp_gop_input$quality <- 0
     } else if 
+  # 8 columns
     (this_cruise$discreterates_cols == "8"){
-      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin") # 8 columns
+      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin") 
       ncp_gop_input$quality <- 0
+      ncp_gop_input$toi_bottle <- NA
     }
-    else if (this_cruise$discreterates_cols == "9"){
-      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality") # 9 columns
+    else if 
+  # 9 columns
+    (this_cruise$discreterates_cols == "9"){
+      colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "quality") 
+      ncp_gop_input$toi_bottle <- NA
     }
-  else if (this_cruise$discreterates_cols == "11"){
+  else if 
+  # 11 columns
+  (this_cruise$discreterates_cols == "11"){
       colnames(ncp_gop_input) <- c("datetime_utc_matlab", "latitude_matlab", "longitude_matlab", "gop", "ncp","ncp_per_gop", "depth", "niskin", "blank", "toi_bottle", "quality") 
-      #need to remove blank column and add toi_bottle to other dfs # 11 columns
+      ncp_gop_input <- subset(ncp_gop_input, select = -blank)
     }
   
   # add cruise ID

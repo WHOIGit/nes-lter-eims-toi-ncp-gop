@@ -1,5 +1,5 @@
     <project>
-      <title>Northeast U.S. Shelf LTER</title>
+      <title>LTER: Scales of Variability in Ecosystem Dynamics and Production on the Changing Northeast U.S. Shelf (NES II)</title>
       <personnel>
         <individualName>
           <givenName>Heidi</givenName>
@@ -96,7 +96,7 @@
         <para>NSF Award OCE-2322676</para>
       </funding>
       <relatedProject>
-        <title>Northeast U.S. Shelf LTER</title>
+        <title>LTER: Linking Pelagic Community Structure with Ecosystem Dynamics and Production Regimes on the Changing Northeast US Shelf (NES I)</title>
         <personnel>
           <individualName>
             <givenName>Heidi</givenName>
@@ -109,7 +109,7 @@
         <funding>NSF Award OCE-1655686</funding>
       </relatedProject>
       <relatedProject>
-        <title>Ocean Observatories Initiative</title>
+        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
         <personnel>
           <individualName>
             <givenName>James</givenName>
