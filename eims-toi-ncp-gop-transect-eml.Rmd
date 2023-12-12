@@ -749,7 +749,7 @@ cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE, show_col_types =
 
 # refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.30.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.31.1")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -1033,7 +1033,7 @@ if (nrow(toi_transect_surface) == nrow(ncp_gop_input)){
   ncp_gop_transect_wide <- cbind(ncp_gop_input, toi_transect_surface)
   
 } else 
-{rlog::log_warn(glue::glue('ncp_gop_input rows not equal to toi_transect_surface rows'))}
+{print('ncp_gop_input rows not equal to toi_transect_surface rows')}
 
 ## check for correct matching in bind
 # since EN617 ncpgop_input does not have niskin or depth, check that matlab datetimes match for combined data sets
