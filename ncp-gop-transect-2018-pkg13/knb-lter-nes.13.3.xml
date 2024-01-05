@@ -11,7 +11,7 @@
     </allow>
   </access>
   <dataset>
-    <title>Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018</title>
+    <title>Net community production (NCP) and gross oxygen production (GOP), based on oxygen-argon ratios and triple oxygen isotopes, from seasonal NES-LTER Transect cruises in 2018</title>
     <creator>
       <individualName>
         <givenName>Rachel</givenName>
@@ -46,7 +46,7 @@
       <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
       <role>technician</role>
     </associatedParty>
-    <pubDate>2023-11-09</pubDate>
+    <pubDate>2024-01-05</pubDate>
     <abstract>
       <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. </para>
     </abstract>
@@ -78,10 +78,10 @@
       <geographicCoverage>
         <geographicDescription>NES-LTER Transect</geographicDescription>
         <boundingCoordinates>
-          <westBoundingCoordinate>-71.1119</westBoundingCoordinate>
-          <eastBoundingCoordinate>-70.52544</eastBoundingCoordinate>
+          <westBoundingCoordinate>-71.10668</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.57412</eastBoundingCoordinate>
           <northBoundingCoordinate>41.428</northBoundingCoordinate>
-          <southBoundingCoordinate>39.75754</southBoundingCoordinate>
+          <southBoundingCoordinate>39.7631</southBoundingCoordinate>
         </boundingCoordinates>
       </geographicCoverage>
       <temporalCoverage>
@@ -90,7 +90,7 @@
             <calendarDate>2018-01-31</calendarDate>
           </beginDate>
           <endDate>
-            <calendarDate>2022-08-03</calendarDate>
+            <calendarDate>2018-10-23</calendarDate>
           </endDate>
         </rangeOfDates>
       </temporalCoverage>
@@ -141,7 +141,7 @@
       </methodStep>
     </methods>
     <project>
-      <title>Northeast U.S. Shelf LTER</title>
+      <title>LTER: Scales of Variability in Ecosystem Dynamics and Production on the Changing Northeast U.S. Shelf (NES II)</title>
       <personnel>
         <individualName>
           <givenName>Heidi</givenName>
@@ -238,7 +238,7 @@
         <para>NSF Award OCE-2322676</para>
       </funding>
       <relatedProject>
-        <title>Northeast U.S. Shelf LTER</title>
+        <title>LTER: Linking Pelagic Community Structure with Ecosystem Dynamics and Production Regimes on the Changing Northeast US Shelf (NES I)</title>
         <personnel>
           <individualName>
             <givenName>Heidi</givenName>
@@ -251,7 +251,7 @@
         <funding>NSF Award OCE-1655686</funding>
       </relatedProject>
       <relatedProject>
-        <title>Ocean Observatories Initiative</title>
+        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
         <personnel>
           <individualName>
             <givenName>James</givenName>
@@ -264,13 +264,458 @@
         <funding>NSF Award OCE-1743430</funding>
       </relatedProject>
     </project>
+    <dataTable>
+      <entityName>gop-transect-2018</entityName>
+      <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
+      <physical>
+        <objectName>gop-transect-2018.csv</objectName>
+        <size unit="bytes">23538</size>
+        <authentication method="MD5">22fc74800d63ffa5e524b7dcd5e72090</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>Data product UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc_input</attributeName>
+          <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude_input</attributeName>
+          <attributeDefinition>Latitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.7631</minimum>
+                  <maximum exclusive="false">41.4273</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude_input</attributeName>
+          <attributeDefinition>Longitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.1034</minimum>
+                  <maximum exclusive="false">-70.5761</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude_API</attributeName>
+          <attributeDefinition>Latitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.7631</minimum>
+                  <maximum exclusive="false">41.428</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude_API</attributeName>
+          <attributeDefinition>Longitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.10668</minimum>
+                  <maximum exclusive="false">-70.57412</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>toi_source</attributeName>
+          <attributeDefinition>Bottle sample from niskin or underway</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>toi_niskin</code>
+                    <definition>sample bottle was filled from a Niskin bottle on CTD rosette</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>toi_underway</code>
+                    <definition>sample bottle was filled from the ship's underway system</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>gop</attributeName>
+          <attributeDefinition>Gross oxygen production</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">3.543</minimum>
+                  <maximum exclusive="false">328.6</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>ncp</attributeName>
+          <attributeDefinition>Rate of net community production integrated over the mixed layer as oxygen flux</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-82.13</minimum>
+                  <maximum exclusive="false">94.76</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>ncp_per_gop</attributeName>
+          <attributeDefinition>Net community production divided by gross oxygen production</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-2.05</minimum>
+                  <maximum exclusive="false">0.98</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>iode_quality_flag</attributeName>
+          <attributeDefinition>IODE Quality Flag primary level</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>1</code>
+                    <definition>good</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>2</code>
+                    <definition>quality not evaluated, not available or unknown</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>3</code>
+                    <definition>questionable/suspect</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>4</code>
+                    <definition>bad</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>9</code>
+                    <definition>missing data</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>198</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>ncp-transect-2018</entityName>
+      <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
+      <physical>
+        <objectName>ncp-transect-2018.csv</objectName>
+        <size unit="bytes">3879631</size>
+        <authentication method="MD5">7a01434aae7c2f9ac4b47671240d5695</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude</attributeName>
+          <attributeDefinition>Latitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.6721</minimum>
+                  <maximum exclusive="false">41.499</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude</attributeName>
+          <attributeDefinition>Longitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.4187</minimum>
+                  <maximum exclusive="false">-70.5386</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">2.1336</minimum>
+                  <maximum exclusive="false">5</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>temperature</attributeName>
+          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.04042</minimum>
+                  <maximum exclusive="false">23.783</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>salinity</attributeName>
+          <attributeDefinition>Underway thermosalinograph salinity in practical salinity units. URI http://http://vocab.nerc.ac.uk/collection/P09/current/PSAL/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">22.9827</minimum>
+                  <maximum exclusive="false">49.6802</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>ncp</attributeName>
+          <attributeDefinition>Rate of net community production integrated over the mixed layer as oxygen flux</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-90.96</minimum>
+                  <maximum exclusive="false">102.4</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>k</attributeName>
+          <attributeDefinition>Gas transfer velocity used in calculating ncp from O2/Ar ratio</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>metersPerDay</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.24</minimum>
+                  <maximum exclusive="false">7.13</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>51704</numberOfRecords>
+    </dataTable>
     <otherEntity>
       <entityName>input_data_csv.zip</entityName>
       <entityDescription>Package input data files in csv format</entityDescription>
       <physical>
         <objectName>input_data_csv.zip</objectName>
-        <size unit="bytes">3816705</size>
-        <authentication method="MD5">829e4587d31a1561f09d002eb525f0c9</authentication>
+        <size unit="bytes">1053330</size>
+        <authentication method="MD5">4b57ed6222f9696480fa54f104cbee95</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>
@@ -284,8 +729,8 @@
       <entityDescription>Package input data files in Matlab format</entityDescription>
       <physical>
         <objectName>input_data_matlab.zip</objectName>
-        <size unit="bytes">4850369</size>
-        <authentication method="MD5">bf99364cfefd9bf067c6845e40866871</authentication>
+        <size unit="bytes">6449505</size>
+        <authentication method="MD5">52cf5fa396c1ccbc105e2a82fbe13ef0</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>

@@ -24,6 +24,13 @@
     </creator>
     <creator>
       <individualName>
+        <givenName>Danielle</givenName>
+        <surName>Aldrett</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+    </creator>
+    <creator>
+      <individualName>
         <givenName>Arshia</givenName>
         <surName>Mehta</surName>
       </individualName>
@@ -32,15 +39,8 @@
     </creator>
     <creator>
       <individualName>
-        <givenName>Danielle</givenName>
-        <surName>Aldrett</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-    </creator>
-    <creator>
-      <individualName>
-        <givenName>Shrives</givenName>
-        <surName>Rachel</surName>
+        <givenName>Rachel</givenName>
+        <surName>Shrives</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
@@ -53,7 +53,7 @@
       <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
       <role>technician</role>
     </associatedParty>
-    <pubDate>2023-11-09</pubDate>
+    <pubDate>2024-01-05</pubDate>
     <abstract>
       <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2019. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. &#13;
 </para>
@@ -150,7 +150,7 @@
       </methodStep>
     </methods>
     <project>
-      <title>Northeast U.S. Shelf LTER</title>
+      <title>LTER: Scales of Variability in Ecosystem Dynamics and Production on the Changing Northeast U.S. Shelf (NES II)</title>
       <personnel>
         <individualName>
           <givenName>Heidi</givenName>
@@ -247,7 +247,7 @@
         <para>NSF Award OCE-2322676</para>
       </funding>
       <relatedProject>
-        <title>Northeast U.S. Shelf LTER</title>
+        <title>LTER: Linking Pelagic Community Structure with Ecosystem Dynamics and Production Regimes on the Changing Northeast US Shelf (NES I)</title>
         <personnel>
           <individualName>
             <givenName>Heidi</givenName>
@@ -260,7 +260,7 @@
         <funding>NSF Award OCE-1655686</funding>
       </relatedProject>
       <relatedProject>
-        <title>Ocean Observatories Initiative</title>
+        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
         <personnel>
           <individualName>
             <givenName>James</givenName>

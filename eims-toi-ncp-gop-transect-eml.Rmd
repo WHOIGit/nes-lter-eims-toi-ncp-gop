@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Kate Morkeski, Jaxine Wolfe, Stace Beaulieu"
-date: "September 13, 2023"
+date: "January 5, 2024"
 output: html_document
 ---
 
@@ -205,7 +205,6 @@ for (i in 1:nrow(cruise_list)){
 # combine all cruises
 bottle_list <- paste0("toi_", new_cruises)
 bottle <- list_rbind(mget(bottle_list))
-#bottle <- filter(bottle, cruise != "EN617")
 
 # ensure rows are in time order
 bottle <- bottle[order(bottle$datetime_utc),]
@@ -218,26 +217,10 @@ write.csv(bottle, "toi_bottle_before_qc.csv", row.names = FALSE)
 
 #bottle <- read_csv("toi_bottle_before_qc.csv")
 
-# (special cases for version 2)
-# # remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
+# remove samples recorded with Niskin 99 (and depth 999). These were related to an experiment. 
  excl_niskin99 <- bottle %>% filter(niskin == "99")
  excl_niskin99$reason <- "niskin 99"
  bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
-# 
-# # exclude for now casts affected by provided incorrect cast start time
-# bottle$reason <- ifelse(bottle$cruise == "EN644" & bottle$cast == 8 | 
-#                         bottle$cruise == "EN644" & bottle$cast == 9 | 
-#                         bottle$cruise == "EN644" & bottle$cast == 18 | 
-#                         bottle$cruise == "EN644" & bottle$cast == 20 |
-#                         bottle$cruise == "EN644" & bottle$cast == 26 |
-#                         bottle$cruise == "AR34B" & bottle$cast == 18,
-#                         yes = "incorrect cast start time", 
-#                         no = NA)
-#
-#excl_bottlecasttime <- bottle %>% filter(!is.na(reason))
-#
-#bottle <- bottle %>% filter(is.na(reason))
-#bottle <- bottle %>% select(-reason)
 
 ```
 ## QA for TOI data
@@ -312,13 +295,6 @@ bottle <- bottle %>% mutate(iode_quality_flag = case_when(is.na(datetime_utc) ~ 
 sum(bottle$iode_quality_flag == "4") 
 excl_missing_time <- bottle %>% filter(is.na(datetime_utc))
 excl_missing_time$reason <- "missing datetime"
-
-#special cases for version 2
-# # make columns match (time difference columns)
-# excl_niskin99$time_diff <- NA_integer_
-# excl_niskin99$time_diff_min <- NA_integer_
-# excl_niskin99$depth_diff <- NA_integer_
-# excl_niskin99 <- excl_niskin99 %>% relocate(reason, .after = depth_diff)
 
 # excl_bottlecasttime$time_diff <- NA_integer_
 # excl_bottlecasttime$time_diff_min <- NA_integer_
@@ -395,7 +371,7 @@ bottle <- bottle %>%
   rename(depth_input = depth_matlab)
 
 # define headers for columns in desired order
-bottle_headers <- c("cruise", "datetime_utc","datetime_utc_input", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_input", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O", "iode_quality_flag")
+bottle_headers <- c("cruise", "datetime_utc","datetime_utc_input", "latitude_API", "longitude_API", "toi_source", "cast", "niskin", "depth", "depth_input", "O2_Ar_delta", "O2_Ar_ratio", "cap_Delta_17O", "d17O", "d18O")
 bottle_clean <- bottle[, bottle_headers]
 # write file for inspection
 #write.csv(bottle_clean, here("eims-toi-transect", 'toi-transect-new-v3.csv'), row.names = FALSE)
@@ -496,21 +472,11 @@ for (i in 1:nrow(cruise_list)){
 eims_list <- paste0("eims_", new_cruises)
 eims_all <- list_rbind(mget(eims_list))
 
+# check for any missing dates
 missingdates <- filter(eims_all, is.na(datetime_utc_matlab))
 
-# put all rows without timestamp into one dataframe
-#missingdates <- rbind(missingdate_EN608, missingdate_EN617, missingdate_AR31A, missingdate_EN627, missingdate_EN644, missingdate_AR34B)
-# these are are row 1114 in input file RaEn608withbiosat and row 9845 in input file RaEn627withbiosat 
-
-# write csv file for inspection
-#write.csv(missingdates, "eims_missingdates.csv", row.names = FALSE) 
-
-# combine loop output from all cruises into one dataframe, excluding those with missing timestamp
-#eims_all <- rbind(eims_EN608, eims_EN617, eims_AR31A, eims_EN627, eims_EN644, eims_AR34B)
 # ensure rows are in time order
 eims_all <- eims_all[order(eims_all$datetime_utc_matlab),]
-
-# consider identifying and binding them with same method used for ncp gop
 
 ```
 
@@ -749,7 +715,7 @@ cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE, show_col_types =
 
 # refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.31.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.3")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -920,61 +886,19 @@ ncp_gop_input <- ncp_gop_input %>%
   mutate(ncp=replace(ncp, iode_quality_flag==4, NA)) %>%
   mutate(ncp_per_gop=replace(ncp_per_gop, iode_quality_flag==4, NA))
 
-# check for NAs
+# check for NAs in data
 sum(is.na(ncp_gop_input$gop)) 
 
-# check for NAs
+# check for NAs in datetime
 sum(is.na(ncp_gop_input$datetime_utc_matlab)) 
 
+# remove any rows with missing datetime
 ncp_gop_input <- ncp_gop_input %>% filter(!is.na(datetime_utc_matlab))
-
-```
-# Flag ncp-gop samples affected by incorrect cast start time
-
-```{r}
 
 # ensure rows are in time order
 ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
 
-# flag for now (mostly cruise EN644) samples affected by incorrect cast start time
-# can't do this by cast number because don't have cast number
-ncp_gop_input$cast_flag <- NA_integer_
-ncp_gop_input <- ncp_gop_input %>%
-   mutate(cast_flag = case_when(datetime_utc_matlab == "2018-02-02 09:10:00" ~ 3, #EN608 large depth difference
-                                datetime_utc_matlab == "2018-02-01 17:31:00" ~ 3, # EN608
-                                datetime_utc_matlab == "2018-07-22 05:00:00" ~ 3, #EN617
-                                datetime_utc_matlab == "2018-07-22 08:58:00" ~ 3, #EN617
-                                datetime_utc_matlab == "2018-07-23 12:59:00"  ~ 3, #EN617
-                                #datetime_utc_matlab == "2018-07-24 15:33:00"  ~ 3, #EN617
-                                #datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 2 ~ 3, # AR31A large depth difference
-                                #datetime_utc_matlab == "2018-10-21 17:56:00" & niskin == 10 ~ 3, # AR31A large depth difference
-                                #is.na(datetime_utc_matlab) ~ 3, #AR31A missing time
-                                #datetime_utc_matlab == "2019-08-22 00:57:00"  ~ 3, #EN644
-                                #datetime_utc_matlab == "2019-08-22 03:10:00"  ~ 3,
-                                #datetime_utc_matlab == "2019-08-22 04:23:00"  ~ 3,
-                                #datetime_utc_matlab == "2019-08-23 15:45:00"  ~ 3,
-                                #datetime_utc_matlab == "2019-08-23 16:55:00"  ~ 3,
-                                #datetime_utc_matlab == "2019-08-23 23:45:00"  ~ 3,
-                                #datetime_utc_matlab == "2019-08-24 23:16:00"  ~ 3,
-                                #datetime_utc_matlab == "2019-08-21 00:48:00" ~ 3, # EN644 underway sample with non-zero provided depth
-                                #datetime_utc_matlab == "2019-02-01 21:39:00" & niskin == 2 ~ 3, # EN627 large depth difference
-                                #datetime_utc_matlab == "2019-02-02 06:29:00" & niskin == 1 ~ 3, # EN627 large depth difference
-                                #datetime_utc_matlab == "2019-02-03 17:42:00" & depth == 0 ~ 3, # EN627 Niskin with provided depth zero
-                                datetime_utc_matlab == "2019-04-22 04:34:00"  ~ 3, #AR34B
-                                TRUE ~ 0,))
-
-# check how many rows
-sum(ncp_gop_input$cast_flag)
-
-# isolate the identified rows
-ncpcasttime <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 3)
-
-# remove the identified rows
-#ncp_gop_input <- ncp_gop_input %>% filter(ncp_gop_input$cast_flag == 0)
-#ncp_gop_input <- ncp_gop_input %>% select(-cast_flag)
-
 ```
-
 
 # Bind low-frequency data with TOI data to identify TOI_source and supply API-provided timestamp, latitude, and longitude
 
@@ -987,13 +911,23 @@ toi_transect <- toi_transect %>% filter(toi_transect$year == this_cruise$year)
 
 # expect toi_transect to have rows with bottles deeper than surface
 # filter for rows depth less than Rachel's depthcutoff 6 m
-# check for length discrepancy
 toi_transect_surface <- filter(toi_transect, depth_input <= 6)
-#toi_transect_surface <- filter(toi_transect, depth <= 6)
+
+# remove rows not in in NCP-GOP data
+ if (this_year == 2021){
+toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$datetime_utc_input == "2021-02-04 13:12:00"| 
+                            toi_transect_surface$datetime_utc_input == "2021-02-04 18:53:00"| 
+                            toi_transect_surface$datetime_utc_input == "2021-02-05 11:57:00"| 
+                            toi_transect_surface$datetime_utc_input == "2021-02-05 23:30:00"| 
+                            toi_transect_surface$datetime_utc_input == "2021-02-07 22:06:00"),]
+ }
+
+# check for length discrepancy
 nrow(toi_transect_surface)  
 nrow(ncp_gop_input)
 
 write.csv(toi_transect_surface, "toi_transect_surface.csv")
+
 ```
 # Identify mismatching rows
 
@@ -1041,7 +975,7 @@ ncp_gop_transect_wide <- ncp_gop_transect_wide %>%
   mutate(timecheck = case_when(datetime_utc_matlab == datetime_utc_input_toi ~ 0,
                               datetime_utc_matlab != datetime_utc_input_toi ~ 1))
 sum(ncp_gop_transect_wide$timecheck)  
-#bad_wide <- ncp_gop_transect_wide %>% filter(timecheck == 1)
+bad_wide <- ncp_gop_transect_wide %>% filter(timecheck == 1)
 
 ncp_gop_transect_wide <- ncp_gop_transect_wide %>%
     rename(latitude_input = latitude_matlab) %>%
@@ -1139,6 +1073,7 @@ ggplot(ncp_hifreq_wide, aes(x= cumulative_dist, y = k, color = cruiseid))+ geom_
 ggsave(paste0(project_folder, "/k-", this_year, ".png"))
 
 # would be helpful to color by season
+# EN661 does not have cumulative_dist
 
 ```
 
@@ -1233,7 +1168,7 @@ make_eml(path = project_folder,
          temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = geographic_coordinates(lat, long),
-         maintenance.description = "ongoing", #TODO: add column in cruise list to designate completed pkgs
+         maintenance.description = "completed", #TODO: add column in cruise list to designate completed pkgs
          user.id = "NES",
          user.domain = "LTER",
          package.id = pkg_id)
