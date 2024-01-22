@@ -24,6 +24,13 @@
     </creator>
     <creator>
       <individualName>
+        <givenName>Zoe</givenName>
+        <surName>Sandwith</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+    </creator>
+    <creator>
+      <individualName>
         <givenName>Arshia</givenName>
         <surName>Mehta</surName>
       </individualName>
@@ -37,18 +44,9 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
-    <associatedParty>
-      <individualName>
-        <givenName>Kevin</givenName>
-        <surName>Cahill</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
-      <role>technician</role>
-    </associatedParty>
-    <pubDate>2024-01-05</pubDate>
+    <pubDate>2024-01-22</pubDate>
     <abstract>
-      <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. </para>
+      <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. </para>
     </abstract>
     <keywordSet>
       <keyword>primary production</keyword>
@@ -119,7 +117,7 @@
           <para># Source data</para>
           <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.3 in the EDI Data Portal. </para>
           <para>Additional data sources for these derived data:&#13;
--- Gas transfer velocity (wind data product, weighted over 30 days)&#13;
+-- Gas transfer velocity (monthly mean 10-m wind data product, NCEP-NCAR Reanalysis 1 data provided by the NOAA PSL, Boulder, Colorado, USA, at https://psl.noaa.gov )&#13;
 -- Temperature from NES-LTER ship-provided data&#13;
 -- Salinity from NES-LTER ship-provided data</para>
           <para># Additional cruise notes</para>
@@ -134,8 +132,10 @@
           <para>In version 3, temperature and salinity are included in the high-frequency data set. Column headers for date/time, latitude, longitude, and depth are edited to remove references to Matlab, instead using the word "input" where needed to distinguish from NES-LTER API-derived metadata. The units of NCP were updated to exclude the element name (oxygen) from the unit and instead include it in the attribute definition; the multiplier to SI units was also corrected. The EN617 high-frequency data (and resultant NCP values) now include a correction that aligns EIMS data with bottle sample values. One additional row (EN608 2018-02-01 00:00:01) is added to the high-frequency data set. One discrete sample (EN617 2018-07-24 15:33) previously labeled as sourced from Niskin is corrected to underway, and several samples that were excluded in previous versions are now included and flagged 3 (questionable). </para>
           <para>Version 2 is combined with (and deprecates) previous package knb-lter-nes.7, and excludes some rows in previous version gop-transect csv for reasons described above.</para>
           <para># References</para>
+          <para>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., Iredell, M., Saha, S., White, G., Woollen, J., Zhu, Y., Chelliah, M., Ebisuzaki, W., Higgins, W., Janowiak, J., Mo, K. C., Ropelewski, C., Wang, J., Leetmaa, A., Reynolds, R., Jenne, R., and Joseph, D.: The NCEP/NCAR 40-year reanalysis project, Bulletin of the American Meteorological Society, 77, 437-471, 10.1175/1520-0477(1996)077&lt;0437:TNYRP&gt;2.0.CO;2, 1996.</para>
+          <para>Kistler, R., Kalnay, E., Collins, W., Saha, S., White, G., Woollen, J., Chelliah, M., Ebisuzaki, W., Kanamitsu, M., Kousky, V., van den Dool, H., Jenne, R., and Fiorino, M.: The NCEP-NCAR 50-year reanalysis: Monthly means CD-ROM and documentation, Bulletin of the American Meteorological Society, 82, 247-267, 2001.</para>
           <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
-          <para>&#13;
+          <para> &#13;
 </para>
         </description>
       </methodStep>
@@ -224,7 +224,7 @@
       </personnel>
       <personnel>
         <individualName>
-          <givenName>Weifeng</givenName>
+          <givenName>Weifeng Gordon</givenName>
           <surName>Zhang</surName>
         </individualName>
         <electronicMailAddress>wzhang@whoi.edu</electronicMailAddress>
@@ -269,8 +269,8 @@
       <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
         <objectName>gop-transect-2018.csv</objectName>
-        <size unit="bytes">23538</size>
-        <authentication method="MD5">22fc74800d63ffa5e524b7dcd5e72090</authentication>
+        <size unit="bytes">25385</size>
+        <authentication method="MD5">581a7184388d23efa90b61da3d57a909</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -519,15 +519,15 @@
           </measurementScale>
         </attribute>
       </attributeList>
-      <numberOfRecords>198</numberOfRecords>
+      <numberOfRecords>213</numberOfRecords>
     </dataTable>
     <dataTable>
       <entityName>ncp-transect-2018</entityName>
       <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
       <physical>
         <objectName>ncp-transect-2018.csv</objectName>
-        <size unit="bytes">3879631</size>
-        <authentication method="MD5">7a01434aae7c2f9ac4b47671240d5695</authentication>
+        <size unit="bytes">5622530</size>
+        <authentication method="MD5">6e944b67cd1198ab39678b496fccf1cb</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -578,7 +578,7 @@
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">39.6721</minimum>
-                  <maximum exclusive="false">41.499</maximum>
+                  <maximum exclusive="false">41.524</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -673,7 +673,7 @@
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">-90.96</minimum>
-                  <maximum exclusive="false">102.4</maximum>
+                  <maximum exclusive="false">178.2</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -707,15 +707,15 @@
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>51704</numberOfRecords>
+      <numberOfRecords>74150</numberOfRecords>
     </dataTable>
     <otherEntity>
       <entityName>input_data_csv.zip</entityName>
       <entityDescription>Package input data files in csv format</entityDescription>
       <physical>
         <objectName>input_data_csv.zip</objectName>
-        <size unit="bytes">1053330</size>
-        <authentication method="MD5">4b57ed6222f9696480fa54f104cbee95</authentication>
+        <size unit="bytes">1480311</size>
+        <authentication method="MD5">12685022c9f3fdfd97261491f3c24011</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>
@@ -729,8 +729,8 @@
       <entityDescription>Package input data files in Matlab format</entityDescription>
       <physical>
         <objectName>input_data_matlab.zip</objectName>
-        <size unit="bytes">6449505</size>
-        <authentication method="MD5">52cf5fa396c1ccbc105e2a82fbe13ef0</authentication>
+        <size unit="bytes">7635352</size>
+        <authentication method="MD5">98fda284248344de83442164bc6f83d6</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>

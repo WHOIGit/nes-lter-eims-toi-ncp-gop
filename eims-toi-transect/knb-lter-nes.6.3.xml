@@ -22,14 +22,20 @@
       <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
     </creator>
-    <associatedParty>
+    <creator>
       <individualName>
         <givenName>Kevin</givenName>
         <surName>Cahill</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <role>technician</role>
-    </associatedParty>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Zoe</givenName>
+        <surName>Sandwith</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+    </creator>
     <associatedParty>
       <individualName>
         <givenName>Kate</givenName>
@@ -40,7 +46,7 @@
       <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
       <role>metadata Provider</role>
     </associatedParty>
-    <pubDate>2024-01-05</pubDate>
+    <pubDate>2024-01-21</pubDate>
     <abstract>
       <para>In order to calculate net community production (NCP) rates on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) transect cruises, gas tracer data were collected with a continuous at-sea mass spectrometer. The ratio of O2/Ar, measured continuously from underway water, yields 8,000-15,000 rates of NCP per cruise. Discrete water samples (50 to 150 per cruise) were collected for triple oxygen isotope (TOI) analysis to estimate gross primary production (GPP) rates and ratios of NCP/GPP. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.&#13;
 This data package provides two types of data tables for NES-LTER transect cruises beginning in 2018: a high-frequency continuous Equilibration Inlet Mass Spectrometer (EIMS) table, provided by year, and a low-frequency discrete triple oxygen isotope (TOI) table with all years combined. Rates calculated from these measurements are provided as separate packages, per year, in the EDI repository.</para>
@@ -142,6 +148,7 @@ EN655: Diaphragm.</para>
 2021, knb-lter-nes.31.1&#13;
 2022, knb-lter-nes.32.1</para>
           <para># References</para>
+          <para>Casillo Cieza, S. A., Stanley, R. H. R., Marrec, P., Fontaine, D. N., Crockford, E. T., McGillicuddy, D. J., Mehta, A., Menden-Deuer, S., Peacock, E. E., Rynearson, T. A., Sandwith, Z. O., Zhang, W., and Sosik, H. M. 2024. Unusual Hemiaulus Bloom Influences Ocean Productivity in Northeast U.S. Shelf Waters, Biogeosciences Discuss. https://doi.org/10.5194/bg-2023-153</para>
           <para>Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347. https://doi.org/10.1016/S0304-4203(98)00090-5</para>
           <para>Stanley, Rachel H.R., Zoe O. Sandwith, William J. Williams. 2015. Rates of summertime biological productivity in the Beaufort Gyre: A comparison between the low and record-low ice conditions of August 2011 and 2012. Journal of Marine Systems 147:29-44. https://doi.org/10.1016/j.jmarsys.2014.04.006</para>
           <para/>
@@ -232,7 +239,7 @@ EN655: Diaphragm.</para>
       </personnel>
       <personnel>
         <individualName>
-          <givenName>Weifeng</givenName>
+          <givenName>Weifeng Gordon</givenName>
           <surName>Zhang</surName>
         </individualName>
         <electronicMailAddress>wzhang@whoi.edu</electronicMailAddress>
@@ -273,12 +280,303 @@ EN655: Diaphragm.</para>
       </relatedProject>
     </project>
     <dataTable>
+      <entityName>toi-transect.csv</entityName>
+      <entityDescription>Data product low-frequency triple oxygen isotopes and oxygen-argon ratio from rosette and underway bottles</entityDescription>
+      <physical>
+        <objectName>toi-transect.csv</objectName>
+        <size unit="bytes">164601</size>
+        <authentication method="MD5">0236d5be8bc435f2d61eccc13d1fe88c</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>Data product UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc_input</attributeName>
+          <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude_API</attributeName>
+          <attributeDefinition>Latitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.75754</minimum>
+                  <maximum exclusive="false">41.428</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude_API</attributeName>
+          <attributeDefinition>Longitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.1119</minimum>
+                  <maximum exclusive="false">-70.52544</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>toi_source</attributeName>
+          <attributeDefinition>Source of bottle sample whether from Niskin or underway</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>toi_niskin</code>
+                    <definition>sample bottle was filled from a Niskin bottle on CTD rosette</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>toi_underway</code>
+                    <definition>sample bottle was filled from the ship's underway system</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>cast</attributeName>
+          <attributeDefinition>CTD rosette cast number, chronological per cruise</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>CTD rosette cast number, chronological per cruise</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Sample from underway</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>niskin</attributeName>
+          <attributeDefinition>Rosette bottle position number</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">1</minimum>
+                  <maximum exclusive="false">24</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Sample from underway</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Data product depth of sample below sea surface, for underway samples depth of ship's intake, for Niskins from CTD summary data in NES-LTER  API. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.269</minimum>
+                  <maximum exclusive="false">224.991</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth_input</attributeName>
+          <attributeDefinition>PI-provided depth of sample below sea surface.</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0</minimum>
+                  <maximum exclusive="false">225</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_delta</attributeName>
+          <attributeDefinition>Oxygen-argon ratio divided by the reference ratio (oxygen-argon ratio in air minus 1, multiplied by 100)</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-552.32</minimum>
+                  <maximum exclusive="false">84.952</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>O2_Ar_ratio</attributeName>
+          <attributeDefinition>Oxygen-argon ratio of bottle sample</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">10.0402</minimum>
+                  <maximum exclusive="false">24.3324</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>cap_Delta_17O</attributeName>
+          <attributeDefinition>Triple isotopic composition of dissolved oxygen versus atmospheric O2, D17O</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>perMeg</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-25.5</minimum>
+                  <maximum exclusive="false">169</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>d17O</attributeName>
+          <attributeDefinition>Enrichment of oxygen-17 in dissolved oxygen (delta(17)O) in the water body by mass spectrometry</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>perMil</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-1.157</minimum>
+                  <maximum exclusive="false">4.067</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>d18O</attributeName>
+          <attributeDefinition>Enrichment of oxygen-18 in dissolved oxygen {18O in O2 CAS 14797-71-8} {delta(18)O} in the water body by mass spectrometry URI http://vocab.nerc.ac.uk/collection/P01/current/D18OMXDG/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>perMil</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-2.503</minimum>
+                  <maximum exclusive="false">7.731</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>1262</numberOfRecords>
+    </dataTable>
+    <dataTable>
       <entityName>eims-transect-2018.csv</entityName>
       <entityDescription>Data product high-frequency oxygen-argon dissolved gas ratio and biosaturation from underway EIMS measurements in 2018</entityDescription>
       <physical>
         <objectName>eims-transect-2018.csv</objectName>
-        <size unit="bytes">4060123</size>
-        <authentication method="MD5">b8b6d3d7364816fa7e434a55a9c903c5</authentication>
+        <size unit="bytes">5901961</size>
+        <authentication method="MD5">563868fc4016bca4eac95bf6b212273a</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -329,7 +627,7 @@ EN655: Diaphragm.</para>
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">39.6721</minimum>
-                  <maximum exclusive="false">41.499</maximum>
+                  <maximum exclusive="false">41.524</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -424,7 +722,7 @@ EN655: Diaphragm.</para>
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">-8.492</minimum>
-                  <maximum exclusive="false">10.44</maximum>
+                  <maximum exclusive="false">21.4</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -447,7 +745,7 @@ EN655: Diaphragm.</para>
                 <numberType>real</numberType>
                 <bounds>
                   <minimum exclusive="false">18.6508</minimum>
-                  <maximum exclusive="false">22.4891</maximum>
+                  <maximum exclusive="false">24.787</maximum>
                 </bounds>
               </numericDomain>
             </ratio>
@@ -458,7 +756,7 @@ EN655: Diaphragm.</para>
           </missingValueCode>
         </attribute>
       </attributeList>
-      <numberOfRecords>51704</numberOfRecords>
+      <numberOfRecords>74150</numberOfRecords>
     </dataTable>
     <dataTable>
       <entityName>eims-transect-2019.csv</entityName>
@@ -1217,8 +1515,8 @@ EN655: Diaphragm.</para>
       <entityDescription>Package input data files in csv format</entityDescription>
       <physical>
         <objectName>input_data_csv.zip</objectName>
-        <size unit="bytes">3816705</size>
-        <authentication method="MD5">829e4587d31a1561f09d002eb525f0c9</authentication>
+        <size unit="bytes">4217652</size>
+        <authentication method="MD5">eac31e5c3dff3d96f094f115595e3ed6</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>
@@ -1232,8 +1530,8 @@ EN655: Diaphragm.</para>
       <entityDescription>Package input data files in Matlab format</entityDescription>
       <physical>
         <objectName>input_data_matlab.zip</objectName>
-        <size unit="bytes">9877775</size>
-        <authentication method="MD5">fe1be94157632331ed7c430e3fe2a9f7</authentication>
+        <size unit="bytes">10795680</size>
+        <authentication method="MD5">deff5ea2c0558064146a8595cb582307</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>

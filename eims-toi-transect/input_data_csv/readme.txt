@@ -1,3 +1,5 @@
+See input_corrections.R for data sheets modified with R. 
+
 20230104 Kate Morkeski:
 
 Saved bottleEn661.csv as bottleEn661_original.csv and used R to output new bottleEn661.csv with:

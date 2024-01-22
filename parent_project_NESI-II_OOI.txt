@@ -82,7 +82,7 @@
       </personnel>
       <personnel>
         <individualName>
-          <givenName>Weifeng</givenName>
+          <givenName>Weifeng Gordon</givenName>
           <surName>Zhang</surName>
         </individualName>
         <electronicMailAddress>wzhang@whoi.edu</electronicMailAddress>

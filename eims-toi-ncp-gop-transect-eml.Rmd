@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Kate Morkeski, Jaxine Wolfe, Stace Beaulieu"
-date: "January 5, 2024"
+date: "January 12, 2024"
 output: html_document
 ---
 
@@ -221,6 +221,27 @@ write.csv(bottle, "toi_bottle_before_qc.csv", row.names = FALSE)
  excl_niskin99 <- bottle %>% filter(niskin == "99")
  excl_niskin99$reason <- "niskin 99"
  bottle <- bottle %>% filter(niskin != "99" | is.na(niskin))
+ 
+# provide CTD metadata for AR28B cast 1 (there is no CTD btl file)
+ 
+bottle <- bottle %>% mutate(cast = case_when(datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 1 ~ "1",
+                                             datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 9 ~ "1",
+                                            TRUE ~ cast)) %>%
+                      mutate(latitude_API = case_when(datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 1 ~ 41.197,
+                                                      datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 9 ~ 41.197,
+                                                     TRUE ~ latitude_API)) %>%
+                      mutate(longitude_API = case_when(datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 1 ~ -70.883,
+                                                      datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 9 ~ -70.883,
+                                                    TRUE  ~ longitude_API)) %>%
+                      mutate(datetime_utc = case_when(datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 1 ~ datetime_utc_matlab,
+                                                      datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 9 ~ datetime_utc_matlab,
+                                                    TRUE  ~ datetime_utc)) %>%
+                      mutate(depth = case_when(datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 1 ~ 15,
+                                               datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 9 ~ 3,
+                                                    TRUE  ~ depth)) %>%
+                      mutate(depth_API = case_when(datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 1 ~ 15,
+                                               datetime_utc_matlab == "2018-04-03 20:26:00" & niskin == 9 ~ 3,
+                                                    TRUE  ~ depth_API)) 
 
 ```
 ## QA for TOI data
@@ -504,6 +525,9 @@ map_locs(df = eims_all, xvar = "longitude_API", yvar = "latitude_API", region = 
 # plot values
 ggplot(eims_all, aes(x= datetime_utc_matlab, y = biosat, color = cruise))+ geom_point()
 ggplot(eims_all, aes(x= datetime_utc_matlab, y = O2_Ar_ratio, color = cruise))+ geom_point()
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = salinity, color = cruise))+ geom_point()
+ggplot(eims_all, aes(x= datetime_utc_matlab, y = temperature, color = cruise))+ geom_point()
+ggplot(eims_all, aes(x= temperature, y = salinity, color = cruise))+ geom_point()
 
 ggplot(eims_all, aes(x= salinity, y = biosat, color = cruise))+ geom_point()
 ggsave("all-salinity-biosat.png")
@@ -514,6 +538,13 @@ ggsave("all-temperature-biosat.png")
 ggplot(eims_all, aes(x= temperature, y = O2_Ar_ratio, color = cruise))+ geom_point()
 ggsave("all-temperature-O2AR.png")
 
+map_locs(df = eims_en608, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "salinity")
+map_locs(df = eims_ar28b, xvar = "longitude_API", yvar = "latitude_API", region = "transect", color = "salinity")
+ggplot(eims_en608, aes(x= datetime_utc_matlab, y = salinity, color = temperature))+ geom_point()+ labs(title= "EN608")
+ggplot(eims_ar28b, aes(x= datetime_utc_matlab, y = salinity, color = temperature))+ geom_point()+ labs(title= "AR28B")
+ggplot(eims_en627, aes(x= datetime_utc_matlab, y = salinity, color = temperature))+ geom_point()+ labs(title= "EN627")
+ggplot(eims_en649, aes(x= datetime_utc_matlab, y = salinity, color = temperature))+ geom_point()+ labs(title= "EN649")
+
 ```
 ```{r}
 
@@ -523,6 +554,8 @@ print(unique(sal_check$cruise))
 
 ggplot(eims_en608, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN608")
 ggsave("en608-salinity-biosat.png")
+ggplot(eims_ar28b, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "AR28B")
+ggsave("ar28b-salinity-biosat.png")
 ggplot(eims_en627, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN627")
 ggsave("en627-salinity-biosat.png")
 ggplot(eims_en649, aes(x= salinity, y = biosat, color = datetime_utc_matlab))+ geom_point()+labs(title = "EN649")
@@ -914,6 +947,18 @@ toi_transect <- toi_transect %>% filter(toi_transect$year == this_cruise$year)
 toi_transect_surface <- filter(toi_transect, depth_input <= 6)
 
 # remove rows not in in NCP-GOP data
+#2/1/2018  18:12 	row 29, 2/3/2018  03:50	row 70
+# AR28B underway
+if (this_year == 2018){
+toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$datetime_utc_input == "2018-02-01 18:12:00"| 
+                            toi_transect_surface$datetime_utc_input == "2018-02-03 03:50:00"),]
+toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$cruise == "AR28B" & toi_transect_surface$toi_source == "toi_underway"),]
+}
+
+if (this_year == 2019){
+toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$cruise == "AR34B" & toi_transect_surface$niskin == 15 ),]
+ }
+
  if (this_year == 2021){
 toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$datetime_utc_input == "2021-02-04 13:12:00"| 
                             toi_transect_surface$datetime_utc_input == "2021-02-04 18:53:00"| 
@@ -938,6 +983,7 @@ cruise_check_ncp <- ncp_gop_input %>% group_by(cruiseid) %>% summarize(toi_trans
 ncp_gop_input$datetime_utc_input <- ncp_gop_input$datetime_utc_matlab
 #cruise_check_ncp <- ncp_gop_input %>% rename(datetime_utc_input = datetime_utc_matlab)
 diffrows <- anti_join(ncp_gop_input, toi_transect_surface, by = "datetime_utc_input")
+diffrows <- anti_join(toi_transect_surface, ncp_gop_input,  by = "datetime_utc_input")
 
 ```
 
@@ -952,8 +998,8 @@ if (nrow(toi_transect_surface) == nrow(ncp_gop_input)){
   toi_transect_surface$datetime_utc <- as.POSIXct(toi_transect_surface$datetime_utc, format="%d-%b-%Y %H:%M:%OS")
   toi_transect_surface <- toi_transect_surface %>%
     rename(datetime_utc_input_toi = datetime_utc_input) %>%
-    rename(depth_input_toi = depth_input) %>%
-    rename(iode_quality_flag_toi = iode_quality_flag)
+    rename(depth_input_toi = depth_input) 
+ # %>%    rename(iode_quality_flag_toi = iode_quality_flag)
   
    ncp_gop_input <- ncp_gop_input %>%
      rename(depth_input_ncp = depth) %>%
@@ -1168,7 +1214,7 @@ make_eml(path = project_folder,
          temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = geographic_coordinates(lat, long),
-         maintenance.description = "completed", #TODO: add column in cruise list to designate completed pkgs
+         maintenance.description = "ongoing", #TODO: add column in cruise list to designate completed pkgs
          user.id = "NES",
          user.domain = "LTER",
          package.id = pkg_id)

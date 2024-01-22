@@ -3,7 +3,7 @@
 These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.3 in the EDI Data Portal. 
 
 Additional data sources for these derived data:
--- Gas transfer velocity (wind data product, weighted over 30 days)
+-- Gas transfer velocity (monthly mean 10-m wind data product, NCEP-NCAR Reanalysis 1 data provided by the NOAA PSL, Boulder, Colorado, USA, at https://psl.noaa.gov)
 -- Temperature from NES-LTER ship-provided data
 -- Salinity from NES-LTER ship-provided data
 
@@ -22,6 +22,10 @@ In the high-frequency data table, one record measured precisely at midnight was 
 We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. 
 
 # References
+
+Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., Iredell, M., Saha, S., White, G., Woollen, J., Zhu, Y., Chelliah, M., Ebisuzaki, W., Higgins, W., Janowiak, J., Mo, K. C., Ropelewski, C., Wang, J., Leetmaa, A., Reynolds, R., Jenne, R., and Joseph, D.: The NCEP/NCAR 40-year reanalysis project, Bulletin of the American Meteorological Society, 77, 437-471, 10.1175/1520-0477(1996)077<0437:TNYRP>2.0.CO;2, 1996.
+
+Kistler, R., Kalnay, E., Collins, W., Saha, S., White, G., Woollen, J., Chelliah, M., Ebisuzaki, W., Kanamitsu, M., Kousky, V., van den Dool, H., Jenne, R., and Fiorino, M.: The NCEP-NCAR 50-year reanalysis: Monthly means CD-ROM and documentation, Bulletin of the American Meteorological Society, 82, 247-267, 2001.
 
 Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856
 

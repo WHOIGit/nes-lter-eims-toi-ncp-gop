@@ -24,6 +24,14 @@
     </creator>
     <creator>
       <individualName>
+        <givenName>Kevin</givenName>
+        <surName>Cahill</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
+    </creator>
+    <creator>
+      <individualName>
         <givenName>Arshia</givenName>
         <surName>Mehta</surName>
       </individualName>
@@ -36,18 +44,9 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
-    <associatedParty>
-      <individualName>
-        <givenName>Kevin</givenName>
-        <surName>Cahill</surName>
-      </individualName>
-      <organizationName>Northeast U.S. Shelf LTER</organizationName>
-      <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
-      <role>technician</role>
-    </associatedParty>
-    <pubDate>2024-01-05</pubDate>
+    <pubDate>2024-01-22</pubDate>
     <abstract>
-      <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, and summer Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2021. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. &#13;
+      <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter and summer Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2021. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. &#13;
 </para>
     </abstract>
     <keywordSet>
@@ -119,7 +118,7 @@
           <para># Source data</para>
           <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.3 in the EDI Data Portal. </para>
           <para>Additional data sources for these derived data:&#13;
--- Gas transfer velocity (wind data product, weighted over 30 days)&#13;
+-- Gas transfer velocity (monthly mean 10-m wind data product, NCEP-NCAR Reanalysis 1 data provided by the NOAA PSL, Boulder, Colorado, USA, at https://psl.noaa.gov)&#13;
 -- Temperature from NES-LTER ship-provided data&#13;
 -- Salinity from NES-LTER ship-provided data</para>
           <para># Additional cruise notes</para>
@@ -130,6 +129,8 @@
           <para># Quality assurance</para>
           <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. </para>
           <para># References</para>
+          <para>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., Iredell, M., Saha, S., White, G., Woollen, J., Zhu, Y., Chelliah, M., Ebisuzaki, W., Higgins, W., Janowiak, J., Mo, K. C., Ropelewski, C., Wang, J., Leetmaa, A., Reynolds, R., Jenne, R., and Joseph, D.: The NCEP/NCAR 40-year reanalysis project, Bulletin of the American Meteorological Society, 77, 437-471, 10.1175/1520-0477(1996)077&lt;0437:TNYRP&gt;2.0.CO;2, 1996.</para>
+          <para>Kistler, R., Kalnay, E., Collins, W., Saha, S., White, G., Woollen, J., Chelliah, M., Ebisuzaki, W., Kanamitsu, M., Kousky, V., van den Dool, H., Jenne, R., and Fiorino, M.: The NCEP-NCAR 50-year reanalysis: Monthly means CD-ROM and documentation, Bulletin of the American Meteorological Society, 82, 247-267, 2001.</para>
           <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
           <para>&#13;
 </para>
@@ -220,7 +221,7 @@
       </personnel>
       <personnel>
         <individualName>
-          <givenName>Weifeng</givenName>
+          <givenName>Weifeng Gordon</givenName>
           <surName>Zhang</surName>
         </individualName>
         <electronicMailAddress>wzhang@whoi.edu</electronicMailAddress>
@@ -265,8 +266,8 @@
       <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
       <physical>
         <objectName>gop-transect-2021.csv</objectName>
-        <size unit="bytes">14793</size>
-        <authentication method="MD5">9e53dbf37d6aa26e5adb455b20ad5557</authentication>
+        <size unit="bytes">14824</size>
+        <authentication method="MD5">840a404f82e9139fa6cc293fb961a373</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -424,7 +425,7 @@
               <numericDomain>
                 <numberType>real</numberType>
                 <bounds>
-                  <minimum exclusive="false">28.48</minimum>
+                  <minimum exclusive="false">28.47</minimum>
                   <maximum exclusive="false">483.8</maximum>
                 </bounds>
               </numericDomain>
@@ -710,8 +711,8 @@
       <entityDescription>Package input data files in csv format</entityDescription>
       <physical>
         <objectName>input_data_csv.zip</objectName>
-        <size unit="bytes">614118</size>
-        <authentication method="MD5">45683b427de05651169ebee84946668e</authentication>
+        <size unit="bytes">617551</size>
+        <authentication method="MD5">97cc23045662caf853df7ecfcda540f6</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>
@@ -725,8 +726,8 @@
       <entityDescription>Package input data files in Matlab format</entityDescription>
       <physical>
         <objectName>input_data_matlab.zip</objectName>
-        <size unit="bytes">1781630</size>
-        <authentication method="MD5">270466a7bcd4e8db3e5813039edf076e</authentication>
+        <size unit="bytes">1781724</size>
+        <authentication method="MD5">e6c5936ea0a1acef0b4bdf2b0850865f</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>
