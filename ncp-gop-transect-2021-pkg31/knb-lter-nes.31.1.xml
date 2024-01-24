@@ -33,14 +33,23 @@
     <creator>
       <individualName>
         <givenName>S. Alejandra</givenName>
-        <surName>Casillo Cieza</surName>
+        <surName>Castillo Cieza</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>sc1@wellesley.edu</electronicMailAddress>
     </creator>
     <creator>
       <individualName>
         <givenName>Arshia</givenName>
         <surName>Mehta</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>amehta3@wellesley.edu</electronicMailAddress>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Rachel</givenName>
+        <surName>Shrives</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>

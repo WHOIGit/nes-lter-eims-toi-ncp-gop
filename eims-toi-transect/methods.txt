@@ -52,7 +52,7 @@ Net community production (NCP) and gross oxygen production (GOP) are derived fro
 
 # References
 
-Casillo Cieza, S. A., Stanley, R. H. R., Marrec, P., Fontaine, D. N., Crockford, E. T., McGillicuddy, D. J., Mehta, A., Menden-Deuer, S., Peacock, E. E., Rynearson, T. A., Sandwith, Z. O., Zhang, W., and Sosik, H. M. 2024. Unusual Hemiaulus Bloom Influences Ocean Productivity in Northeast U.S. Shelf Waters, Biogeosciences Discuss. https://doi.org/10.5194/bg-2023-153
+Castillo Cieza, S. A., Stanley, R. H. R., Marrec, P., Fontaine, D. N., Crockford, E. T., McGillicuddy, D. J., Mehta, A., Menden-Deuer, S., Peacock, E. E., Rynearson, T. A., Sandwith, Z. O., Zhang, W., and Sosik, H. M. 2024. Unusual Hemiaulus Bloom Influences Ocean Productivity in Northeast U.S. Shelf Waters, Biogeosciences Discuss. https://doi.org/10.5194/bg-2023-153
 
 Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347. https://doi.org/10.1016/S0304-4203(98)00090-5
 

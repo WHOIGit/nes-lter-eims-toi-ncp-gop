@@ -142,7 +142,7 @@ EN655: Diaphragm.</para>
 2021, knb-lter-nes.31.1&#13;
 2022, knb-lter-nes.32.1</para>
           <para># References</para>
-          <para>Casillo Cieza, S. A., Stanley, R. H. R., Marrec, P., Fontaine, D. N., Crockford, E. T., McGillicuddy, D. J., Mehta, A., Menden-Deuer, S., Peacock, E. E., Rynearson, T. A., Sandwith, Z. O., Zhang, W., and Sosik, H. M. 2024. Unusual Hemiaulus Bloom Influences Ocean Productivity in Northeast U.S. Shelf Waters, Biogeosciences Discuss. https://doi.org/10.5194/bg-2023-153</para>
+          <para>Castillo Cieza, S. A., Stanley, R. H. R., Marrec, P., Fontaine, D. N., Crockford, E. T., McGillicuddy, D. J., Mehta, A., Menden-Deuer, S., Peacock, E. E., Rynearson, T. A., Sandwith, Z. O., Zhang, W., and Sosik, H. M. 2024. Unusual Hemiaulus Bloom Influences Ocean Productivity in Northeast U.S. Shelf Waters, Biogeosciences Discuss. https://doi.org/10.5194/bg-2023-153</para>
           <para>Emerson, S., C. Stump, D. Wilbur, and P. Quay. 1999. Accurate measurement of O-2, N-2, and Ar gases in water and the solubility of N-2. Mar. Chem. 64:337-347. https://doi.org/10.1016/S0304-4203(98)00090-5</para>
           <para>Stanley, Rachel H.R., Zoe O. Sandwith, William J. Williams. 2015. Rates of summertime biological productivity in the Beaufort Gyre: A comparison between the low and record-low ice conditions of August 2011 and 2012. Journal of Marine Systems 147:29-44. https://doi.org/10.1016/j.jmarsys.2014.04.006</para>
           <para/>
@@ -1509,8 +1509,8 @@ EN655: Diaphragm.</para>
       <entityDescription>Package input data files in csv format</entityDescription>
       <physical>
         <objectName>input_data_csv.zip</objectName>
-        <size unit="bytes">4217652</size>
-        <authentication method="MD5">eac31e5c3dff3d96f094f115595e3ed6</authentication>
+        <size unit="bytes">4225090</size>
+        <authentication method="MD5">16a02a47565b455204af5e3b640b5750</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>
