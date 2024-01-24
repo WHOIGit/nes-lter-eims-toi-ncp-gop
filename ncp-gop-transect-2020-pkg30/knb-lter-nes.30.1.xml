@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eml:eml xmlns:eml="https://eml.ecoinformatics.org/eml-2.2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stmml="http://www.xml-cml.org/schema/stmml-1.2" packageId="knb-lter-nes.30.1" xsi:schemaLocation="https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd https://eml.ecoinformatics.org/eml-2.2.0/eml.xsd" system="edi">
+  <access authSystem="https://pasta.edirepository.org/authentication" order="allowFirst" scope="document">
+    <allow>
+      <principal>uid=NES,o=LTER,dc=ecoinformatics,dc=org</principal>
+      <permission>all</permission>
+    </allow>
+    <allow>
+      <principal>public</principal>
+      <permission>read</permission>
+    </allow>
+  </access>
+  <dataset>
+    <title>Net community production (NCP) and gross oxygen production (GOP), based on oxygen-argon ratios and triple oxygen isotopes, from seasonal NES-LTER Transect cruises in 2020</title>
+    <creator>
+      <individualName>
+        <givenName>Rachel</givenName>
+        <givenName>H R</givenName>
+        <surName>Stanley</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Danielle</givenName>
+        <surName>Aldrett</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Kevin</givenName>
+        <surName>Cahill</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kcahill@whoi.edu</electronicMailAddress>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>S. Alejandra</givenName>
+        <surName>Casillo Cieza</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+    </creator>
+    <creator>
+      <individualName>
+        <givenName>Rachel</givenName>
+        <surName>Shrives</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+    </creator>
+    <pubDate>2024-01-24</pubDate>
+    <abstract>
+      <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, and summer Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2020. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. &#13;
+</para>
+    </abstract>
+    <keywordSet>
+      <keyword>primary production</keyword>
+      <keyword>inorganic matter</keyword>
+      <keywordThesaurus>LTER Core Research Areas</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>chemistry</keyword>
+      <keyword>oceanography</keyword>
+      <keyword>seawater</keyword>
+      <keyword>gross primary production</keyword>
+      <keywordThesaurus>LTER Controlled Vocabulary</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>Northeast U.S. Continental Shelf</keyword>
+      <keywordThesaurus>NOAA Large Marine Ecosystems</keywordThesaurus>
+    </keywordSet>
+    <keywordSet>
+      <keyword>net ecosystem production</keyword>
+      <keyword>net community production</keyword>
+    </keywordSet>
+    <intellectualRights>
+      <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
+</para>
+    </intellectualRights>
+    <coverage>
+      <geographicCoverage>
+        <geographicDescription>NES-LTER Transect</geographicDescription>
+        <boundingCoordinates>
+          <westBoundingCoordinate>-71.1113</westBoundingCoordinate>
+          <eastBoundingCoordinate>-70.57588</eastBoundingCoordinate>
+          <northBoundingCoordinate>41.32058</northBoundingCoordinate>
+          <southBoundingCoordinate>39.76474</southBoundingCoordinate>
+        </boundingCoordinates>
+      </geographicCoverage>
+      <temporalCoverage>
+        <rangeOfDates>
+          <beginDate>
+            <calendarDate>2020-02-01</calendarDate>
+          </beginDate>
+          <endDate>
+            <calendarDate>2020-10-18</calendarDate>
+          </endDate>
+        </rangeOfDates>
+      </temporalCoverage>
+    </coverage>
+    <maintenance>
+      <description>ongoing</description>
+    </maintenance>
+    <contact>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <positionName>Nes-Lter Information Manager</positionName>
+      <electronicMailAddress>lter-nes-info@whoi.edu</electronicMailAddress>
+    </contact>
+    <contact>
+      <individualName>
+        <givenName>Rachel</givenName>
+        <givenName>H R</givenName>
+        <surName>Stanley</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+    </contact>
+    <methods>
+      <methodStep>
+        <description>
+          <para># Source data</para>
+          <para>These data are derived from the underway Equilibration Inlet Mass Spectrometer (EIMS) O2/Ar ratios and bottle triple oxygen isotopes (TOI) and O2/Ar ratios published in the data package titled "Oxygen-argon dissolved gas ratios using Equilibrator Inlet Mass Spectrometry (EIMS) and triple oxygen isotopes (TOI) from NES-LTER Transect cruises, ongoing since 2018" with identifier knb-lter-nes.6.3 in the EDI Data Portal. </para>
+          <para>Additional data sources for these derived data:&#13;
+-- Gas transfer velocity (monthly mean 10-m wind data product, NCEP-NCAR Reanalysis 1 data provided by the NOAA PSL, Boulder, Colorado, USA, at https://psl.noaa.gov)&#13;
+-- Temperature from NES-LTER ship-provided data&#13;
+-- Salinity from NES-LTER ship-provided data</para>
+          <para># Additional cruise notes</para>
+          <para># Calibrations and derivations</para>
+          <para>The high-frequency NCP data table is derived from the underway EIMS measurements published in package knb-lter-nes.6.3 and includes the gas transfer velocity (k) and net community production (NCP, millimol/m2/day) integrated over the mixed layer. The discrete rates data table is derived from the surface bottle data included in package knb-lter-nes.6.3 and includes discrete NCP (millimol/m2/day), gross oxygen production (GOP, millimol/m2/day), and NCP/GOP ratio. Note that in some cases a rosette bottle at the surface and an underway discrete may be taken at approximately the same time, thus two rows in the discrete (low-frequency) table would match to one row in the underway (high-frequency) table. Data were collected and analyzed and NCP and GOP were calculated following Smith et al. (2021). </para>
+          <para># Data cleaning and assembly</para>
+          <para>In the high-frequency data table, one record measured precisely at midnight was omitted due to the lack of time code conversion. For the discrete rates data table, a column was added to indicate whether the bottle was sampled from underway or Niskin, and quality is indicated using IODE Primary Level flags: 1 good; 2 not evaluated, not available or unknown; 3 questionable/suspect; 4 bad; 9 missing data. For bottle samples from Niskins, datetime (in UTC) was corrected to reflect the time at which the rosette bottle closed instead of cast start time; latitude_API and longitude_API are based on datetime_utc. Any records with the following conditions were flagged: a cast start time or a Niskin not found in API bottle summary, a time difference from API bottle summary record greater than 60 minutes or a depth difference greater than 5 m, a missing time value, a Niskin sample with a provided depth of zero, or an underway sample with a nonzero provided depth. Data cleaning and metadata template assembly were performed in R Markdown. Further documentation can be found on GitHub, at https://github.com/WHOIGit/nes-lter-eims-toi-ncp-gop. </para>
+          <para># Quality assurance</para>
+          <para>We assured that the geographic and temporal coverage of the clean data table were within expected ranges. We completed visual inspections of plots of the reported parameters. We provided quality flags as explained above. </para>
+          <para># References</para>
+          <para>Kalnay, E., Kanamitsu, M., Kistler, R., Collins, W., Deaven, D., Gandin, L., Iredell, M., Saha, S., White, G., Woollen, J., Zhu, Y., Chelliah, M., Ebisuzaki, W., Higgins, W., Janowiak, J., Mo, K. C., Ropelewski, C., Wang, J., Leetmaa, A., Reynolds, R., Jenne, R., and Joseph, D.: The NCEP/NCAR 40-year reanalysis project, Bulletin of the American Meteorological Society, 77, 437-471, 10.1175/1520-0477(1996)077&lt;0437:TNYRP&gt;2.0.CO;2, 1996.</para>
+          <para>Kistler, R., Kalnay, E., Collins, W., Saha, S., White, G., Woollen, J., Chelliah, M., Ebisuzaki, W., Kanamitsu, M., Kousky, V., van den Dool, H., Jenne, R., and Fiorino, M.: The NCEP-NCAR 50-year reanalysis: Monthly means CD-ROM and documentation, Bulletin of the American Meteorological Society, 82, 247-267, 2001.</para>
+          <para>Smith Jr., W. O., Zhang, W. G., Hirzel, A., Stanley, R. M., Meyer, M. G., Sosik, H., et al. 2021. A regional, early spring bloom of Phaeocystis pouchetii on the New England continental shelf. Journal of Geophysical Research: Oceans, 126, e2020JC016856. https://doi.org/10.1029/2020JC016856</para>
+          <para>&#13;
+</para>
+        </description>
+      </methodStep>
+    </methods>
+    <project>
+      <title>LTER: Scales of Variability in Ecosystem Dynamics and Production on the Changing Northeast U.S. Shelf (NES II)</title>
+      <personnel>
+        <individualName>
+          <givenName>Heidi</givenName>
+          <surName>Sosik</surName>
+        </individualName>
+        <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+        <role>Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Changsheng</givenName>
+          <surName>Chen</surName>
+        </individualName>
+        <electronicMailAddress>c1chen@umassd.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8715-6101</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rubao</givenName>
+          <surName>Ji</surName>
+        </individualName>
+        <electronicMailAddress>rji@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8839-5427</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Joel</givenName>
+          <surName>Llopiz</surName>
+        </individualName>
+        <electronicMailAddress>jllopiz@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-7584-7471</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Susanne</givenName>
+          <surName>Menden-Deuer</surName>
+        </individualName>
+        <electronicMailAddress>smenden@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-8434-4251</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Michael</givenName>
+          <surName>Neubert</surName>
+        </individualName>
+        <electronicMailAddress>mneubert@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0001-8820-5008</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Tatiana</givenName>
+          <surName>Rynearson</surName>
+        </individualName>
+        <electronicMailAddress>rynearson@uri.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-2951-0066</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Mei</givenName>
+          <surName>Sato</surName>
+        </individualName>
+        <electronicMailAddress>msato@whoi.edu</electronicMailAddress>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Rachel</givenName>
+          <surName>Stanley</surName>
+        </individualName>
+        <electronicMailAddress>rstanle2@wellesley.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0003-4860-2476</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <personnel>
+        <individualName>
+          <givenName>Weifeng Gordon</givenName>
+          <surName>Zhang</surName>
+        </individualName>
+        <electronicMailAddress>wzhang@whoi.edu</electronicMailAddress>
+        <userId directory="https://orcid.org">https://orcid.org/0000-0002-2819-1780</userId>
+        <role>Co-Principal Investigator</role>
+      </personnel>
+      <abstract>
+        <para>The Northeast U.S. Shelf (NES) Long-Term Ecological Research (LTER) project integrates observations, experiments, and models to understand and predict how planktonic food webs are changing, and how those changes impact the productivity of higher trophic levels. The NES-LTER is co-located with the Northeast U.S. Continental Shelf Large Marine Ecosystem, spanning the Middle Atlantic Bight and Gulf of Maine. Our focal cross-shelf transect extends about 150 km southward from Martha’s Vineyard, MA, to just beyond the shelf break. Our overarching question is: How is climate change impacting the pelagic NES ecosystem and, in particular, affecting the relationship between compositional (e.g., species diversity and size structure) and aggregate (e.g., rates of primary production, and transfer of energy to important forage fish species) variability?</para>
+      </abstract>
+      <funding>
+        <para>NSF Award OCE-2322676</para>
+      </funding>
+      <relatedProject>
+        <title>LTER: Linking Pelagic Community Structure with Ecosystem Dynamics and Production Regimes on the Changing Northeast US Shelf (NES I)</title>
+        <personnel>
+          <individualName>
+            <givenName>Heidi</givenName>
+            <surName>Sosik</surName>
+          </individualName>
+          <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0002-4591-2842</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>NSF Award OCE-1655686</funding>
+      </relatedProject>
+      <relatedProject>
+        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
+        <personnel>
+          <individualName>
+            <givenName>James</givenName>
+            <surName>Edson</surName>
+          </individualName>
+          <electronicMailAddress>jedson@whoi.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">https://orcid.org/0000-0002-8777-031X</userId>
+          <role>Principal Investigator</role>
+        </personnel>
+        <funding>NSF Award OCE-1743430</funding>
+      </relatedProject>
+    </project>
+    <dataTable>
+      <entityName>gop-transect-2020</entityName>
+      <entityDescription>Data product discrete rates of NCP and GOP from bottle TOI measurements integrated over the mixed layer</entityDescription>
+      <physical>
+        <objectName>gop-transect-2020.csv</objectName>
+        <size unit="bytes">19014</size>
+        <authentication method="MD5">b6237bd325bf01ab762932f3232bfc6f</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>Data product UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc_input</attributeName>
+          <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude_input</attributeName>
+          <attributeDefinition>Latitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.7648</minimum>
+                  <maximum exclusive="false">41.3206</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude_input</attributeName>
+          <attributeDefinition>Longitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.1113</minimum>
+                  <maximum exclusive="false">-70.5781</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude_API</attributeName>
+          <attributeDefinition>Latitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.76474</minimum>
+                  <maximum exclusive="false">41.32058</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude_API</attributeName>
+          <attributeDefinition>Longitude of sample event provided by NES-LTER API</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.1113</minimum>
+                  <maximum exclusive="false">-70.57588</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>toi_source</attributeName>
+          <attributeDefinition>Bottle sample from niskin or underway</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>toi_niskin</code>
+                    <definition>sample bottle was filled from a Niskin bottle on CTD rosette</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>toi_underway</code>
+                    <definition>sample bottle was filled from the ship's underway system</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>gop</attributeName>
+          <attributeDefinition>Gross oxygen production</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-28.4</minimum>
+                  <maximum exclusive="false">148.5</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>ncp</attributeName>
+          <attributeDefinition>Rate of net community production integrated over the mixed layer as oxygen flux</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-62.75</minimum>
+                  <maximum exclusive="false">30.96</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>ncp_per_gop</attributeName>
+          <attributeDefinition>Net community production divided by gross oxygen production</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-3.17</minimum>
+                  <maximum exclusive="false">3.88</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>iode_quality_flag</attributeName>
+          <attributeDefinition>IODE Quality Flag primary level</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <enumeratedDomain>
+                  <codeDefinition>
+                    <code>1</code>
+                    <definition>good</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>2</code>
+                    <definition>quality not evaluated, not available or unknown</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>3</code>
+                    <definition>questionable/suspect</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>4</code>
+                    <definition>bad</definition>
+                  </codeDefinition>
+                  <codeDefinition>
+                    <code>9</code>
+                    <definition>missing data</definition>
+                  </codeDefinition>
+                </enumeratedDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>160</numberOfRecords>
+    </dataTable>
+    <dataTable>
+      <entityName>ncp-transect-2020</entityName>
+      <entityDescription>Data product high frequency NCP derived from EIMS sampling of underway seawater</entityDescription>
+      <physical>
+        <objectName>ncp-transect-2020.csv</objectName>
+        <size unit="bytes">2798961</size>
+        <authentication method="MD5">232aa5cc4e373574dd90a0bda4833b4a</authentication>
+        <dataFormat>
+          <textFormat>
+            <numHeaderLines>1</numHeaderLines>
+            <recordDelimiter>\r\n</recordDelimiter>
+            <attributeOrientation>column</attributeOrientation>
+            <simpleDelimited>
+              <fieldDelimiter>,</fieldDelimiter>
+            </simpleDelimited>
+          </textFormat>
+        </dataFormat>
+      </physical>
+      <attributeList>
+        <attribute>
+          <attributeName>cruise</attributeName>
+          <attributeDefinition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</attributeDefinition>
+          <storageType>string</storageType>
+          <measurementScale>
+            <nominal>
+              <nonNumericDomain>
+                <textDomain>
+                  <definition>Identifier for research cruise generally including abbreviation for research vessel and voyage number</definition>
+                </textDomain>
+              </nonNumericDomain>
+            </nominal>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>datetime_utc</attributeName>
+          <attributeDefinition>PI-provided UTC date and time</attributeDefinition>
+          <storageType>date</storageType>
+          <measurementScale>
+            <dateTime>
+              <formatString>YYYY-MM-DD hh:mm:ss</formatString>
+              <dateTimeDomain/>
+            </dateTime>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>latitude</attributeName>
+          <attributeDefinition>Latitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">39.699</minimum>
+                  <maximum exclusive="false">41.4922</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>longitude</attributeName>
+          <attributeDefinition>Longitude of sample event provided by PI</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>degree</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-71.4187</minimum>
+                  <maximum exclusive="false">-70.5714</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>depth</attributeName>
+          <attributeDefinition>Depth of sample below sea surface. URI http://vocab.nerc.ac.uk/collection/P09/current/DEPH/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>meter</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>natural</numberType>
+                <bounds>
+                  <minimum exclusive="false">5</minimum>
+                  <maximum exclusive="false">5</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>temperature</attributeName>
+          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>celsius</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">3.94237</minimum>
+                  <maximum exclusive="false">25.9677</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>salinity</attributeName>
+          <attributeDefinition>Underway thermosalinograph salinity in practical salinity units. URI http://http://vocab.nerc.ac.uk/collection/P09/current/PSAL/</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>dimensionless</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">0.2934</minimum>
+                  <maximum exclusive="false">35.5763</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+        </attribute>
+        <attribute>
+          <attributeName>ncp</attributeName>
+          <attributeDefinition>Rate of net community production integrated over the mixed layer as oxygen flux</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <customUnit>millimolePerMeterSquaredPerDay</customUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">-74.46</minimum>
+                  <maximum exclusive="false">29.59</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+        <attribute>
+          <attributeName>k</attributeName>
+          <attributeDefinition>Gas transfer velocity used in calculating ncp from O2/Ar ratio</attributeDefinition>
+          <storageType>float</storageType>
+          <measurementScale>
+            <ratio>
+              <unit>
+                <standardUnit>metersPerDay</standardUnit>
+              </unit>
+              <numericDomain>
+                <numberType>real</numberType>
+                <bounds>
+                  <minimum exclusive="false">1.3</minimum>
+                  <maximum exclusive="false">5.13</maximum>
+                </bounds>
+              </numericDomain>
+            </ratio>
+          </measurementScale>
+          <missingValueCode>
+            <code>NaN</code>
+            <codeExplanation>Missing value</codeExplanation>
+          </missingValueCode>
+        </attribute>
+      </attributeList>
+      <numberOfRecords>37545</numberOfRecords>
+    </dataTable>
+    <otherEntity>
+      <entityName>input_data_csv.zip</entityName>
+      <entityDescription>Package input data files in csv format</entityDescription>
+      <physical>
+        <objectName>input_data_csv.zip</objectName>
+        <size unit="bytes">806609</size>
+        <authentication method="MD5">ee80273e1cf336e678cc48f08c296177</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>application/zip</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+    <otherEntity>
+      <entityName>input_data_matlab.zip</entityName>
+      <entityDescription>Package input data files in Matlab format</entityDescription>
+      <physical>
+        <objectName>input_data_matlab.zip</objectName>
+        <size unit="bytes">2338141</size>
+        <authentication method="MD5">116b8b14eb486704fab5ba4d6f8eff98</authentication>
+        <dataFormat>
+          <externallyDefinedFormat>
+            <formatName>application/zip</formatName>
+          </externallyDefinedFormat>
+        </dataFormat>
+      </physical>
+      <entityType>unknown</entityType>
+    </otherEntity>
+  </dataset>
+  <additionalMetadata>
+    <metadata>
+      <unitList>
+        <unit id="millimolePerMeterSquaredPerDay" multiplierToSI="1.157407e-08" name="millimolePerMeterSquaredPerDay" parentSI="molePerMeterSquaredPerSecond" unitType="">
+          <description>millimoles per square meter per day</description>
+        </unit>
+      </unitList>
+    </metadata>
+  </additionalMetadata>
+  <additionalMetadata>
+    <metadata>
+      <emlEditor>
+        <app>EMLassemblyline</app>
+        <release>3.5.5</release>
+      </emlEditor>
+    </metadata>
+  </additionalMetadata>
+</eml:eml>

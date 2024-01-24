@@ -34,6 +34,8 @@ AR31A: Approximately 10 hrs of high-frequency data are missing (2018-10-22 from 
 
 AR34B: Some high-frequency data are missing from the first and last days of the cruise. No underway TOI data are available for this cruise due to contamination. Niskin TOI data are included in the package.
 
+On EN608, AR28B, EN627, and EN649, underway salinity data include a small number of unexpected values (e.g., S < 25, S > 36) but corresponding oxygen data and production rates are not outlying, so they are included. 
+
 # Differences from previous version
 
 Version 3 adds several cruises.  A correction was made to EN617 high-frequency data to align them with discrete bottle values. Discrete sample metadata identified in the quality assurance steps have been corrected and retained in version 3 (previously they were excluded). Column headers for date/time, latitude, longitude, and depth are edited to remove references to Matlab, instead using the word "input" where needed to distinguish from NES-LTER API-derived metadata. 

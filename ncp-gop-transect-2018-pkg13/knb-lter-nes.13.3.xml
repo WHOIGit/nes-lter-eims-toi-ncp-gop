@@ -25,9 +25,12 @@
     <creator>
       <individualName>
         <givenName>Zoe</givenName>
+        <givenName>O</givenName>
         <surName>Sandwith</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>zoe.sandwith@hakai.org</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9952-9526</userId>
     </creator>
     <creator>
       <individualName>
@@ -44,7 +47,7 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
-    <pubDate>2024-01-22</pubDate>
+    <pubDate>2024-01-24</pubDate>
     <abstract>
       <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. </para>
     </abstract>
@@ -94,7 +97,7 @@
       </temporalCoverage>
     </coverage>
     <maintenance>
-      <description>ongoing</description>
+      <description>completed</description>
     </maintenance>
     <contact>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
@@ -270,7 +273,7 @@
       <physical>
         <objectName>gop-transect-2018.csv</objectName>
         <size unit="bytes">25385</size>
-        <authentication method="MD5">581a7184388d23efa90b61da3d57a909</authentication>
+        <authentication method="MD5">ad4c95bd3b02fe0a5345556ea06c829e</authentication>
         <dataFormat>
           <textFormat>
             <numHeaderLines>1</numHeaderLines>
@@ -714,8 +717,8 @@
       <entityDescription>Package input data files in csv format</entityDescription>
       <physical>
         <objectName>input_data_csv.zip</objectName>
-        <size unit="bytes">1480311</size>
-        <authentication method="MD5">12685022c9f3fdfd97261491f3c24011</authentication>
+        <size unit="bytes">1480327</size>
+        <authentication method="MD5">14786034b32b47e4607a72692f81e17f</authentication>
         <dataFormat>
           <externallyDefinedFormat>
             <formatName>application/zip</formatName>

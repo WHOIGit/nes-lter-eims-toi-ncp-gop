@@ -748,7 +748,7 @@ cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE, show_col_types =
 
 # refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.14.3")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.32.1")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -933,7 +933,7 @@ ncp_gop_input <- ncp_gop_input[order(ncp_gop_input$datetime_utc_matlab),]
 
 ```
 
-# Bind low-frequency data with TOI data to identify TOI_source and supply API-provided timestamp, latitude, and longitude
+# Set up to bind low-frequency data with TOI data to identify TOI_source and supply API-provided timestamp, latitude, and longitude
 
 ```{r}
 # read in toi data product table
@@ -944,10 +944,12 @@ toi_transect <- toi_transect %>% filter(toi_transect$year == this_cruise$year)
 
 # expect toi_transect to have rows with bottles deeper than surface
 # filter for rows depth less than Rachel's depthcutoff 6 m
-toi_transect_surface <- filter(toi_transect, depth_input <= 6)
+#toi_transect_surface <- filter(toi_transect, depth_input <= 6)
+# deeper depth for package 32.1
+toi_transect_surface <- filter(toi_transect, depth_input <= 7.1)
+
 
 # remove rows not in in NCP-GOP data
-#2/1/2018  18:12 	row 29, 2/3/2018  03:50	row 70
 # AR28B underway
 if (this_year == 2018){
 toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$datetime_utc_input == "2018-02-01 18:12:00"| 
@@ -967,6 +969,10 @@ toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$datetim
                             toi_transect_surface$datetime_utc_input == "2021-02-07 22:06:00"),]
  }
 
+if (this_year == 2022){
+toi_transect_surface <- toi_transect_surface[-which(toi_transect_surface$datetime_utc_input == "2022-08-03 01:34:00"),]
+ }
+
 # check for length discrepancy
 nrow(toi_transect_surface)  
 nrow(ncp_gop_input)
@@ -982,8 +988,9 @@ cruise_check_surf <- toi_transect_surface %>% group_by(cruise) %>% summarize(toi
 cruise_check_ncp <- ncp_gop_input %>% group_by(cruiseid) %>% summarize(toi_transect_surf = n())
 ncp_gop_input$datetime_utc_input <- ncp_gop_input$datetime_utc_matlab
 #cruise_check_ncp <- ncp_gop_input %>% rename(datetime_utc_input = datetime_utc_matlab)
-diffrows <- anti_join(ncp_gop_input, toi_transect_surface, by = "datetime_utc_input")
-diffrows <- anti_join(toi_transect_surface, ncp_gop_input,  by = "datetime_utc_input")
+diffrows_ncp <- anti_join(ncp_gop_input, toi_transect_surface, by = "datetime_utc_input")
+diffrows_toi <- anti_join(toi_transect_surface, ncp_gop_input,  by = "datetime_utc_input")
+
 
 ```
 

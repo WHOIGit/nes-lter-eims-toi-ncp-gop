@@ -24,15 +24,15 @@
     </creator>
     <creator>
       <individualName>
-        <givenName>Zoe</givenName>
-        <surName>Sandwith</surName>
+        <givenName>Danielle</givenName>
+        <surName>Aldrett</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
     <creator>
       <individualName>
-        <givenName>Danielle</givenName>
-        <surName>Aldrett</surName>
+        <givenName>S. Alejandra</givenName>
+        <surName>Casillo Cieza</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
@@ -46,12 +46,22 @@
     </creator>
     <creator>
       <individualName>
+        <givenName>Zoe</givenName>
+        <givenName>O</givenName>
+        <surName>Sandwith</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>zoe.sandwith@hakai.org</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0001-9952-9526</userId>
+    </creator>
+    <creator>
+      <individualName>
         <givenName>Rachel</givenName>
         <surName>Shrives</surName>
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
-    <pubDate>2024-01-22</pubDate>
+    <pubDate>2024-01-24</pubDate>
     <abstract>
       <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2019. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. &#13;
 </para>
@@ -102,7 +112,7 @@
       </temporalCoverage>
     </coverage>
     <maintenance>
-      <description>ongoing</description>
+      <description>completed</description>
     </maintenance>
     <contact>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>

@@ -29,12 +29,13 @@ bottleAr28b <- bottleAr28b %>%
   mutate(X4 = case_when(X1 == "03-Apr-2018 20:37:00" & X4 == 5 & X8 == 0 ~ 0, TRUE ~ X4)) 
 write_csv(bottleAr28b, paste0(here(),"/eims-toi-transect/input_data_csv/bottleAr28.csv"), col_names = FALSE)
 
-# # One extra row in discreterates file that breaks join. 0:03 timestamp (it is not surface). Exclude row 3. 
-# ratesAr28 <- read_csv(paste0(here(),"/ncp-gop-transect-2018-pkg13/input_data_csv/discreteratesAr28_original.csv"), col_names = FALSE)
-# ratesAr28 <- ratesAr28[-which(ratesAr28$X1 == "10-Apr-2018 00:03:00" & ratesAr28$X4 == 199.0),]
-# write_csv(ratesAr28, paste0(here(),"/ncp-gop-transect-2018-pkg13/input_data_csv/discreteratesAr28.csv"), col_names = FALSE)
+# fix timestamp for 0:03 timestamp sample from cast 12  
+ratesAr28 <- read_csv(paste0(here(),"/ncp-gop-transect-2018-pkg13/input_data_csv/discreteratesAr28_original.csv"), col_names = FALSE)
+ratesAr28 <- ratesAr28 |>
+  mutate(X1 = case_when(X1 == "10-Apr-2018 00:03:00" & X4 == 199 ~ "10-Apr-2018 01:53:00", TRUE ~ X1)) 
+write_csv(ratesAr28, paste0(here(),"/ncp-gop-transect-2018-pkg13/input_data_csv/discreteratesAr28.csv"), col_names = FALSE)
 
-# Ar31A cast 6 depths were mis-entered. Correct them and remove one non-surface row from discreterates files
+#  AR31A cast 6 depths were mis-entered. Correct them and remove one non-surface row from discreterates files
 bottleAr31 <- read_csv(paste0(here(),"/eims-toi-transect/input_data_csv/bottleAr31_original.csv"), col_names = FALSE)
 bottleAr31 <- bottleAr31 %>% 
   mutate(X4 = case_when(X1 == "21-Oct-2018 17:56:00" & X8 == 4 ~ 16, TRUE ~ X4)) %>%    
@@ -78,6 +79,12 @@ bottleEn649 <- bottleEn649 |>
   mutate(X1 = case_when(X1 == "02-Feb-2020 23:02:00" ~ "02-Feb-2020 08:34:00", TRUE ~ X1)) 
 write_csv(bottleEn649, paste0(here(),"/eims-toi-transect/input_data_csv/bottleEn649.csv"), col_names = FALSE)
 
+ratesEn649 <- read_csv(paste0(here(),"/ncp-gop-transect-2020-pkg30/input_data_csv/discreteratesEn649_original.csv"), col_names = FALSE)
+ratesEn649 <- ratesEn649 |>
+   mutate(X1 = case_when(X1 == "02-Feb-2020 18:17:00" ~ "01-Feb-2020 18:17:00", TRUE ~ X1)) |>
+   mutate(X1 = case_when(X1 == "02-Feb-2020 23:07:00" ~ "01-Feb-2020 23:07:00", TRUE ~ X1)) 
+write_csv(ratesEn649, paste0(here(),"/ncp-gop-transect-2020-pkg30/input_data_csv/discreteratesEn649.csv"), col_names = FALSE)
+
 # EN655
 bottleEn655 <- read_csv(paste0(here(), "/eims-toi-transect/input_data_csv/bottleEn655_original.csv"), col_names = FALSE)
 bottleEn655 <- bottleEn655 |> 
@@ -94,6 +101,12 @@ bottleEn655 <- bottleEn655 |>
   mutate(X1 = case_when(X1 == "26-Jul-2020 07:24:00" ~ "26-Jul-2020 19:24:00", TRUE ~ X1)) |>
   mutate(X1 = case_when(X1 == "26-Jul-2020 02:30:00" ~ "26-Jul-2020 14:30:00", TRUE ~ X1)) 
 write_csv(bottleEn655, paste0(here(),"/eims-toi-transect/input_data_csv/bottleEn655.csv"), col_names = FALSE)
+
+ratesEn655 <- read_csv(paste0(here(),"/ncp-gop-transect-2020-pkg30/input_data_csv/discreteratesEn655_original.csv"), col_names = FALSE)
+ratesEn655 <- ratesEn655 |>
+  mutate(X1 = case_when(X1 == "25-Jul-2020 09:56:00" ~ "25-Jul-2020 21:56:00", TRUE ~ X1)) |>
+  mutate(X1 = case_when(X1 == "26-Jul-2020 07:24:00" ~ "26-Jul-2020 19:24:00", TRUE ~ X1))
+write_csv(ratesEn655, paste0(here(),"/ncp-gop-transect-2020-pkg30/input_data_csv/discreteratesEn655.csv"), col_names = FALSE)
 
 # Remove duplicate rows and fix one start time in EN661 bottle file
 bottleEn661 <- read_csv(paste0(here(), "/eims-toi-transect/input_data_csv/bottleEn661_original.csv"), col_names = FALSE)
@@ -125,6 +138,12 @@ bottleAt46 <- bottleAt46 |>
   mutate(X1 = case_when(X1 == "20-Feb-2022 01:58:00"  ~ "21-Feb-2022 00:01:58", TRUE ~ X1)) |>
   mutate(X1 = case_when(X1 == "21-Feb-2022 04:50:00"  ~ "21-Feb-2022 00:04:50", TRUE ~ X1)) 
 write_csv(bottleAt46, paste0(here(),"/eims-toi-transect/input_data_csv/bottleAt46.csv"), col_names = FALSE)
+
+ratesAt46 <- read_csv(paste0(here(),"/ncp-gop-transect-2022-pkg32/input_data_csv/discreteratesAt46_original.csv"), col_names = FALSE)
+ratesAt46 <- ratesAt46 |>
+  mutate(X1 = case_when(X1 == "17-Feb-2022 08:16:00"  ~ "17-Feb-2022 02:45:00", TRUE ~ X1)) |>
+  mutate(X1 = case_when(X1 == "21-Feb-2022 04:50:00"  ~ "21-Feb-2022 00:04:50", TRUE ~ X1)) 
+write_csv(ratesAt46, paste0(here(),"/ncp-gop-transect-2022-pkg32/input_data_csv/discreteratesAt46.csv"), col_names = FALSE)
 
 # check cast station list
 cast_stns <- read_csv(paste0(here(),"/ctd_nearest_stations.csv"), na = "NaN")
