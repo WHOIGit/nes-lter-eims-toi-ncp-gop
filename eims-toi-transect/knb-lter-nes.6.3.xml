@@ -39,7 +39,17 @@
       <electronicMailAddress>zoe.sandwith@hakai.org</electronicMailAddress>
       <userId directory="https://orcid.org">https://orcid.org/0000-0001-9952-9526</userId>
     </creator>
-    <pubDate>2024-01-24</pubDate>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
+      <role>metadata Provider</role>
+    </associatedParty>
+    <pubDate>2024-01-26</pubDate>
     <abstract>
       <para>In order to calculate net community production (NCP) rates on Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) transect cruises, gas tracer data were collected with a continuous at-sea mass spectrometer. The ratio of O2/Ar, measured continuously from underway water, yields 8,000-15,000 rates of NCP per cruise. Discrete water samples (50 to 150 per cruise) were collected for triple oxygen isotope (TOI) analysis to estimate gross primary production (GPP) rates and ratios of NCP/GPP. Along-shelf (upstream-downstream) transects were conducted in addition to the main across-shelf transect.&#13;
 This data package provides two types of data tables for NES-LTER transect cruises beginning in 2018: a high-frequency continuous Equilibration Inlet Mass Spectrometer (EIMS) table, provided by year, and a low-frequency discrete triple oxygen isotope (TOI) table with all years combined. Rates calculated from these measurements are provided as separate packages, per year, in the EDI repository.</para>
@@ -63,6 +73,7 @@ This data package provides two types of data tables for NES-LTER transect cruise
     </keywordSet>
     <additionalInfo>
       <para>Acknowledgments and gratitude to the WHOI staff and Wellesley College undergraduate students who participated in each cruise: Elizabeth Lambert (EN608 and EN644), Helene Alt (EN617 and AR31A), Emily Kopp (EN627), Lindsey Baldwin and Anne Cruz (AT46), Alejandra Castillo Cieza and Ellen Roosen (EN668), Justin Ossolinski (EN657 and EN649), Danielle Aldrett (EN649), and Zoe Kronberg (EN687). For cruises in 2018 and 2019, technician Zoe Sandwith contributed much sea time and completed the lab analyses. Technician Kevin Cahill has completed lab analyses since 2020. </para>
+      <para>For cruises on R/V Neil Armstrong, we thank the Ocean Observatories Initiative, funded by the National Science Foundation under Cooperative Agreement No. 1743430.</para>
     </additionalInfo>
     <intellectualRights>
       <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
@@ -260,17 +271,21 @@ EN655: Diaphragm.</para>
         <funding>NSF Award OCE-1655686</funding>
       </relatedProject>
       <relatedProject>
-        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
+        <title>RAPID: Collaborative Research: Autumn transition in plankton ecology during an ocean heatwave on the Northeast U.S. Shelf</title>
         <personnel>
           <individualName>
-            <givenName>James</givenName>
-            <surName>Edson</surName>
+            <givenName>Heidi</givenName>
+            <surName>Sosik</surName>
           </individualName>
-          <electronicMailAddress>jedson@whoi.edu</electronicMailAddress>
-          <userId directory="https://orcid.org">https://orcid.org/0000-0002-8777-031X</userId>
+          <electronicMailAddress>hsosik@whoi.edu</electronicMailAddress>
+          <userId directory="https://orcid.org">0000-0002-4591-2842</userId>
           <role>Principal Investigator</role>
         </personnel>
-        <funding>NSF Award OCE-1743430</funding>
+        <award>
+          <funderName>National Science Foundation</funderName>
+          <awardNumber>NSF Award OCE-210243</awardNumber>
+          <title>RAPID: Collaborative Research: Autumn transition in plankton ecology during an ocean heatwave on the Northeast U.S. Shelf</title>
+        </award>
       </relatedProject>
     </project>
     <dataTable>
@@ -667,7 +682,7 @@ EN655: Diaphragm.</para>
         </attribute>
         <attribute>
           <attributeName>temperature</attributeName>
-          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <attributeDefinition>Underway thermosalinograph temperature in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -855,7 +870,7 @@ EN655: Diaphragm.</para>
         </attribute>
         <attribute>
           <attributeName>temperature</attributeName>
-          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <attributeDefinition>Underway thermosalinograph temperature in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -1043,7 +1058,7 @@ EN655: Diaphragm.</para>
         </attribute>
         <attribute>
           <attributeName>temperature</attributeName>
-          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <attributeDefinition>Underway thermosalinograph temperature in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -1231,7 +1246,7 @@ EN655: Diaphragm.</para>
         </attribute>
         <attribute>
           <attributeName>temperature</attributeName>
-          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <attributeDefinition>Underway thermosalinograph temperature in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
@@ -1419,7 +1434,7 @@ EN655: Diaphragm.</para>
         </attribute>
         <attribute>
           <attributeName>temperature</attributeName>
-          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <attributeDefinition>Underway thermosalinograph temperature in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>

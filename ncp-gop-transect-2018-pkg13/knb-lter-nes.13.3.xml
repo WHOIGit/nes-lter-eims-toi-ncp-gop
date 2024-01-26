@@ -47,7 +47,17 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
-    <pubDate>2024-01-24</pubDate>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
+      <role>metadata Provider</role>
+    </associatedParty>
+    <pubDate>2024-01-26</pubDate>
     <abstract>
       <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter, spring, summer, and fall Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2018. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. </para>
     </abstract>
@@ -71,6 +81,9 @@
       <keyword>net ecosystem production</keyword>
       <keyword>net community production</keyword>
     </keywordSet>
+    <additionalInfo>
+      <para>For cruises on R/V Neil Armstrong, we thank the Ocean Observatories Initiative, funded by the National Science Foundation under Cooperative Agreement No. 1743430.</para>
+    </additionalInfo>
     <intellectualRights>
       <para>This information is released under the Creative Commons license - Attribution - CC BY (https://creativecommons.org/licenses/by/4.0/). The consumer of these data ("Data User" herein) is required to cite it appropriately in any publication that results from its use. The Data User should realize that these data may be actively used by others for ongoing research and that coordination may be necessary to prevent duplicate publication. The Data User is urged to contact the authors of these data if any questions about methodology or results occur. Where appropriate, the Data User is encouraged to consider collaboration or co-authorship with the authors. The Data User should realize that misinterpretation of data may occur if used out of context of the original study. While substantial efforts are made to ensure the accuracy of data and associated documentation, complete accuracy of data sets cannot be guaranteed. All data are made available "as is." The Data User should be aware, however, that data are updated periodically and it is the responsibility of the Data User to check for new versions of the data. The data authors and the repository where these data were obtained shall not be liable for damages resulting from any use or misinterpretation of the data. Thank you.
 </para>
@@ -252,19 +265,6 @@
           <role>Principal Investigator</role>
         </personnel>
         <funding>NSF Award OCE-1655686</funding>
-      </relatedProject>
-      <relatedProject>
-        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
-        <personnel>
-          <individualName>
-            <givenName>James</givenName>
-            <surName>Edson</surName>
-          </individualName>
-          <electronicMailAddress>jedson@whoi.edu</electronicMailAddress>
-          <userId directory="https://orcid.org">https://orcid.org/0000-0002-8777-031X</userId>
-          <role>Principal Investigator</role>
-        </personnel>
-        <funding>NSF Award OCE-1743430</funding>
       </relatedProject>
     </project>
     <dataTable>
@@ -627,7 +627,7 @@
         </attribute>
         <attribute>
           <attributeName>temperature</attributeName>
-          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <attributeDefinition>Underway thermosalinograph temperature in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>

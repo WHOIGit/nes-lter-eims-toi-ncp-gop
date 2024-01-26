@@ -1,7 +1,7 @@
 ---
 title: "NES-LTER EIMS TOI and NCP-GOP Transects"
 author: "Kate Morkeski, Jaxine Wolfe, Stace Beaulieu"
-date: "January 12, 2024"
+date: "January 26, 2024"
 output: html_document
 ---
 
@@ -733,7 +733,7 @@ make_eml(path=project_folder,
 #project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
 
 # for prep-eims-toi-data: 
-add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESI-II_OOI.txt", xml.path = project_folder)
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESI-II_RAPID.txt", xml.path = project_folder)
 
 ```
 
@@ -748,7 +748,7 @@ cruise_list <- read_csv("cruise_list_v3.csv", col_names = TRUE, show_col_types =
 
 # refer to package_identifiers.txt that matches to package for manual edit
 # manually edit package id to select package to assemble 
-this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.32.1")
+this_pkg <- cruise_list %>% filter(package_id == "knb-lter-nes.13.3")
 
 # get identifying info for this package
 this_year <- this_pkg$year[1]
@@ -1221,7 +1221,7 @@ make_eml(path = project_folder,
          temporal.coverage = temp_coverage,
          geographic.description = "NES-LTER Transect",
          geographic.coordinates = geographic_coordinates(lat, long),
-         maintenance.description = "ongoing", #TODO: add column in cruise list to designate completed pkgs
+         maintenance.description = "completed", #TODO: add column in cruise list to designate completed pkgs
          user.id = "NES",
          user.domain = "LTER",
          package.id = pkg_id)
@@ -1235,7 +1235,11 @@ make_eml(path = project_folder,
 #project_insert(edi_pkg = pkg_id, filename = 'parent_project.txt')
 
 # for prep-eims-toi-data: 
-add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESI-II_OOI.txt", xml.path = project_folder)
+# 2018, 2019, 2021, 2022
+add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESI-II.txt", xml.path = project_folder)
+
+# 2020
+#add_parent(edi_pkg = pkg_id, parent_name = "parent_project_NESI-II_RAPID.txt", xml.path = project_folder)
 
 ```
 

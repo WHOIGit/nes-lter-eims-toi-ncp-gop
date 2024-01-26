@@ -53,7 +53,17 @@
       </individualName>
       <organizationName>Northeast U.S. Shelf LTER</organizationName>
     </creator>
-    <pubDate>2024-01-24</pubDate>
+    <associatedParty>
+      <individualName>
+        <givenName>Kate</givenName>
+        <surName>Morkeski</surName>
+      </individualName>
+      <organizationName>Northeast U.S. Shelf LTER</organizationName>
+      <electronicMailAddress>kmorkeski@whoi.edu</electronicMailAddress>
+      <userId directory="https://orcid.org">https://orcid.org/0000-0002-2903-5851</userId>
+      <role>metadata Provider</role>
+    </associatedParty>
+    <pubDate>2024-01-26</pubDate>
     <abstract>
       <para>This data package provides net community production (NCP) and gross oxygen production (GOP, a measure of gross primary production) for the winter and summer Northeast U.S. Shelf Long-Term Ecological Research (NES-LTER) Transect cruises in 2021. Two tables are provided: a high-frequency table with NCP rates calculated from measurements of O2/Ar made continuously by an at-sea equilibrator inlet mass spectrometer (EIMS), and a low-frequency table with both NCP and GOP rates calculated for discrete samples measured post-cruise. The GOP rates were calculated from triple O2 isotopic (TOI) ratios. These data are derived from the EIMS and TOI data for the NES-LTER Transect cruises in EDI data package knb-lter-nes.6.3. &#13;
 </para>
@@ -255,19 +265,6 @@
           <role>Principal Investigator</role>
         </personnel>
         <funding>NSF Award OCE-1655686</funding>
-      </relatedProject>
-      <relatedProject>
-        <title>Management and Operation of the Ocean Observatories Initiative (OOI)</title>
-        <personnel>
-          <individualName>
-            <givenName>James</givenName>
-            <surName>Edson</surName>
-          </individualName>
-          <electronicMailAddress>jedson@whoi.edu</electronicMailAddress>
-          <userId directory="https://orcid.org">https://orcid.org/0000-0002-8777-031X</userId>
-          <role>Principal Investigator</role>
-        </personnel>
-        <funding>NSF Award OCE-1743430</funding>
       </relatedProject>
     </project>
     <dataTable>
@@ -630,7 +627,7 @@
         </attribute>
         <attribute>
           <attributeName>temperature</attributeName>
-          <attributeDefinition>Underway thermosalinograph salinity in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
+          <attributeDefinition>Underway thermosalinograph temperature in degrees Celsius. URI http://vocab.nerc.ac.uk/collection/P01/current/TEMPSZ01/</attributeDefinition>
           <storageType>float</storageType>
           <measurementScale>
             <ratio>
